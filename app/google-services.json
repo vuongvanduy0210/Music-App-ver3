@@ -45,9 +45,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:864398814382:android:834815958395ce7c4a913f",
+        "mobilesdk_app_id": "1:864398814382:android:c636f7190c55d26f4a913f",
         "android_client_info": {
-          "package_name": "com.vuongvanduy.music_app_ver3"
+          "package_name": "com.vuongvanduy.music_app"
         }
       },
       "oauth_client": [

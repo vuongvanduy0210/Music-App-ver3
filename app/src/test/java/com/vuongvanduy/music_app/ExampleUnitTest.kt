@@ -1,4 +1,4 @@
-package com.vuongvanduy.music_app_ver3
+package com.vuongvanduy.music_app
 
 import org.junit.Test
 
