@@ -44,7 +44,7 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.firebase:firebase-auth:21.1.0'
     implementation 'com.google.firebase:firebase-database:20.1.0'
@@ -58,19 +58,15 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
 
-    //gson
-    implementation 'com.google.code.gson:gson:2.10.1'
-
     //hilt
-    def hilt_version = '2.38.1'
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-compiler:2.44"
     implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'
 
     //navigation
     def nav_version = "2.6.0"
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-ui:$nav_version"
 
     // viewpager
     implementation "androidx.viewpager2:viewpager2:1.0.0"
@@ -81,17 +77,17 @@ dependencies {
     //circle indicator
     implementation 'me.relex:circleindicator:2.1.6'
 
-    // bottom navigation
+    //bottom navigation
     implementation 'com.aurelhubert:ahbottomnavigation:2.3.4'
 
-    // glide
+    //glide
     implementation 'com.github.bumptech.glide:glide:4.15.1'
-
-    //fragment
-    implementation 'androidx.fragment:fragment:1.6.0'
 
     //media
     implementation 'androidx.media:media:1.6.0'
+
+    //fragment
+    implementation 'androidx.fragment:fragment:1.6.0'
 
     //swipe layout
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
