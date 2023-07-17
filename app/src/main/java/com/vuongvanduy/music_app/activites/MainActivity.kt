@@ -1,20 +1,24 @@
 package com.vuongvanduy.music_app.activites
 
 import android.annotation.SuppressLint
-import android.graphics.Rect
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.TypedValue
-import android.view.View
-import android.view.ViewTreeObserver
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.bumptech.glide.Glide
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.common.*
+import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.ActivityMainBinding
 import com.vuongvanduy.music_app.ui.common.adapter.FragmentViewPagerAdapter
 import com.vuongvanduy.music_app.ui.music_player.MusicPlayerFragment
@@ -30,13 +34,45 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var onBackPressedCallback: OnBackPressedCallback
 
+    private val serviceReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent != null) {
+                mainViewModel.receiveDataFromReceiver(intent)
+            }
+        }
+    }
+
+    private val currentTimeReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent != null) {
+                mainViewModel.receiveCurrentTime(intent)
+            }
+        }
+    }
+
+    inner class UpdateSeekBar : Runnable {
+        override fun run() {
+            val currentTime = mainViewModel.currentTime.value
+            if (currentTime != null) {
+                binding.progressBar.progress = currentTime
+            }
+            binding.progressBar.isEnabled = false
+
+            Handler(Looper.myLooper()!!).postDelayed(this, 1000)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+
         init()
+
         setContentView(binding.root)
 
         setBottomNavigationWithViewPager()
+
+        registerButtonListener()
 
         registerObserver()
 
@@ -47,6 +83,11 @@ class MainActivity : AppCompatActivity() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         binding.viewModel = mainViewModel
         binding.lifecycleOwner = this
+
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(serviceReceiver, IntentFilter(SEND_DATA))
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(currentTimeReceiver, IntentFilter(SEND_CURRENT_TIME))
     }
 
     private fun setBottomNavigationWithViewPager() {
@@ -78,35 +119,113 @@ class MainActivity : AppCompatActivity() {
         binding.toolBarTitle.text = title
     }
 
+    private fun registerButtonListener() {
+        binding.imgBack.setOnClickListener {
+            popMusicPlayer()
+        }
+        binding.imgPlay.setOnClickListener {
+            if (mainViewModel.isPlaying.value == true) {
+                sendActionToService(this, ACTION_PAUSE)
+            } else {
+                sendActionToService(this, ACTION_RESUME)
+            }
+        }
+        binding.imgPrevious.setOnClickListener {
+            sendActionToService(this, ACTION_PAUSE)
+        }
+        binding.imgNext.setOnClickListener {
+            sendActionToService(this, ACTION_NEXT)
+        }
+        binding.imgClear.setOnClickListener {
+            sendActionToService(this, ACTION_CLEAR)
+        }
+    }
+
     @SuppressLint("CommitTransaction")
     private fun registerObserver() {
         mainViewModel.apply {
-            isServiceRunning.observe(this@MainActivity) {
-                if (it) {
-                    if (isShowMusicPlayer.value == true) {
-                        isShowMiniPlayer.postValue(false)
-                    } else {
-                        isShowMiniPlayer.postValue(true)
-                    }
-                } else {
-                    isShowMiniPlayer.postValue(false)
-                }
+            isServiceRunning.observe(this@MainActivity) { isRunning ->
+                isShowMiniPlayer.postValue(isRunning && isShowMusicPlayer.value == false)
             }
-            isShowMusicPlayer.observe(this@MainActivity) {
-                isShowBottomNav.postValue(!it)
-                if (!it) {
+
+            isShowMusicPlayer.observe(this@MainActivity) { isShow ->
+                if (!isShow) {
                     if (isServiceRunning.value == true) {
                         isShowMiniPlayer.postValue(true)
                     } else {
                         isShowMiniPlayer.postValue(false)
                     }
                     supportFragmentManager.popBackStack()
+                    setToolbarTitle()
                 } else {
                     //replace fragment
                     replaceMusicPlayer()
+                    isShowMiniPlayer.postValue(false)
+                    binding.toolBarTitle.text = TITLE_MUSIC_PLAYER
+                }
+            }
+
+            actionMusic.observe(this@MainActivity) { value ->
+                when (value) {
+                    ACTION_START, ACTION_NEXT, ACTION_PREVIOUS ->
+                        currentSong.value?.let {
+                            setLayoutMiniPlayer(it)
+                        }
+
+                    ACTION_CLEAR -> {
+                        isPlaying.postValue(false)
+                        isServiceRunning.postValue(false)
+                        popMusicPlayer()
+                    }
+
+                    ACTION_RELOAD_DATA -> {
+                        currentSong.value?.let {
+                            setLayoutMiniPlayer(it)
+                        }
+                        isShowMiniPlayer.postValue(true)
+                    }
+
+                    ACTION_OPEN_MUSIC_PLAYER -> {
+                        isShowMusicPlayer.postValue(true)
+                    }
+
+                    else -> {}
+                }
+            }
+
+            isPlaying.observe(this@MainActivity) {
+                if (it) {
+                    binding.imgPlay.setImageResource(R.drawable.ic_pause)
+                } else {
+                    binding.imgPlay.setImageResource(R.drawable.ic_play)
                 }
             }
         }
+    }
+
+    private fun setToolbarTitle() {
+        when (binding.bottomNav.selectedItemId) {
+            R.id.home -> binding.toolBarTitle.text = TITLE_HOME
+            R.id.online -> binding.toolBarTitle.text = TITLE_ONLINE_SONGS
+            R.id.favourite -> binding.toolBarTitle.text = TITLE_FAVOURITE_SONGS
+            R.id.device -> binding.toolBarTitle.text = TITLE_DEVICE_SONGS
+            R.id.settings -> binding.toolBarTitle.text = TITLE_SETTINGS
+        }
+    }
+
+    private fun setLayoutMiniPlayer(song: Song) {
+
+        val imageUri = Uri.parse(song.imageUri)
+        // set layout
+        binding.apply {
+            Glide.with(this@MainActivity).load(imageUri).into(imgMusic)
+            tvMusicName.isSelected = true
+            tvSinger.isSelected = true
+            Glide.with(this@MainActivity).load(imageUri).into(imgBgMiniPlayer)
+        }
+
+        val updateSeekBar = UpdateSeekBar()
+        Handler(Looper.myLooper()!!).post(updateSeekBar)
     }
 
     private fun replaceMusicPlayer() {
@@ -157,5 +276,11 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         onBackPressedCallback.remove()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(serviceReceiver)
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(currentTimeReceiver)
     }
 }

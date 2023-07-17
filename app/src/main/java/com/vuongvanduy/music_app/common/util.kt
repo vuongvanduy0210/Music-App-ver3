@@ -1,9 +1,13 @@
 package com.vuongvanduy.music_app.common
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.vuongvanduy.music_app.MusicService
 import com.vuongvanduy.music_app.data.models.Song
+import java.io.Serializable
 
 const val CHANNEL_ID = "channel_service"
 
@@ -74,13 +78,14 @@ const val TITLE_ACCOUNT = "Account"
 const val TITLE_APPEARANCE = "Appearance"
 const val TITLE_APP_INFO = "About"
 const val TITLE_CONTACT = "Contact"
+const val TITLE_MUSIC_PLAYER = "Music Player"
 
-const val EMPTY_LIST_SONG_TEXT_ONLINE = "No song in list. " +
+const val EMPTY_LIST_SONG_TEXT_ONLINE = "No currentSong in list. " +
         "Please check your internet connection."
-const val EMPTY_LIST_SONG_TEXT_DEVICE = "No song in list. " +
+const val EMPTY_LIST_SONG_TEXT_DEVICE = "No currentSong in list. " +
         "Please allow access photos and " +
-        "media on your device or add new song to your media storage."
-const val EMPTY_LIST_SONG_TEXT_FAVOURITE = "No song in list. " +
+        "media on your device or add new currentSong to your media storage."
+const val EMPTY_LIST_SONG_TEXT_FAVOURITE = "No currentSong in list. " +
         "Please check your internet connection or sign in to see your favourites."
 
 const val TEXT_ADD_FAVOURITES = "Add To \n Favourites"
@@ -101,4 +106,27 @@ fun isSongExists(songList: List<Song>, song: Song): Boolean {
         }
     }
     return false
+}
+
+fun sendListSongToService(context: Context, songs: List<Song>) {
+    val intent = Intent(context, MusicService::class.java)
+    val bundle = Bundle()
+    bundle.putSerializable(KEY_LIST_SONGS, songs as Serializable)
+    intent.putExtras(bundle)
+    context.startService(intent)
+}
+
+fun sendDataToService(context: Context, currentSong: Song, action: Int) {
+    val intent = Intent(context, MusicService::class.java)
+    intent.putExtra(KEY_ACTION, action)
+    val bundle = Bundle()
+    bundle.putSerializable(KEY_SONG, currentSong)
+    intent.putExtras(bundle)
+    context.startService(intent)
+}
+
+fun sendActionToService(context: Context, action: Int) {
+    val intent = Intent(context, MusicService::class.java)
+    intent.putExtra(KEY_ACTION, action)
+    context.startService(intent)
 }

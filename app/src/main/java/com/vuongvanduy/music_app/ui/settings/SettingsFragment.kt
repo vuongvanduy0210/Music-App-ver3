@@ -17,22 +17,6 @@ class SettingsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        log(SETTINGS_FRAGMENT_TAG, "onCreateView")
         return inflater.inflate(R.layout.fragment_settings, container, false)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        log(SETTINGS_FRAGMENT_TAG, "onPause")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        log(SETTINGS_FRAGMENT_TAG, "onDestroy")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        log(SETTINGS_FRAGMENT_TAG, "onResume")
     }
 }

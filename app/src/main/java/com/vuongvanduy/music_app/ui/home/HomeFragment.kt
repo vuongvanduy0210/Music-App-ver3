@@ -22,7 +22,7 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
-    private val songViewModel by viewModels<SongViewModel>()
+//    private val songViewModel by viewModels<SongViewModel>()
 
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -39,7 +39,6 @@ class HomeFragment : BaseFragment() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        log(HOME_FRAGMENT_TAG, "onCreate")
         super.onCreate(savedInstanceState)
         requestPermissionReadStorage()
         songViewModel.getListOnline()
@@ -49,7 +48,6 @@ class HomeFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        log(HOME_FRAGMENT_TAG, "onCreateView")
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.viewModel = songViewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -59,14 +57,14 @@ class HomeFragment : BaseFragment() {
     private fun requestPermissionReadStorage() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (requireContext().checkSelfPermission(Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-                // get list song from device and send to music device fragment
+                // get list currentSong from device and send to music device fragment
                 songViewModel.getLocalData()
             } else {
                 activityResultLauncher.launch(Manifest.permission.READ_MEDIA_AUDIO)
             }
         } else {
             if (requireContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                // get list song from device and send to music device fragment
+                // get list currentSong from device and send to music device fragment
                 songViewModel.getLocalData()
             } else {
                 activityResultLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)

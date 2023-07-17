@@ -81,18 +81,22 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
             .setAudioAttributes(
                 AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .build())
-            .setOnAudioFocusChangeListener {focusChange ->
+                    .build()
+            )
+            .setOnAudioFocusChangeListener { focusChange ->
                 when (focusChange) {
                     AudioManager.AUDIOFOCUS_GAIN -> {
                         resumeMusic()
                     }
+
                     AudioManager.AUDIOFOCUS_LOSS -> {
                         pauseMusic()
                     }
+
                     AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
                         pauseMusic()
                     }
+
                     AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
                         resumeMusic()
                     }
@@ -123,7 +127,7 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
                 songs = listReceive as MutableList<Song>
             }
 
-            //receive song
+            //receive currentSong
             val songReceive = bundle.getSerializable(KEY_SONG)
             if (songReceive != null) {
                 currentSong = songReceive as Song?
@@ -476,7 +480,7 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
             pauseMusic()
             Toast.makeText(
                 this@MusicService,
-                "Can't play this song. Check your internet connection or reload app.",
+                "Can't play this currentSong. Check your internet connection or reload app.",
                 Toast.LENGTH_SHORT
             ).show()
         }

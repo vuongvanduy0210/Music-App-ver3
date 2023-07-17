@@ -1,18 +1,17 @@
 package com.vuongvanduy.music_app.ui.online_songs
 
-import android.graphics.Rect
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.TypedValue
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.view.inputmethod.EditorInfo
-import androidx.fragment.app.viewModels
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +24,6 @@ import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.FragmentOnlineSongsBinding
 import com.vuongvanduy.music_app.ui.common.adapter.ExtendSongAdapter
 import com.vuongvanduy.music_app.ui.common.myinterface.IClickSongListener
-import com.vuongvanduy.music_app.ui.common.viewmodel.SongViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -34,13 +32,14 @@ class OnlineSongsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentOnlineSongsBinding
 
-    private val songViewModel by viewModels<SongViewModel>()
-
-    private lateinit var mainViewModel: MainViewModel
-
-    private lateinit var songAdapter: ExtendSongAdapter
-
-    private lateinit var activity: MainActivity
+    private val activityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                mainViewModel.currentSong.value?.let { playMusic(it) }
+            } else {
+                Log.e("FRAGMENT_NAME", "Permission denied")
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,8 +58,8 @@ class OnlineSongsFragment : BaseFragment() {
     private fun init() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = songViewModel
-        activity = requireActivity() as MainActivity
-        mainViewModel = ViewModelProvider(activity)[MainViewModel::class.java]
+        mainActivity = requireActivity() as MainActivity
+        mainViewModel = ViewModelProvider(mainActivity)[MainViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,15 +73,14 @@ class OnlineSongsFragment : BaseFragment() {
     }
 
     private fun setRecyclerViewSongs() {
-        songAdapter = ExtendSongAdapter(object : IClickSongListener {
+        extendSongAdapter = ExtendSongAdapter(object : IClickSongListener {
             override fun onClickSong(song: Song) {
-//                songViewModel.setSong(song)
+                mainViewModel.currentSong.postValue(song)
                 playSong(song)
-
             }
 
             override fun onClickAddFavourites(song: Song) {
-//                addToFavourites(song)
+//                addToFavourites(currentSong)
             }
 
             override fun onClickRemoveFavourites(song: Song) {}
@@ -91,7 +89,7 @@ class OnlineSongsFragment : BaseFragment() {
         binding.rcvListSongs.apply {
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(decoration)
-            adapter = songAdapter
+            adapter = extendSongAdapter
 
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -108,13 +106,32 @@ class OnlineSongsFragment : BaseFragment() {
         mainViewModel.isShowMusicPlayer.postValue(true)
         mainViewModel.isServiceRunning.postValue(true)
         hideKeyboard(requireContext(), binding.root)
+        requestPermissionPostNotification(song)
+    }
+
+    private fun requestPermissionPostNotification(song: Song) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (mainActivity.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                playMusic(song)
+            } else {
+                activityResultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        } else {
+            playMusic(song)
+        }
+    }
+
+    private fun playMusic(song: Song) {
+        mainViewModel.currentListName = TITLE_ONLINE_SONGS
+        songViewModel.onlineSongs.value?.let { sendListSongToService(mainActivity, it) }
+        sendDataToService(mainActivity, song, ACTION_START)
     }
 
     private fun registerObserverFetchDataFinish() {
         songViewModel.onlineSongs.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 songViewModel.isLoadingOnline.postValue(false)
-                songAdapter.setData(it)
+                extendSongAdapter.setData(it)
             }
         }
     }
@@ -146,7 +163,7 @@ class OnlineSongsFragment : BaseFragment() {
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
                 override fun afterTextChanged(s: Editable?) {
-                    songAdapter.filter.filter(s)
+                    extendSongAdapter.filter.filter(s)
                 }
             })
         }

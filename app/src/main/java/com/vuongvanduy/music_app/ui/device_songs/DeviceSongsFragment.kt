@@ -13,12 +13,18 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.vuongvanduy.music_app.activites.MainActivity
+import com.vuongvanduy.music_app.activites.MainViewModel
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
+import com.vuongvanduy.music_app.common.ACTION_START
+import com.vuongvanduy.music_app.common.TITLE_ONLINE_SONGS
 import com.vuongvanduy.music_app.common.hideKeyboard
-import com.vuongvanduy.music_app.ui.common.viewmodel.SongViewModel
+import com.vuongvanduy.music_app.common.sendDataToService
+import com.vuongvanduy.music_app.common.sendListSongToService
 import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.FragmentDeviceSongsBinding
 import com.vuongvanduy.music_app.ui.common.myinterface.IClickSongListener
@@ -30,11 +36,7 @@ class DeviceSongsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentDeviceSongsBinding
 
-    private val songViewModel by viewModels<SongViewModel>()
-
-    private lateinit var songAdapter: SongAdapter
-
-    private val activityResultLauncher =
+    private val activityResultLauncherGetData =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
                 songViewModel.getLocalData()
@@ -48,6 +50,15 @@ class DeviceSongsFragment : BaseFragment() {
             }
         }
 
+    private val activityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                mainViewModel.currentSong.value?.let { playMusic(it) }
+            } else {
+                Log.e("FRAGMENT_NAME", "Permission denied")
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestPermissionReadStorage()
@@ -56,17 +67,17 @@ class DeviceSongsFragment : BaseFragment() {
     private fun requestPermissionReadStorage() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (requireContext().checkSelfPermission(Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-                // get list song from device and send to music device fragment
+                // get list currentSong from device and send to music device fragment
                 songViewModel.getLocalData()
             } else {
-                activityResultLauncher.launch(Manifest.permission.READ_MEDIA_AUDIO)
+                activityResultLauncherGetData.launch(Manifest.permission.READ_MEDIA_AUDIO)
             }
         } else {
             if (requireContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                // get list song from device and send to music device fragment
+                // get list currentSong from device and send to music device fragment
                 songViewModel.getLocalData()
             } else {
-                activityResultLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                activityResultLauncherGetData.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
         }
     }
@@ -76,9 +87,15 @@ class DeviceSongsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentDeviceSongsBinding.inflate(inflater, container, false)
+        init()
+        return binding.root
+    }
+
+    private fun init() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = songViewModel
-        return binding.root
+        mainActivity = requireActivity() as MainActivity
+        mainViewModel = ViewModelProvider(mainActivity)[MainViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -94,8 +111,8 @@ class DeviceSongsFragment : BaseFragment() {
     private fun setRecyclerViewSongs() {
         songAdapter = SongAdapter(object : IClickSongListener {
             override fun onClickSong(song: Song) {
-//                songViewModel.setSong(song)
-//                playSong(song)
+                mainViewModel.currentSong.postValue(song)
+                playSong(song)
             }
 
             override fun onClickAddFavourites(song: Song) {}
@@ -107,7 +124,41 @@ class DeviceSongsFragment : BaseFragment() {
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(decoration)
             adapter = songAdapter
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                        hideKeyboard(requireContext(), binding.root)
+                    }
+                }
+            })
         }
+    }
+
+    private fun playSong(song: Song) {
+        mainViewModel.isShowMusicPlayer.postValue(true)
+        mainViewModel.isServiceRunning.postValue(true)
+        hideKeyboard(requireContext(), binding.root)
+        requestPermissionPostNotification(song)
+    }
+
+    private fun requestPermissionPostNotification(song: Song) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (mainActivity.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                playMusic(song)
+            } else {
+                activityResultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        } else {
+            playMusic(song)
+        }
+    }
+
+    private fun playMusic(song: Song) {
+        mainViewModel.currentListName = TITLE_ONLINE_SONGS
+        songViewModel.onlineSongs.value?.let { sendListSongToService(mainActivity, it) }
+        sendDataToService(mainActivity, song, ACTION_START)
     }
 
     private fun registerObserverFetchDataFinish() {
