@@ -22,7 +22,7 @@
     <string name="dev_name">VuongVanDuy</string>
     <string name="dev">DyuW</string>
 
-    <string name="hint_search">Song name…</string>
+    <string name="hint_search">Song name, singer…</string>
 
     <string name="version">Version 2.0</string>
     <string name="app_info">This application is created to help you listen to music\n Copyright © by VuongVanDuy</string>

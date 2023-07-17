@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.vuongvanduy.music_app.data.common.SongViewModel" />
+            type="com.vuongvanduy.music_app.ui.common.viewmodel.SongViewModel" />
         <import type="android.view.View"/>
     </data>
 

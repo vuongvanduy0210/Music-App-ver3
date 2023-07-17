@@ -10,6 +10,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.data.common.*
 import com.vuongvanduy.music_app.data.models.Song
 import java.lang.Exception
@@ -50,8 +51,8 @@ class SongRemoteService @Inject constructor() {
         val songsLiveData = MutableLiveData<List<Song>>()
         val list = mutableListOf<Song>()
 
-        val email = FirebaseAuth.getInstance().currentUser?.email?.substringBefore(".")
-//        val email = "duyconbn7@gmail"
+//        val email = FirebaseAuth.getInstance().currentUser?.email?.substringBefore(".")
+        val email = "duyconbn7@gmail"
         val database = Firebase.database
         val myRef = email?.let { database.getReference("favourite_songs").child(it) }
         myRef?.addValueEventListener(object : ValueEventListener {

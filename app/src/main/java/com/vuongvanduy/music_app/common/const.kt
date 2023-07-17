@@ -1,5 +1,10 @@
 package com.vuongvanduy.music_app.common
 
+import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import com.vuongvanduy.music_app.data.models.Song
+
 const val CHANNEL_ID = "channel_service"
 
 const val ACTION_MUSIC_NAME = "action_music"
@@ -83,3 +88,17 @@ const val TEXT_REMOVE_FAVOURITES = "Remove \n This Song"
 
 const val EMAIL_CONTACT = "vuongvanduyit03@gmail.com"
 const val MICROSOFT_CONTACT = "duycon123bn@outlook.com"
+
+fun hideKeyboard(context: Context, view: View) {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+fun isSongExists(songList: List<Song>, song: Song): Boolean {
+    for (s in songList) {
+        if (s.resourceUri == song.resourceUri) {
+            return true
+        }
+    }
+    return false
+}

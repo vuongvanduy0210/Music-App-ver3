@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.vuongvanduy.music_app.data.common.SongViewModel" />
+            type="com.vuongvanduy.music_app.ui.common.viewmodel.SongViewModel" />
         <import type="android.view.View"/>
     </data>
 
@@ -56,7 +56,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="15dp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="10dp"/>
+                android:layout_marginEnd="10dp" />
 
         </RelativeLayout>
 
