@@ -38,7 +38,7 @@
                     android:id="@+id/slide_image"
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
-                    android:layout_margin="13dp"/>
+                    android:layout_margin="13dp" />
 
                 <me.relex.circleindicator.CircleIndicator3
                     android:id="@+id/circle_indicator"

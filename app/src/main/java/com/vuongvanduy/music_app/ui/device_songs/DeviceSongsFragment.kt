@@ -11,14 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.vuongvanduy.music_app.activites.MainActivity
-import com.vuongvanduy.music_app.activites.MainViewModel
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
 import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.common.hideKeyboard
@@ -28,7 +24,6 @@ import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.FragmentDeviceSongsBinding
 import com.vuongvanduy.music_app.ui.common.myinterface.IClickSongListener
 import com.vuongvanduy.music_app.ui.common.adapter.SongAdapter
-import com.vuongvanduy.music_app.ui.common.viewmodel.SongViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

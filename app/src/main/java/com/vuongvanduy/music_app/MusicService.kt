@@ -26,7 +26,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.vuongvanduy.music_app.activites.MainActivity
+import com.vuongvanduy.music_app.activites.main.MainActivity
 import com.vuongvanduy.music_app.broadcast_receiver.MyReceiver
 import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.data.common.*

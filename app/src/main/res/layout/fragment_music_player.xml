@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.vuongvanduy.music_app.activites.MainViewModel" />
+            type="com.vuongvanduy.music_app.activites.main.MainViewModel" />
     </data>
 
     <RelativeLayout
@@ -86,8 +86,6 @@
                 android:id="@+id/seek_bar_music"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:max="@{viewModel.finalTime}"
-                android:progress="@{viewModel.currentTime}"
                 android:progressTint="@color/seekbar_color"
                 android:thumbTint="@color/seekbar_color"
                 android:visibility="visible" />

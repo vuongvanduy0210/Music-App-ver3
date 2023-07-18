@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.vuongvanduy.music_app.activites.MainViewModel" />
+            type="com.vuongvanduy.music_app.activites.main.MainViewModel" />
 
         <import type="android.view.View" />
     </data>
@@ -15,7 +15,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activites.MainActivity">
+        tools:context=".activites.main.MainActivity">
 
         <FrameLayout
             android:id="@+id/layout_music_player"

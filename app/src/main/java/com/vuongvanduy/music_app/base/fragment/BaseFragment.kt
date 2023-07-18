@@ -2,10 +2,9 @@ package com.vuongvanduy.music_app.base.fragment
 
 import android.util.Log
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import com.vuongvanduy.music_app.activites.MainActivity
-import com.vuongvanduy.music_app.activites.MainViewModel
+import com.vuongvanduy.music_app.activites.main.MainActivity
+import com.vuongvanduy.music_app.activites.main.MainViewModel
 import com.vuongvanduy.music_app.ui.common.adapter.ExtendSongAdapter
 import com.vuongvanduy.music_app.ui.common.adapter.SongAdapter
 import com.vuongvanduy.music_app.ui.common.viewmodel.SongViewModel

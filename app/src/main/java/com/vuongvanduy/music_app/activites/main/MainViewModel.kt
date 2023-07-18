@@ -1,4 +1,4 @@
-package com.vuongvanduy.music_app.activites
+package com.vuongvanduy.music_app.activites.main
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -21,17 +21,15 @@ class MainViewModel : BaseViewModel() {
     val isServiceRunning = MutableLiveData(false)
     val isShowMiniPlayer = MutableLiveData(false)
     val isShowBtPlayAll = MutableLiveData(false)
+
     var isPlaying = MutableLiveData(false)
     var isLooping = MutableLiveData(false)
     var isShuffling = MutableLiveData(false)
+
     var actionMusic = MutableLiveData(0)
     val finalTime = MutableLiveData(0)
     val currentTime = MutableLiveData(0)
     var isHome = false
-
-    fun openMusicPlayer() {
-        isShowMusicPlayer.postValue(true)
-    }
 
     fun receiveDataFromReceiver(intent: Intent) {
         val bundle = intent.extras ?: return

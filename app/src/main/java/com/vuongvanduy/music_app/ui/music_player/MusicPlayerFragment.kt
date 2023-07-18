@@ -4,17 +4,14 @@ import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import androidx.fragment.app.Fragment
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.SeekBar
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.vuongvanduy.music_app.R
-import com.vuongvanduy.music_app.activites.MainActivity
-import com.vuongvanduy.music_app.activites.MainViewModel
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
 import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.data.models.Song
@@ -23,6 +20,27 @@ import com.vuongvanduy.music_app.databinding.FragmentMusicPlayerBinding
 class MusicPlayerFragment : BaseFragment() {
 
     private lateinit var binding: FragmentMusicPlayerBinding
+
+    private val handler = Looper.myLooper()
+
+    inner class UpdateSeekBar : Runnable {
+        override fun run() {
+            val currentTime = mainViewModel.currentTime.value
+            if (currentTime != null) {
+                binding.seekBarMusic.progress = currentTime
+                val minutes: Int = currentTime / 1000 / 60
+                val seconds: Int = currentTime / 1000 % 60
+                @SuppressLint("DefaultLocale")
+                val str = String.format("%02d:%02d", minutes, seconds)
+                binding.tvCurrentTime.text = str
+                handler.let {
+                    if (it != null) {
+                        Handler(it).postDelayed(this, 1000)
+                    }
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +54,7 @@ class MusicPlayerFragment : BaseFragment() {
     override fun init() {
         super.init()
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = mainViewModel
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

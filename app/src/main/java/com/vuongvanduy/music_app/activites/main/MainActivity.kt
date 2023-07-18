@@ -1,7 +1,8 @@
-package com.vuongvanduy.music_app.activites
+package com.vuongvanduy.music_app.activites.main
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.ActivityManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -14,14 +15,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
@@ -35,6 +33,7 @@ import com.vuongvanduy.music_app.ui.common.viewmodel.SongViewModel
 import com.vuongvanduy.music_app.ui.music_player.MusicPlayerFragment
 import com.vuongvanduy.music_app.ui.transformer.ZoomOutPageTransformer
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Random
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -63,6 +62,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val activityResultLauncherGetData =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                songViewModel.getLocalData()
+                Toast.makeText(
+                    this,
+                    "Get music from your phone success",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Log.e("FRAGMENT_NAME", "Permission denied")
+            }
+        }
+
     inner class UpdateSeekBar : Runnable {
         override fun run() {
             val currentTime = mainViewModel.currentTime.value
@@ -83,6 +96,8 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        checkServiceIsRunning()
+
         setBottomNavigationWithViewPager()
 
         registerButtonListener()
@@ -96,7 +111,6 @@ class MainActivity : AppCompatActivity() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         songViewModel = ViewModelProvider(this)[SongViewModel::class.java]
         songViewModel.fetchData()
-//        songViewModel.getLocalData()
         requestPermissionReadStorage()
         binding.viewModel = mainViewModel
         binding.lifecycleOwner = this
@@ -125,19 +139,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val activityResultLauncherGetData =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                songViewModel.getLocalData()
-                Toast.makeText(
-                    this,
-                    "Get music from your phone success",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Log.e("FRAGMENT_NAME", "Permission denied")
+    private fun checkServiceIsRunning() {
+        val activityManager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        val runningServices = activityManager.getRunningServices(Int.MAX_VALUE)
+        for (serviceInfo in runningServices) {
+            if (serviceInfo.service.className
+                == "com.vuongvanduy.music_app.MusicService"
+            ) {
+                sendActionToService(this, ACTION_RELOAD_DATA)
+                break
             }
         }
+    }
 
     private fun setBottomNavigationWithViewPager() {
         val viewPagerAdapter = FragmentViewPagerAdapter(this)
@@ -218,7 +231,9 @@ class MainActivity : AppCompatActivity() {
     private fun playMusic() {
         when (binding.bottomNav.selectedItemId) {
             R.id.online -> {
+
                 if (!songViewModel.onlineSongs.value.isNullOrEmpty()) {
+                    mainViewModel.currentListName = TITLE_ONLINE_SONGS
                     val list = songViewModel.onlineSongs.value as MutableList<Song>
                     playList(list)
                 }
@@ -226,6 +241,7 @@ class MainActivity : AppCompatActivity() {
 
             R.id.favourite -> {
                 if (!songViewModel.favouriteSongs.value.isNullOrEmpty()) {
+                    mainViewModel.currentListName = TITLE_FAVOURITE_SONGS
                     val list = songViewModel.favouriteSongs.value as MutableList<Song>
                     playList(list)
                 }
@@ -233,6 +249,7 @@ class MainActivity : AppCompatActivity() {
 
             R.id.device -> {
                 if (!songViewModel.deviceSongs.value.isNullOrEmpty()) {
+                    mainViewModel.currentListName = TITLE_DEVICE_SONGS
                     val list = songViewModel.deviceSongs.value as MutableList<Song>
                     playList(list)
                 }
@@ -244,13 +261,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun playList(list: MutableList<Song>) {
-        if (mainViewModel.isShuffling.value == true) {
-            list.shuffle()
+        val index: Int = if (mainViewModel.isShuffling.value == true) {
+            Random().nextInt(list.size)
         } else {
-            sortListAscending(list)
+            0
         }
         sendListSongToService(this, list)
-        sendDataToService(this, list[0], ACTION_START)
+        sendDataToService(this, list[index], ACTION_START)
         mainViewModel.isShowMusicPlayer.postValue(true)
         mainViewModel.isServiceRunning.postValue(true)
     }
@@ -312,6 +329,7 @@ class MainActivity : AppCompatActivity() {
                             setLayoutMiniPlayer(it)
                         }
                         isShowMiniPlayer.postValue(true)
+                        isServiceRunning.postValue(true)
                     }
 
                     else -> {}
