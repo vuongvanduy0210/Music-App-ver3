@@ -20,8 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vuongvanduy.music_app.activites.MainActivity
 import com.vuongvanduy.music_app.activites.MainViewModel
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
-import com.vuongvanduy.music_app.common.ACTION_START
-import com.vuongvanduy.music_app.common.TITLE_ONLINE_SONGS
+import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.common.hideKeyboard
 import com.vuongvanduy.music_app.common.sendDataToService
 import com.vuongvanduy.music_app.common.sendListSongToService
@@ -29,26 +28,13 @@ import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.FragmentDeviceSongsBinding
 import com.vuongvanduy.music_app.ui.common.myinterface.IClickSongListener
 import com.vuongvanduy.music_app.ui.common.adapter.SongAdapter
+import com.vuongvanduy.music_app.ui.common.viewmodel.SongViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DeviceSongsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentDeviceSongsBinding
-
-    private val activityResultLauncherGetData =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                songViewModel.getLocalData()
-                Toast.makeText(
-                    requireContext(),
-                    "Get music from your phone success",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Log.e("FRAGMENT_NAME", "Permission denied")
-            }
-        }
 
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -59,29 +45,6 @@ class DeviceSongsFragment : BaseFragment() {
             }
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        requestPermissionReadStorage()
-    }
-
-    private fun requestPermissionReadStorage() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (requireContext().checkSelfPermission(Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-                // get list currentSong from device and send to music device fragment
-                songViewModel.getLocalData()
-            } else {
-                activityResultLauncherGetData.launch(Manifest.permission.READ_MEDIA_AUDIO)
-            }
-        } else {
-            if (requireContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                // get list currentSong from device and send to music device fragment
-                songViewModel.getLocalData()
-            } else {
-                activityResultLauncherGetData.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -91,11 +54,10 @@ class DeviceSongsFragment : BaseFragment() {
         return binding.root
     }
 
-    private fun init() {
+    override fun init() {
+        super.init()
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = songViewModel
-        mainActivity = requireActivity() as MainActivity
-        mainViewModel = ViewModelProvider(mainActivity)[MainViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -139,7 +101,6 @@ class DeviceSongsFragment : BaseFragment() {
     private fun playSong(song: Song) {
         mainViewModel.isShowMusicPlayer.postValue(true)
         mainViewModel.isServiceRunning.postValue(true)
-        hideKeyboard(requireContext(), binding.root)
         requestPermissionPostNotification(song)
     }
 
@@ -156,8 +117,8 @@ class DeviceSongsFragment : BaseFragment() {
     }
 
     private fun playMusic(song: Song) {
-        mainViewModel.currentListName = TITLE_ONLINE_SONGS
-        songViewModel.onlineSongs.value?.let { sendListSongToService(mainActivity, it) }
+        mainViewModel.currentListName = TITLE_DEVICE_SONGS
+        songViewModel.deviceSongs.value?.let { sendListSongToService(mainActivity, it) }
         sendDataToService(mainActivity, song, ACTION_START)
     }
 

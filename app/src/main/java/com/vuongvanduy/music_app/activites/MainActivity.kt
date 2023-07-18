@@ -1,26 +1,37 @@
 package com.vuongvanduy.music_app.activites
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.common.*
+import com.vuongvanduy.music_app.data.common.sortListAscending
 import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.ActivityMainBinding
 import com.vuongvanduy.music_app.ui.common.adapter.FragmentViewPagerAdapter
+import com.vuongvanduy.music_app.ui.common.viewmodel.SongViewModel
 import com.vuongvanduy.music_app.ui.music_player.MusicPlayerFragment
 import com.vuongvanduy.music_app.ui.transformer.ZoomOutPageTransformer
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +42,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 
     private lateinit var mainViewModel: MainViewModel
+
+    private lateinit var songViewModel: SongViewModel
 
     private lateinit var onBackPressedCallback: OnBackPressedCallback
 
@@ -81,6 +94,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun init() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        songViewModel = ViewModelProvider(this)[SongViewModel::class.java]
+        songViewModel.fetchData()
+//        songViewModel.getLocalData()
+        requestPermissionReadStorage()
         binding.viewModel = mainViewModel
         binding.lifecycleOwner = this
 
@@ -89,6 +106,38 @@ class MainActivity : AppCompatActivity() {
         LocalBroadcastManager.getInstance(this)
             .registerReceiver(currentTimeReceiver, IntentFilter(SEND_CURRENT_TIME))
     }
+
+    private fun requestPermissionReadStorage() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+                // get list currentSong from device and send to music device fragment
+                songViewModel.getLocalData()
+            } else {
+                activityResultLauncherGetData.launch(Manifest.permission.READ_MEDIA_AUDIO)
+            }
+        } else {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                // get list currentSong from device and send to music device fragment
+                songViewModel.getLocalData()
+            } else {
+                activityResultLauncherGetData.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+        }
+    }
+
+    private val activityResultLauncherGetData =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                songViewModel.getLocalData()
+                Toast.makeText(
+                    this,
+                    "Get music from your phone success",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Log.e("FRAGMENT_NAME", "Permission denied")
+            }
+        }
 
     private fun setBottomNavigationWithViewPager() {
         val viewPagerAdapter = FragmentViewPagerAdapter(this)
@@ -117,6 +166,10 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager.currentItem = item
         binding.bottomNav.setBackgroundColor(color)
         binding.toolBarTitle.text = title
+        when (item) {
+            1, 2, 3 -> mainViewModel.isShowBtPlayAll.postValue(true)
+            else -> mainViewModel.isShowBtPlayAll.postValue(false)
+        }
     }
 
     private fun registerButtonListener() {
@@ -131,7 +184,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.imgPrevious.setOnClickListener {
-            sendActionToService(this, ACTION_PAUSE)
+            sendActionToService(this, ACTION_PREVIOUS)
         }
         binding.imgNext.setOnClickListener {
             sendActionToService(this, ACTION_NEXT)
@@ -139,7 +192,77 @@ class MainActivity : AppCompatActivity() {
         binding.imgClear.setOnClickListener {
             sendActionToService(this, ACTION_CLEAR)
         }
+        binding.miniPlayer.setOnClickListener {
+            mainViewModel.isShowMusicPlayer.postValue(true)
+            if (mainViewModel.isPlaying.value == false) {
+                sendActionToService(this, ACTION_RESUME)
+            }
+        }
+        binding.btPlayAll.setOnClickListener {
+            requestPermissionPostNotification()
+        }
     }
+
+    private fun requestPermissionPostNotification() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                playMusic()
+            } else {
+                activityResultLauncherNotification.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        } else {
+            playMusic()
+        }
+    }
+
+    private fun playMusic() {
+        when (binding.bottomNav.selectedItemId) {
+            R.id.online -> {
+                if (!songViewModel.onlineSongs.value.isNullOrEmpty()) {
+                    val list = songViewModel.onlineSongs.value as MutableList<Song>
+                    playList(list)
+                }
+            }
+
+            R.id.favourite -> {
+                if (!songViewModel.favouriteSongs.value.isNullOrEmpty()) {
+                    val list = songViewModel.favouriteSongs.value as MutableList<Song>
+                    playList(list)
+                }
+            }
+
+            R.id.device -> {
+                if (!songViewModel.deviceSongs.value.isNullOrEmpty()) {
+                    val list = songViewModel.deviceSongs.value as MutableList<Song>
+                    playList(list)
+                }
+            }
+
+            else -> {
+            }
+        }
+    }
+
+    private fun playList(list: MutableList<Song>) {
+        if (mainViewModel.isShuffling.value == true) {
+            list.shuffle()
+        } else {
+            sortListAscending(list)
+        }
+        sendListSongToService(this, list)
+        sendDataToService(this, list[0], ACTION_START)
+        mainViewModel.isShowMusicPlayer.postValue(true)
+        mainViewModel.isServiceRunning.postValue(true)
+    }
+
+    private val activityResultLauncherNotification =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                playMusic()
+            } else {
+                Log.e("FRAGMENT_NAME", "Permission denied")
+            }
+        }
 
     @SuppressLint("CommitTransaction")
     private fun registerObserver() {
@@ -157,11 +280,17 @@ class MainActivity : AppCompatActivity() {
                     }
                     supportFragmentManager.popBackStack()
                     setToolbarTitle()
+                    when (binding.bottomNav.selectedItemId) {
+                        R.id.online, R.id.favourite, R.id.device ->
+                            isShowBtPlayAll.postValue(true)
+                    }
                 } else {
                     //replace fragment
                     replaceMusicPlayer()
                     isShowMiniPlayer.postValue(false)
                     binding.toolBarTitle.text = TITLE_MUSIC_PLAYER
+                    isShowBtPlayAll.postValue(false)
+                    hideKeyboard(this@MainActivity, binding.root)
                 }
             }
 
@@ -185,15 +314,12 @@ class MainActivity : AppCompatActivity() {
                         isShowMiniPlayer.postValue(true)
                     }
 
-                    ACTION_OPEN_MUSIC_PLAYER -> {
-                        isShowMusicPlayer.postValue(true)
-                    }
-
                     else -> {}
                 }
             }
 
             isPlaying.observe(this@MainActivity) {
+                Log.e(MAIN_ACTIVITY_TAG, "isPlaying $it")
                 if (it) {
                     binding.imgPlay.setImageResource(R.drawable.ic_pause)
                 } else {

@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.vuongvanduy.music_app.activites.MainViewModel" />
     </data>
 
     <RelativeLayout
@@ -47,6 +50,7 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
+                android:text="@{viewModel.currentSong.name.toString()}"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size_name_song_player_music"
                 android:textStyle="bold" />
@@ -62,6 +66,7 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
+                android:text="@{viewModel.currentSong.singer.toString()}"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size_singer_player_music"
                 android:textStyle="italic"
@@ -81,6 +86,8 @@
                 android:id="@+id/seek_bar_music"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
+                android:max="@{viewModel.finalTime}"
+                android:progress="@{viewModel.currentTime}"
                 android:progressTint="@color/seekbar_color"
                 android:thumbTint="@color/seekbar_color"
                 android:visibility="visible" />

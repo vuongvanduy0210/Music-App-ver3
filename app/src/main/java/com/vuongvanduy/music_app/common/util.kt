@@ -22,11 +22,10 @@ const val ACTION_RESUME = 3
 const val ACTION_NEXT = 4
 const val ACTION_CLEAR = 5
 const val ACTION_START = 6
-const val ACTION_OPEN_MUSIC_PLAYER = 7
-const val ACTION_CONTROL_SEEK_BAR = 8
-const val ACTION_SHUFFLE = 9
-const val ACTION_LOOP = 10
-const val ACTION_RELOAD_DATA = 11
+const val ACTION_CONTROL_SEEK_BAR = 7
+const val ACTION_SHUFFLE = 8
+const val ACTION_LOOP = 9
+const val ACTION_RELOAD_DATA = 10
 
 const val KEY_SONG = "key_song"
 const val KEY_LIST_SONGS = "key_list_song"
@@ -129,4 +128,11 @@ fun sendActionToService(context: Context, action: Int) {
     val intent = Intent(context, MusicService::class.java)
     intent.putExtra(KEY_ACTION, action)
     context.startService(intent)
+}
+
+fun sendCurrentTimeToService(context: Context, progress: Int) {
+    val intentActivity = Intent(context, MusicService::class.java)
+    intentActivity.putExtra(KEY_ACTION, ACTION_CONTROL_SEEK_BAR)
+    intentActivity.putExtra(KEY_PROGRESS, progress)
+    context.startService(intentActivity)
 }

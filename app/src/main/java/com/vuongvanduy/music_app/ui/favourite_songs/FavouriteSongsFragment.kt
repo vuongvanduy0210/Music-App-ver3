@@ -19,9 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vuongvanduy.music_app.activites.MainActivity
 import com.vuongvanduy.music_app.activites.MainViewModel
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
-import com.vuongvanduy.music_app.common.ACTION_START
-import com.vuongvanduy.music_app.common.TITLE_FAVOURITE_SONGS
-import com.vuongvanduy.music_app.common.TITLE_ONLINE_SONGS
+import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.common.hideKeyboard
 import com.vuongvanduy.music_app.common.sendDataToService
 import com.vuongvanduy.music_app.common.sendListSongToService
@@ -29,6 +27,7 @@ import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.FragmentFavouriteSongsBinding
 import com.vuongvanduy.music_app.ui.common.adapter.ExtendSongAdapter
 import com.vuongvanduy.music_app.ui.common.myinterface.IClickSongListener
+import com.vuongvanduy.music_app.ui.common.viewmodel.SongViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -45,11 +44,6 @@ class FavouriteSongsFragment : BaseFragment() {
             }
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        songViewModel.getFavouriteSongs()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,11 +53,10 @@ class FavouriteSongsFragment : BaseFragment() {
         return binding.root
     }
 
-    private fun init() {
+    override fun init() {
+        super.init()
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = songViewModel
-        mainActivity = requireActivity() as MainActivity
-        mainViewModel = ViewModelProvider(mainActivity)[MainViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,7 +102,6 @@ class FavouriteSongsFragment : BaseFragment() {
     private fun playSong(song: Song) {
         mainViewModel.isShowMusicPlayer.postValue(true)
         mainViewModel.isServiceRunning.postValue(true)
-        hideKeyboard(requireContext(), binding.root)
         requestPermissionPostNotification(song)
     }
 
@@ -126,8 +118,8 @@ class FavouriteSongsFragment : BaseFragment() {
     }
 
     private fun playMusic(song: Song) {
-        mainViewModel.currentListName = TITLE_ONLINE_SONGS
-        songViewModel.onlineSongs.value?.let { sendListSongToService(mainActivity, it) }
+        mainViewModel.currentListName = TITLE_FAVOURITE_SONGS
+        songViewModel.favouriteSongs.value?.let { sendListSongToService(mainActivity, it) }
         sendDataToService(mainActivity, song, ACTION_START)
     }
 

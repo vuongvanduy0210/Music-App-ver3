@@ -22,11 +22,11 @@ class SongViewModel @Inject constructor(private val songRepository: SongReposito
     var deviceSongs = MutableLiveData<List<Song>>()
         private set
 
-    fun getListOnline() {
+    private fun getListOnline() {
         onlineSongs = songRepository.getOnlineSongs() as MutableLiveData<List<Song>>
     }
 
-    fun getFavouriteSongs() {
+    private fun getFavouriteSongs() {
         favouriteSongs = songRepository.getFavouriteSongs() as MutableLiveData<List<Song>>
     }
 

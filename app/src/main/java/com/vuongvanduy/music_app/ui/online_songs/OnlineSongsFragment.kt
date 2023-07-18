@@ -24,6 +24,7 @@ import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.FragmentOnlineSongsBinding
 import com.vuongvanduy.music_app.ui.common.adapter.ExtendSongAdapter
 import com.vuongvanduy.music_app.ui.common.myinterface.IClickSongListener
+import com.vuongvanduy.music_app.ui.common.viewmodel.SongViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -41,11 +42,6 @@ class OnlineSongsFragment : BaseFragment() {
             }
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        songViewModel.getListOnline()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,11 +51,10 @@ class OnlineSongsFragment : BaseFragment() {
         return binding.root
     }
 
-    private fun init() {
+    override fun init() {
+        super.init()
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = songViewModel
-        mainActivity = requireActivity() as MainActivity
-        mainViewModel = ViewModelProvider(mainActivity)[MainViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -105,7 +100,6 @@ class OnlineSongsFragment : BaseFragment() {
     private fun playSong(song: Song) {
         mainViewModel.isShowMusicPlayer.postValue(true)
         mainViewModel.isServiceRunning.postValue(true)
-        hideKeyboard(requireContext(), binding.root)
         requestPermissionPostNotification(song)
     }
 

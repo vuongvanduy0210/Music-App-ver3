@@ -29,15 +29,13 @@ import com.bumptech.glide.request.transition.Transition
 import com.vuongvanduy.music_app.activites.MainActivity
 import com.vuongvanduy.music_app.broadcast_receiver.MyReceiver
 import com.vuongvanduy.music_app.common.*
-import com.vuongvanduy.music_app.data.common.sortListAscending
+import com.vuongvanduy.music_app.data.common.*
 import com.vuongvanduy.music_app.data.models.Song
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.lang.Exception
-import java.text.Collator
-import java.util.Locale
 
 
 class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener,
@@ -157,7 +155,6 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
             ACTION_RESUME -> resumeMusic()
             ACTION_NEXT -> nextMusic()
             ACTION_CLEAR -> clearMusic()
-            ACTION_OPEN_MUSIC_PLAYER -> sendData(ACTION_OPEN_MUSIC_PLAYER)
             ACTION_LOOP -> loopMusic()
             ACTION_SHUFFLE -> shuffleMusic()
             ACTION_CONTROL_SEEK_BAR -> mediaPlayer?.seekTo(progressReceive)
@@ -185,6 +182,7 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
                 sendData(ACTION_START)
                 prepareAsync()
             } catch (e: Exception) {
+                Log.e(MUSIC_SERVICE_TAG, "Set data source fail")
                 e.printStackTrace()
             }
         }
@@ -451,16 +449,6 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
             }
         }
         return index
-    }
-
-    private fun isListSortedAscending(list: MutableList<Song>): Boolean {
-        val collator = Collator.getInstance(Locale("vi"))
-        for (i in 1 until list.size) {
-            if (collator.compare(list[i].name!!, list[i - 1].name!!) < 0) {
-                return false
-            }
-        }
-        return true
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
