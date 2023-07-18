@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,7 +35,11 @@ class OnlineSongsFragment : BaseFragment() {
             if (isGranted) {
                 mainViewModel.currentSong.value?.let { playMusic(it) }
             } else {
-                Log.e("FRAGMENT_NAME", "Permission denied")
+                Toast.makeText(
+                    mainActivity,
+                    "You need allow this app to send notification to start playing music",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
@@ -94,8 +99,6 @@ class OnlineSongsFragment : BaseFragment() {
     }
 
     private fun playSong(song: Song) {
-        mainViewModel.isShowMusicPlayer.postValue(true)
-        mainViewModel.isServiceRunning.postValue(true)
         requestPermissionPostNotification(song)
     }
 
@@ -112,7 +115,11 @@ class OnlineSongsFragment : BaseFragment() {
     }
 
     private fun playMusic(song: Song) {
-        mainViewModel.currentListName = TITLE_ONLINE_SONGS
+        mainViewModel.apply {
+            isShowMusicPlayer.postValue(true)
+            isServiceRunning.postValue(true)
+            currentListName = TITLE_ONLINE_SONGS
+        }
         songViewModel.onlineSongs.value?.let { sendListSongToService(mainActivity, it) }
         sendDataToService(mainActivity, song, ACTION_START)
     }

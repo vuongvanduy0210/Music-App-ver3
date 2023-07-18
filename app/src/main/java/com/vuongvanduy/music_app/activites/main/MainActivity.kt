@@ -72,7 +72,24 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                Log.e("FRAGMENT_NAME", "Permission denied")
+                Toast.makeText(
+                    this,
+                    "You need allow this app to access music and audio to get music on device",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
+    private val activityResultLauncherNotification =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                playMusic()
+            } else {
+                Toast.makeText(
+                    this,
+                    "You need allow this app to send notification to start playing music",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
@@ -271,15 +288,6 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.isShowMusicPlayer.postValue(true)
         mainViewModel.isServiceRunning.postValue(true)
     }
-
-    private val activityResultLauncherNotification =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                playMusic()
-            } else {
-                Log.e("FRAGMENT_NAME", "Permission denied")
-            }
-        }
 
     @SuppressLint("CommitTransaction")
     private fun registerObserver() {
