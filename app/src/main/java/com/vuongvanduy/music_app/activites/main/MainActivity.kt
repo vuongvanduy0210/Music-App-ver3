@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.online -> setLayout(1, getColor(R.color.orange), TITLE_ONLINE_SONGS)
                 R.id.favourite -> setLayout(2, getColor(R.color.red), TITLE_FAVOURITE_SONGS)
                 R.id.device -> setLayout(3, getColor(R.color.blueLight), TITLE_DEVICE_SONGS)
-                R.id.settings -> setLayout(4, getColor(R.color.purple_200), TITLE_SETTINGS)
+                R.id.settings -> setLayout(4, getColor(R.color.yellow), TITLE_SETTINGS)
             }
             true
         }
@@ -385,8 +385,8 @@ class MainActivity : AppCompatActivity() {
             override fun handleOnBackPressed() {
                 if (mainViewModel.isShowMusicPlayer.value == true) {
                     popMusicPlayer()
-                } else if (!mainViewModel.isHome) {
-                    binding.bottomNav.selectedItemId = R.id.home
+//                } else if (!mainViewModel.isHome) {
+//                    binding.bottomNav.selectedItemId = R.id.home
                 } else {
                     finish()
                 }
