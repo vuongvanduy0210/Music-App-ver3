@@ -3,6 +3,7 @@ package com.vuongvanduy.music_app.base.fragment
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.vuongvanduy.music_app.activites.main.MainActivity
 import com.vuongvanduy.music_app.activites.main.MainViewModel
 import com.vuongvanduy.music_app.ui.common.adapter.ExtendSongAdapter
@@ -30,4 +31,12 @@ open class BaseFragment : Fragment() {
         songViewModel = ViewModelProvider(mainActivity)[SongViewModel::class.java]
         mainViewModel = ViewModelProvider(mainActivity)[MainViewModel::class.java]
     }
+
+    fun isFragmentInBackStack(destinationId: Int) =
+        try {
+            findNavController().getBackStackEntry(destinationId)
+            true
+        } catch (e: Exception) {
+            false
+        }
 }

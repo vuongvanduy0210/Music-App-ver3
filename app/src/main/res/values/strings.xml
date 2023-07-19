@@ -34,6 +34,7 @@
     <string name="change_password">Change Password</string>
     <string name="sign_out">Sign Out</string>
     <string name="update_profile">Update Profile</string>
+    <string name="change_profile">Change Profile</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
     <string name="email_hint">Email</string>
@@ -44,7 +45,7 @@
     <string name="confirm_password_hint">Confirm Password</string>
     <string name="you_have_an_account">You have an account?</string>
     <string name="new_password_hint">New Password</string>
-    <string name="send_reset_password">Send Reset Password</string>
+    <string name="send_reset_password">send email verification</string>
     <string name="text_send_email">Enter your email to reset password:</string>
     <string name="continue_with_guest">Continue with Guest</string>
     <string name="play_all">Play all</string>

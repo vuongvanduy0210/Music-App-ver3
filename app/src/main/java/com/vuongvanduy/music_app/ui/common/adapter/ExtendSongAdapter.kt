@@ -45,6 +45,7 @@ class ExtendSongAdapter constructor(
         if (songs?.isEmpty() == true) {
             return
         }
+        holder.binding.layoutItemOnlineSong.close(false)
         val song = songs?.get(position)
         if (song != null) {
             holder.binding.apply {

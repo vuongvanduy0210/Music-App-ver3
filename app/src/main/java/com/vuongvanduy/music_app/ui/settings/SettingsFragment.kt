@@ -11,8 +11,9 @@ import com.vuongvanduy.music_app.base.fragment.BaseFragment
 import com.vuongvanduy.music_app.common.SETTINGS_FRAGMENT_TAG
 import com.vuongvanduy.music_app.databinding.FragmentSettingsBinding
 import com.vuongvanduy.music_app.ui.settings.account.AccountFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SettingsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentSettingsBinding
@@ -26,20 +27,5 @@ class SettingsFragment : BaseFragment() {
         init()
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.tvAccount.setOnClickListener {
-            addFragment()
-        }
-    }
-
-    @SuppressLint("CommitTransaction")
-    private fun addFragment() {
-        val transaction = childFragmentManager.beginTransaction()
-        transaction.add(R.id.layout_container, AccountFragment()).commit()
-
     }
 }

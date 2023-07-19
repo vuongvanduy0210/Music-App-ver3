@@ -2,4 +2,98 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/settings" />
+    android:id="@+id/settings"
+    app:startDestination="@id/settingOptionsFragment">
+    <fragment
+        android:id="@+id/settingOptionsFragment"
+        android:name="com.vuongvanduy.music_app.ui.settings.SettingOptionsFragment"
+        android:label="fragment_setting_options"
+        tools:layout="@layout/fragment_setting_options" >
+        <action
+            android:id="@+id/action_settingOptionsFragment_to_accountFragment"
+            app:destination="@id/accountFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_settingOptionsFragment_to_appearanceFragment"
+            app:destination="@id/appearanceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.vuongvanduy.music_app.ui.settings.account.AccountFragment"
+        android:label="fragment_account"
+        tools:layout="@layout/fragment_account" >
+        <action
+            android:id="@+id/action_accountFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_accountFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_accountFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_accountFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/appearanceFragment"
+        android:name="com.vuongvanduy.music_app.ui.settings.appearance.AppearanceFragment"
+        android:label="fragment_appearance"
+        tools:layout="@layout/fragment_appearance" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.vuongvanduy.music_app.ui.settings.account.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in" >
+        <action
+            android:id="@+id/action_signInFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.vuongvanduy.music_app.ui.settings.account.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUpFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.vuongvanduy.music_app.ui.settings.account.ChangePasswordFragment"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.vuongvanduy.music_app.ui.settings.account.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.vuongvanduy.music_app.ui.settings.account.ForgotPasswordFragment"
+        android:label="ForgotPasswordFragment" >
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+</navigation>

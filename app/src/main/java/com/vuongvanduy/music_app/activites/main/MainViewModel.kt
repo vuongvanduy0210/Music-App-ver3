@@ -29,7 +29,6 @@ class MainViewModel : BaseViewModel() {
     var actionMusic = MutableLiveData(0)
     val finalTime = MutableLiveData(0)
     val currentTime = MutableLiveData(0)
-    var isHome = false
 
     fun receiveDataFromReceiver(intent: Intent) {
         val bundle = intent.extras ?: return

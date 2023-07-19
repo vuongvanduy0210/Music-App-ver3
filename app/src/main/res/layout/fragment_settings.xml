@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -7,44 +8,19 @@
     </data>
 
     <LinearLayout
-        android:id="@+id/layout_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.settings.SettingsFragment"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context=".ui.settings.SettingsFragment">
 
-        <TextView
-            android:id="@+id/tv_account"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/nav_account"
-            android:textColor="@color/black"
-            android:textSize="30dp"
-            android:padding="15dp" />
+            android:layout_height="match_parent"
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/nav_appearance"
-            android:textColor="@color/black"
-            android:textSize="30dp"
-            android:padding="15dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/nav_info"
-            android:textColor="@color/black"
-            android:textSize="30dp"
-            android:padding="15dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/nav_contact"
-            android:textColor="@color/black"
-            android:textSize="30dp"
-            android:padding="15dp" />
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/settings" />
 
     </LinearLayout>
 </layout>

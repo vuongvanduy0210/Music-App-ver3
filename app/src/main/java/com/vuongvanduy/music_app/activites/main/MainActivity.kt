@@ -12,9 +12,6 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -22,6 +19,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.common.*
@@ -128,14 +126,14 @@ class MainActivity : AppCompatActivity() {
     private fun requestPermissionReadStorage() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (checkSelfPermission(Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-                // get list currentSong from device and send to music device fragment
+                // get list currentSong from device
                 songViewModel.getLocalData()
             } else {
                 activityResultLauncherGetData.launch(Manifest.permission.READ_MEDIA_AUDIO)
             }
         } else {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                // get list currentSong from device and send to music device fragment
+                // get list currentSong from device
                 songViewModel.getLocalData()
             } else {
                 activityResultLauncherGetData.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -179,7 +177,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setLayout(item: Int, color: Int, title: String) {
-        mainViewModel.isHome = item == 0
         binding.viewPager.currentItem = item
         binding.bottomNav.setBackgroundColor(color)
         binding.toolBarTitle.text = title
@@ -191,7 +188,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun registerButtonListener() {
         binding.imgBack.setOnClickListener {
-            popMusicPlayer()
+//            popMusicPlayer()
+            onBackPressedCallback.handleOnBackPressed()
         }
         binding.imgPlay.setOnClickListener {
             if (mainViewModel.isPlaying.value == true) {
@@ -217,6 +215,9 @@ class MainActivity : AppCompatActivity() {
         }
         binding.btPlayAll.setOnClickListener {
             requestPermissionPostNotification()
+        }
+        binding.layoutMain.setOnClickListener {
+            hideKeyboard(this, binding.root)
         }
     }
 
@@ -332,7 +333,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             isPlaying.observe(this@MainActivity) {
-                Log.e(MAIN_ACTIVITY_TAG, "isPlaying $it")
                 if (it) {
                     binding.imgPlay.setImageResource(R.drawable.ic_pause)
                 } else {
@@ -385,8 +385,14 @@ class MainActivity : AppCompatActivity() {
             override fun handleOnBackPressed() {
                 if (mainViewModel.isShowMusicPlayer.value == true) {
                     popMusicPlayer()
-//                } else if (!mainViewModel.isHome) {
-//                    binding.bottomNav.selectedItemId = R.id.home
+                } else if (binding.bottomNav.selectedItemId != R.id.home) {
+                    if (binding.bottomNav.selectedItemId == R.id.settings) {
+                        if (!findNavController(R.id.nav_host_fragment).popBackStack()) {
+                            binding.bottomNav.selectedItemId = R.id.home
+                        }
+                    } else {
+                        binding.bottomNav.selectedItemId = R.id.home
+                    }
                 } else {
                     finish()
                 }
