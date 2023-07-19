@@ -25,7 +25,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.common.*
-import com.vuongvanduy.music_app.data.common.sortListAscending
 import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.ActivityMainBinding
 import com.vuongvanduy.music_app.ui.common.adapter.FragmentViewPagerAdapter
@@ -92,18 +91,6 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
         }
-
-    inner class UpdateSeekBar : Runnable {
-        override fun run() {
-            val currentTime = mainViewModel.currentTime.value
-            if (currentTime != null) {
-                binding.progressBar.progress = currentTime
-            }
-            binding.progressBar.isEnabled = false
-
-            Handler(Looper.myLooper()!!).postDelayed(this, 1000)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -352,6 +339,13 @@ class MainActivity : AppCompatActivity() {
                     binding.imgPlay.setImageResource(R.drawable.ic_play)
                 }
             }
+
+            currentTime.observe(this@MainActivity) {
+                val current = mainViewModel.currentTime.value
+                if (current != null) {
+                    binding.progressBar.progress = current
+                }
+            }
         }
     }
 
@@ -375,9 +369,7 @@ class MainActivity : AppCompatActivity() {
             tvSinger.isSelected = true
             Glide.with(this@MainActivity).load(imageUri).into(imgBgMiniPlayer)
         }
-
-        val updateSeekBar = UpdateSeekBar()
-        Handler(Looper.myLooper()!!).post(updateSeekBar)
+        binding.progressBar.isEnabled = false
     }
 
     private fun replaceMusicPlayer() {

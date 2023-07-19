@@ -3,8 +3,6 @@ package com.vuongvanduy.music_app.ui.music_player
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,27 +18,6 @@ import com.vuongvanduy.music_app.databinding.FragmentMusicPlayerBinding
 class MusicPlayerFragment : BaseFragment() {
 
     private lateinit var binding: FragmentMusicPlayerBinding
-
-    private val handler = Looper.myLooper()
-
-    inner class UpdateSeekBar : Runnable {
-        override fun run() {
-            val currentTime = mainViewModel.currentTime.value
-            if (currentTime != null) {
-                binding.seekBarMusic.progress = currentTime
-                val minutes: Int = currentTime / 1000 / 60
-                val seconds: Int = currentTime / 1000 % 60
-                @SuppressLint("DefaultLocale")
-                val str = String.format("%02d:%02d", minutes, seconds)
-                binding.tvCurrentTime.text = str
-                handler.let {
-                    if (it != null) {
-                        Handler(it).postDelayed(this, 1000)
-                    }
-                }
-            }
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
