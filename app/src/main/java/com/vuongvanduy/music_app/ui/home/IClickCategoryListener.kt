@@ -1,4 +1,4 @@
-package com.vuongvanduy.music_app.ui.common.myinterface
+package com.vuongvanduy.music_app.ui.home
 
 import com.vuongvanduy.music_app.data.models.Song
 

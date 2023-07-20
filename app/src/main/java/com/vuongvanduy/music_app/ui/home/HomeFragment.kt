@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,10 +23,8 @@ import com.vuongvanduy.music_app.common.TITLE_FAVOURITE_SONGS
 import com.vuongvanduy.music_app.common.TITLE_ONLINE_SONGS
 import com.vuongvanduy.music_app.common.sendDataToService
 import com.vuongvanduy.music_app.common.sendListSongToService
-import com.vuongvanduy.music_app.data.models.Photo
 import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.FragmentHomeBinding
-import com.vuongvanduy.music_app.ui.common.myinterface.IClickCategoryListener
 import com.vuongvanduy.music_app.ui.transformer.DepthPageTransformer
 import dagger.hilt.android.AndroidEntryPoint
 

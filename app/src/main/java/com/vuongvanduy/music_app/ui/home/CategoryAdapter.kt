@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vuongvanduy.music_app.data.models.Category
 import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.ItemCategoryBinding
-import com.vuongvanduy.music_app.ui.common.myinterface.IClickCategoryListener
 import com.vuongvanduy.music_app.ui.common.myinterface.IClickSongListener
 
 

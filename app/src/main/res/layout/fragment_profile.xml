@@ -9,11 +9,20 @@
     android:padding="30dp"
     tools:context=".ui.settings.account.ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:text="@string/change_profile"
+        android:textColor="@color/login_title_color"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_user"
         android:layout_width="100dp"
-        android:layout_height="100dp" />
+        android:layout_height="100dp"
+        android:src="@drawable/img_avatar_error"/>
 
     <TextView
         android:id="@+id/tv_email"

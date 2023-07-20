@@ -2,18 +2,15 @@ package com.vuongvanduy.music_app.ui.settings
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
+import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.databinding.FragmentSettingOptionsBinding
-import com.vuongvanduy.music_app.databinding.FragmentSettingsBinding
-import java.lang.Exception
 
 class SettingOptionsFragment : BaseFragment() {
 
@@ -37,9 +34,59 @@ class SettingOptionsFragment : BaseFragment() {
         binding.tvAccount.setOnClickListener {
             val action =
                 SettingOptionsFragmentDirections.actionSettingOptionsFragmentToAccountFragment()
-            findNavController().navigate(action)
-
+            goToFragment(action, TITLE_ACCOUNT)
         }
 
+        binding.tvAppearance.setOnClickListener {
+            val action =
+                SettingOptionsFragmentDirections.actionSettingOptionsFragmentToAppearanceFragment()
+            goToFragment(action, TITLE_APPEARANCE)
+        }
+
+        binding.tvAppInfo.setOnClickListener {
+            val action =
+                SettingOptionsFragmentDirections.actionSettingOptionsFragmentToAppInfoFragment()
+            goToFragment(action, TITLE_APP_INFO)
+        }
+
+        binding.tvContact.setOnClickListener {
+            val action =
+                SettingOptionsFragmentDirections.actionSettingOptionsFragmentToContactFragment()
+            goToFragment(action, TITLE_CONTACT)
+        }
+    }
+
+    private fun goToFragment(action: NavDirections, title: String) {
+        findNavController().navigate(action)
+        mainActivity.binding.toolBarTitle.text = title
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        log("SettingOptionsFragment", "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        log("SettingOptionsFragment", "onStop")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        log("SettingOptionsFragment", "onDestroyView")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        log("SettingOptionsFragment", "onDestroy")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        log("SettingOptionsFragment", "onDetach")
     }
 }

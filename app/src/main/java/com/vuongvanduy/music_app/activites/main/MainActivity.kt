@@ -187,37 +187,45 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun registerButtonListener() {
-        binding.imgBack.setOnClickListener {
-//            popMusicPlayer()
-            onBackPressedCallback.handleOnBackPressed()
-        }
-        binding.imgPlay.setOnClickListener {
-            if (mainViewModel.isPlaying.value == true) {
-                sendActionToService(this, ACTION_PAUSE)
-            } else {
-                sendActionToService(this, ACTION_RESUME)
+        binding.apply {
+            imgBack.setOnClickListener {
+                onBackPressedCallback.handleOnBackPressed()
             }
-        }
-        binding.imgPrevious.setOnClickListener {
-            sendActionToService(this, ACTION_PREVIOUS)
-        }
-        binding.imgNext.setOnClickListener {
-            sendActionToService(this, ACTION_NEXT)
-        }
-        binding.imgClear.setOnClickListener {
-            sendActionToService(this, ACTION_CLEAR)
-        }
-        binding.miniPlayer.setOnClickListener {
-            mainViewModel.isShowMusicPlayer.postValue(true)
-            if (mainViewModel.isPlaying.value == false) {
-                sendActionToService(this, ACTION_RESUME)
+
+            imgPlay.setOnClickListener {
+                if (mainViewModel.isPlaying.value == true) {
+                    sendActionToService(this@MainActivity, ACTION_PAUSE)
+                } else {
+                    sendActionToService(this@MainActivity, ACTION_RESUME)
+                }
             }
-        }
-        binding.btPlayAll.setOnClickListener {
-            requestPermissionPostNotification()
-        }
-        binding.layoutMain.setOnClickListener {
-            hideKeyboard(this, binding.root)
+
+            imgPrevious.setOnClickListener {
+                sendActionToService(this@MainActivity, ACTION_PREVIOUS)
+            }
+
+            imgNext.setOnClickListener {
+                sendActionToService(this@MainActivity, ACTION_NEXT)
+            }
+
+            imgClear.setOnClickListener {
+                sendActionToService(this@MainActivity, ACTION_CLEAR)
+            }
+
+            miniPlayer.setOnClickListener {
+                mainViewModel.isShowMusicPlayer.postValue(true)
+                if (mainViewModel.isPlaying.value == false) {
+                    sendActionToService(this@MainActivity, ACTION_RESUME)
+                }
+            }
+
+            btPlayAll.setOnClickListener {
+                requestPermissionPostNotification()
+            }
+
+            layoutMain.setOnClickListener {
+                hideKeyboard(this@MainActivity, binding.root)
+            }
         }
     }
 
@@ -286,13 +294,13 @@ class MainActivity : AppCompatActivity() {
 
             isShowMusicPlayer.observe(this@MainActivity) { isShow ->
                 if (!isShow) {
-                    if (isServiceRunning.value == true) {
-                        isShowMiniPlayer.postValue(true)
-                    } else {
-                        isShowMiniPlayer.postValue(false)
-                    }
+
+                    isShowMiniPlayer.postValue(isServiceRunning.value)
+
                     supportFragmentManager.popBackStack()
+
                     setToolbarTitle()
+
                     when (binding.bottomNav.selectedItemId) {
                         R.id.online, R.id.favourite, R.id.device ->
                             isShowBtPlayAll.postValue(true)
@@ -300,9 +308,12 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     //replace fragment
                     replaceMusicPlayer()
+
                     isShowMiniPlayer.postValue(false)
-                    binding.toolBarTitle.text = TITLE_MUSIC_PLAYER
                     isShowBtPlayAll.postValue(false)
+
+                    binding.toolBarTitle.text = TITLE_MUSIC_PLAYER
+
                     hideKeyboard(this@MainActivity, binding.root)
                 }
             }
@@ -386,9 +397,16 @@ class MainActivity : AppCompatActivity() {
                 if (mainViewModel.isShowMusicPlayer.value == true) {
                     popMusicPlayer()
                 } else if (binding.bottomNav.selectedItemId != R.id.home) {
-                    if (binding.bottomNav.selectedItemId == R.id.settings) {
-                        if (!findNavController(R.id.nav_host_fragment).popBackStack()) {
+
+                    if (isSettingsFragment()) {
+
+                        val navController = findNavController(R.id.nav_host_fragment)
+                        if (!navController.popBackStack()) {
                             binding.bottomNav.selectedItemId = R.id.home
+                        } else {
+                            if (isSettingOptionsFragment()) {
+                                binding.toolBarTitle.text = TITLE_SETTINGS
+                            }
                         }
                     } else {
                         binding.bottomNav.selectedItemId = R.id.home
@@ -398,6 +416,17 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun isSettingsFragment() = binding.bottomNav.selectedItemId == R.id.settings
+
+    private fun isSettingOptionsFragment() : Boolean {
+        if (!isSettingsFragment()) {
+            return false
+        }
+        val navController = findNavController(R.id.nav_host_fragment)
+        return (navController.currentDestination
+        == navController.findDestination(R.id.settingOptionsFragment))
     }
 
     private fun popMusicPlayer() {

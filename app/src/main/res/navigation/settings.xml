@@ -16,7 +16,19 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_settingOptionsFragment_to_appearanceFragment"
-            app:destination="@id/appearanceFragment" />
+            app:destination="@id/appearanceFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_settingOptionsFragment_to_appInfoFragment"
+            app:destination="@id/appInfoFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_settingOptionsFragment_to_contactFragment"
+            app:destination="@id/contactFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/accountFragment"
@@ -86,6 +98,16 @@
         android:name="com.vuongvanduy.music_app.ui.settings.account.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.vuongvanduy.music_app.ui.settings.contact.ContactFragment"
+        android:label="fragment_contact"
+        tools:layout="@layout/fragment_contact" />
+    <fragment
+        android:id="@+id/appInfoFragment"
+        android:name="com.vuongvanduy.music_app.ui.settings.app_info.AppInfoFragment"
+        android:label="fragment_app_info"
+        tools:layout="@layout/fragment_app_info" />
     <fragment
         android:id="@+id/forgotPasswordFragment"
         android:name="com.vuongvanduy.music_app.ui.settings.account.ForgotPasswordFragment"

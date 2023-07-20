@@ -57,16 +57,16 @@ const val MY_SHARED_PREFERENCES = "MY_SHARED_PREFERENCES"
 
 const val TAG_LIST_DEVICE_SONG = "ListDeviceSong"
 
-const val FRAGMENT_HOME = 1
-const val FRAGMENT_ONLINE_SONGS = 2
-const val FRAGMENT_FAVOURITE_SONGS = 3
-const val FRAGMENT_DEVICE_SONGS = 4
-const val FRAGMENT_ACCOUNT = 5
-const val FRAGMENT_APPEARANCE = 6
-const val FRAGMENT_APP_INFO = 7
-const val FRAGMENT_CONTACT = 8
-const val FRAGMENT_MUSIC_PLAYER = 9
-const val FRAGMENT_CHANGE_PASSWORD = 10
+const val HOME_FRAGMENT = 1
+const val ONLINE_SONGS_FRAGMENT = 2
+const val FAVOURITE_SONGS_FRAGMENT = 3
+const val DEVICE_SONGS_FRAGMENT = 4
+const val ACCOUNT_FRAGMENT = 5
+const val APPEARANCE_FRAGMENT = 6
+const val APP_INFO_FRAGMENT = 7
+const val CONTACT_FRAGMENT = 8
+const val MUSIC_PLAYER_FRAGMENT = 9
+const val CHANGE_PASSWORD_FRAGMENT = 10
 
 const val TITLE_HOME = "Home"
 const val TITLE_ONLINE_SONGS = "Online Songs"
@@ -92,6 +92,8 @@ const val TEXT_REMOVE_FAVOURITES = "Remove \n This Song"
 
 const val EMAIL_CONTACT = "vuongvanduyit03@gmail.com"
 const val MICROSOFT_CONTACT = "duycon123bn@outlook.com"
+const val URI_FB = "https://www.facebook.com/vuongduy03"
+const val URI_ZALO = "https://zalo.me/0987786011"
 
 fun hideKeyboard(context: Context, view: View) {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
