@@ -64,29 +64,4 @@ class SettingOptionsFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
     }
-
-    override fun onPause() {
-        super.onPause()
-        log("SettingOptionsFragment", "onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        log("SettingOptionsFragment", "onStop")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        log("SettingOptionsFragment", "onDestroyView")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        log("SettingOptionsFragment", "onDestroy")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        log("SettingOptionsFragment", "onDetach")
-    }
 }

@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -77,7 +78,6 @@ class FavouriteSongsFragment : BaseFragment() {
             }
 
             override fun onClickAddFavourites(song: Song) {
-//                addToFavourites(currentSong)
             }
 
             override fun onClickRemoveFavourites(song: Song) {}
@@ -131,6 +131,8 @@ class FavouriteSongsFragment : BaseFragment() {
             if (!it.isNullOrEmpty()) {
                 songViewModel.isLoadingFavourite.postValue(false)
                 extendSongAdapter.setData(it)
+            } else {
+                songViewModel.isLoadingFavourite.postValue(true)
             }
         }
     }

@@ -2,6 +2,7 @@ package com.vuongvanduy.music_app.data.services
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -42,36 +43,6 @@ class SongRemoteService @Inject constructor() {
             }
         })
 
-        return songsLiveData
-    }
-
-    fun getListFavouriteSongs(): LiveData<List<Song>> {
-        val songsLiveData = MutableLiveData<List<Song>>()
-        val list = mutableListOf<Song>()
-
-//        val email = FirebaseAuth.getInstance().currentUser?.email?.substringBefore(".")
-        val email = "duyconbn7@gmail"
-        val database = Firebase.database
-        val myRef = email?.let { database.getReference("favourite_songs").child(it) }
-        myRef?.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val song = postSnapshot.getValue<Song>()
-                    if (song != null) {
-                        if (!isSongExists(list, song)) {
-                            list.add(song)
-                        }
-                    }
-                }
-                sortListAscending(list)
-                songsLiveData.postValue(list)
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                songsLiveData.postValue(list)
-                throw Exception(databaseError.message)
-            }
-        })
         return songsLiveData
     }
 }

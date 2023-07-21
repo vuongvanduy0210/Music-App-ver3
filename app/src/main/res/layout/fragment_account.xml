@@ -3,7 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="viewModel"
+            type="com.vuongvanduy.music_app.ui.settings.account.AccountViewModel" />
 
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -19,8 +23,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_user"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/img_avatar_error" />
+            android:layout_height="100dp" />
 
         <TextView
             android:id="@+id/tv_email"
@@ -29,17 +32,15 @@
             android:layout_marginTop="20dp"
             android:ellipsize="end"
             android:lines="1"
-            android:text="duyconbn7@gmail.com"
             android:textAlignment="center"
             android:textColor="@color/text_color"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/edt_name"
+            android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
-            android:text="Name"
             android:textAlignment="center"
             android:textColor="@color/text_color"
             android:textSize="20sp" />
@@ -48,7 +49,8 @@
             android:id="@+id/layout_button_sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="@{viewModel.isShowSignOut() ? View.GONE : View.VISIBLE}">
 
             <Button
                 android:id="@+id/bt_sign_in"
@@ -81,7 +83,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="@{viewModel.isShowSignOut() ? View.VISIBLE : View.GONE}">
 
             <Button
                 android:id="@+id/bt_change_profile"
