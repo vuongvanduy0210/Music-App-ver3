@@ -1,7 +1,6 @@
 package com.vuongvanduy.music_app.data.repositories
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.data.services.SongLocalService
 import com.vuongvanduy.music_app.data.services.SongRemoteService

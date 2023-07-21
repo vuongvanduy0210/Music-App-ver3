@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.vuongvanduy.music_app.R
+import com.vuongvanduy.music_app.base.fragment.BaseFragment
+import com.vuongvanduy.music_app.common.TITLE_ACCOUNT
 import com.vuongvanduy.music_app.databinding.FragmentAccountBinding
 
-class AccountFragment : Fragment() {
+class AccountFragment : BaseFragment() {
 
     private lateinit var binding: FragmentAccountBinding
 
@@ -23,6 +25,8 @@ class AccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        init()
 
         binding.btSignIn.setOnClickListener {
             val action = AccountFragmentDirections.actionAccountFragmentToSignInFragment()
@@ -43,5 +47,10 @@ class AccountFragment : Fragment() {
             val action = AccountFragmentDirections.actionAccountFragmentToChangePasswordFragment()
             findNavController().navigate(action)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainActivity.binding.toolBarTitle.text = TITLE_ACCOUNT
     }
 }

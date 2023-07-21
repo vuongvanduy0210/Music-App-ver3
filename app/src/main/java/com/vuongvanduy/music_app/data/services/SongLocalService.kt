@@ -12,8 +12,6 @@ import com.vuongvanduy.music_app.common.DEVICE_SONGS_FRAGMENT_TAG
 import com.vuongvanduy.music_app.data.common.sortListAscending
 import com.vuongvanduy.music_app.data.models.Song
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.text.Collator
-import java.util.Locale
 import javax.inject.Inject
 
 class SongLocalService @Inject constructor(@ApplicationContext val context: Context) {

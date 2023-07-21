@@ -1,6 +1,5 @@
 package com.vuongvanduy.music_app.data.models
 
-import android.net.Uri
 import java.io.Serializable
 
 class Song constructor(

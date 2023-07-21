@@ -1,16 +1,11 @@
 package com.vuongvanduy.music_app.activites.main
 
-import android.annotation.SuppressLint
-import android.content.Context
+
 import android.content.Intent
-import android.os.Bundle
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.vuongvanduy.music_app.MusicService
 import com.vuongvanduy.music_app.base.viewmodel.BaseViewModel
 import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.data.models.Song
-import java.io.Serializable
 
 class MainViewModel : BaseViewModel() {
 

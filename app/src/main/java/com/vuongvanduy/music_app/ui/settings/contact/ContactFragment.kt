@@ -78,4 +78,9 @@ class ContactFragment : BaseFragment() {
         val dialog = builder.create()
         dialog.show()
     }
+
+    override fun onResume() {
+        super.onResume()
+        mainActivity.binding.toolBarTitle.text = TITLE_CONTACT
+    }
 }

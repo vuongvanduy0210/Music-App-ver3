@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
+import com.vuongvanduy.music_app.common.TITLE_ACCOUNT
 import com.vuongvanduy.music_app.common.hideKeyboard
 import com.vuongvanduy.music_app.databinding.FragmentSignInBinding
 
@@ -56,5 +57,10 @@ class SignInFragment : BaseFragment() {
             val action = SignInFragmentDirections.actionSignInFragmentToForgotPasswordFragment()
             findNavController().navigate(action)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainActivity.binding.toolBarTitle.text = TITLE_ACCOUNT
     }
 }

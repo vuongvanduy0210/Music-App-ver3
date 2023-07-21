@@ -12,6 +12,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -125,15 +126,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun requestPermissionReadStorage() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (checkSelfPermission(Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-                // get list currentSong from device
+            if (checkSelfPermission(Manifest.permission.READ_MEDIA_AUDIO)
+                == PackageManager.PERMISSION_GRANTED
+            ) {
                 songViewModel.getLocalData()
             } else {
                 activityResultLauncherGetData.launch(Manifest.permission.READ_MEDIA_AUDIO)
             }
         } else {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                // get list currentSong from device
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED
+            ) {
                 songViewModel.getLocalData()
             } else {
                 activityResultLauncherGetData.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -231,7 +234,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun requestPermissionPostNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED
+            ) {
                 playMusic()
             } else {
                 activityResultLauncherNotification.launch(Manifest.permission.POST_NOTIFICATIONS)
@@ -366,7 +371,21 @@ class MainActivity : AppCompatActivity() {
             R.id.online -> binding.toolBarTitle.text = TITLE_ONLINE_SONGS
             R.id.favourite -> binding.toolBarTitle.text = TITLE_FAVOURITE_SONGS
             R.id.device -> binding.toolBarTitle.text = TITLE_DEVICE_SONGS
-            R.id.settings -> binding.toolBarTitle.text = TITLE_SETTINGS
+            R.id.settings -> setToolbarTitleSettings()
+        }
+    }
+
+    private fun setToolbarTitleSettings() {
+        if (isFragmentInBackStack(R.id.accountFragment)) {
+            binding.toolBarTitle.text = TITLE_ACCOUNT
+        } else if (isFragmentInBackStack(R.id.appearanceFragment)) {
+            binding.toolBarTitle.text = TITLE_APPEARANCE
+        } else if (isFragmentInBackStack(R.id.appInfoFragment)) {
+            binding.toolBarTitle.text = TITLE_APP_INFO
+        } else if (isFragmentInBackStack(R.id.contactFragment)) {
+            binding.toolBarTitle.text = TITLE_CONTACT
+        } else {
+            binding.toolBarTitle.text = TITLE_SETTINGS
         }
     }
 
@@ -420,14 +439,22 @@ class MainActivity : AppCompatActivity() {
 
     private fun isSettingsFragment() = binding.bottomNav.selectedItemId == R.id.settings
 
-    private fun isSettingOptionsFragment() : Boolean {
+    private fun isSettingOptionsFragment(): Boolean {
         if (!isSettingsFragment()) {
             return false
         }
         val navController = findNavController(R.id.nav_host_fragment)
         return (navController.currentDestination
-        == navController.findDestination(R.id.settingOptionsFragment))
+                == navController.findDestination(R.id.settingOptionsFragment))
     }
+
+    private fun isFragmentInBackStack(destinationId: Int) =
+        try {
+            findNavController(R.id.nav_host_fragment).getBackStackEntry(destinationId)
+            true
+        } catch (e: Exception) {
+            false
+        }
 
     private fun popMusicPlayer() {
         val slideOutAnimation =
