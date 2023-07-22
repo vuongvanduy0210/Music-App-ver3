@@ -1,8 +1,6 @@
 package com.vuongvanduy.music_app.ui.settings.account
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +12,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
-import com.vuongvanduy.music_app.common.TITLE_ACCOUNT
-import com.vuongvanduy.music_app.common.TITLE_FAVOURITE_SONGS
+import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.common.sendListSongToService
 import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.FragmentAccountBinding
@@ -93,9 +90,8 @@ class AccountFragment : BaseFragment() {
             .show()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun registerObserver() {
-        accountViewModel.user.observe(viewLifecycleOwner) {user ->
+        accountViewModel.user.observe(mainActivity) { user ->
             accountViewModel.isShowSignOut.postValue(user != null)
             if (user != null) {
                 binding.apply {
@@ -110,8 +106,8 @@ class AccountFragment : BaseFragment() {
                 binding.apply {
                     Glide.with(mainActivity).load(R.drawable.img_avatar_error)
                         .into(imgUser)
-                    tvName.text = "Guest"
-                    tvEmail.text = "Someone@gmail.com"
+                    tvName.text = GUEST
+                    tvEmail.text = GUEST_EMAIL
                 }
 
                 songViewModel.favouriteSongs.value = null

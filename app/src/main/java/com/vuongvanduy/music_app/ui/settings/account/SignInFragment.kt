@@ -2,7 +2,6 @@ package com.vuongvanduy.music_app.ui.settings.account
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -101,10 +100,8 @@ class SignInFragment : BaseFragment() {
             .addOnCompleteListener() { task ->
                 progressDialog.dismiss()
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
+                    // Sign in success
                     findNavController().popBackStack(R.id.accountFragment, false)
-                } else {
-                    // If sign in fails, display a message to the user.
                 }
             }
             .addOnFailureListener { exception ->

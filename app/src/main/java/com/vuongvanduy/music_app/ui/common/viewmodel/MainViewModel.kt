@@ -1,4 +1,4 @@
-package com.vuongvanduy.music_app.activites.main
+package com.vuongvanduy.music_app.ui.common.viewmodel
 
 
 import android.content.Intent

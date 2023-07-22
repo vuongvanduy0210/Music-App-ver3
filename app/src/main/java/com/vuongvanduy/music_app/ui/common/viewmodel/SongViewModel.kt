@@ -1,6 +1,5 @@
 package com.vuongvanduy.music_app.ui.common.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
@@ -47,16 +46,14 @@ class SongViewModel @Inject constructor(private val songRepository: SongReposito
 
     fun getFavouriteSongs() {
         if (FirebaseAuth.getInstance().currentUser != null) {
-//            favouriteSongs = songRepository.getFavouriteSongs() as MutableLiveData<List<Song>>
             getListFavouriteSongs()
         }
     }
 
-    fun getListFavouriteSongs() {
+    private fun getListFavouriteSongs() {
 
         val list = mutableListOf<Song>()
         val email = FirebaseAuth.getInstance().currentUser?.email?.substringBefore(".")
-//        val email = "duyconbn7@gmail"
         val database = Firebase.database
         val myRef = email?.let { database.getReference("favourite_songs").child(it) }
         myRef?.addValueEventListener(object : ValueEventListener {
@@ -117,13 +114,15 @@ class SongViewModel @Inject constructor(private val songRepository: SongReposito
         getFavouriteSongsShow()
         getDeviceSongsShow()
         val list = mutableListOf<Category>()
-        onlineSongsShow.value?.let { Category(TITLE_ONLINE_SONGS, it as MutableList<Song>) }
-            ?.let { list.add(it) }
+        if (!onlineSongsShow.value.isNullOrEmpty()) {
+            list.add(Category(TITLE_ONLINE_SONGS, onlineSongsShow.value as MutableList<Song>))
+        }
         if (!favouriteSongsShow.value.isNullOrEmpty()) {
             list.add(Category(TITLE_FAVOURITE_SONGS, favouriteSongsShow.value as MutableList<Song>))
         }
-        deviceSongsShow.value?.let { Category(TITLE_DEVICE_SONGS, it as MutableList<Song>) }
-            ?.let { list.add(it) }
+        if (!deviceSongsShow.value.isNullOrEmpty()) {
+            list.add(Category(TITLE_DEVICE_SONGS, deviceSongsShow.value as MutableList<Song>))
+        }
         return list
     }
 

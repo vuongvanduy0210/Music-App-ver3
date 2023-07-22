@@ -1,6 +1,5 @@
 package com.vuongvanduy.music_app.ui.home
 
-import android.annotation.SuppressLint
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,14 +13,6 @@ class SongCategoryAdapter constructor(
     private var listSongShow: MutableList<Song>,
     private val listener: IClickSongListener
 ) : RecyclerView.Adapter<SongCategoryAdapter.SongCategoryViewHolder>() {
-
-    private var listSongPlay: MutableList<Song>? = null
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun setData(list: MutableList<Song>) {
-        this.listSongPlay = list
-        notifyDataSetChanged()
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongCategoryViewHolder {
         val binding = ItemSongInCategoryBinding

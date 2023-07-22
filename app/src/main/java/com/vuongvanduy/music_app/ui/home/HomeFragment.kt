@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,12 +17,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
-import com.vuongvanduy.music_app.common.ACTION_START
-import com.vuongvanduy.music_app.common.FAVOURITE_SONGS_FRAGMENT_TAG
-import com.vuongvanduy.music_app.common.HOME_FRAGMENT_TAG
-import com.vuongvanduy.music_app.common.TITLE_DEVICE_SONGS
-import com.vuongvanduy.music_app.common.TITLE_FAVOURITE_SONGS
-import com.vuongvanduy.music_app.common.TITLE_ONLINE_SONGS
+import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.common.sendDataToService
 import com.vuongvanduy.music_app.common.sendListSongToService
 import com.vuongvanduy.music_app.data.models.Song

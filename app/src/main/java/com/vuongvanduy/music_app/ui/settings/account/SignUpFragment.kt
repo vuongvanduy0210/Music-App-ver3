@@ -154,7 +154,7 @@ class SignUpFragment : BaseFragment() {
                     ).show()
                 }
             }
-            .addOnFailureListener {exception ->
+            .addOnFailureListener { exception ->
                 if (exception is FirebaseAuthInvalidUserException) {
                     binding.tvError.apply {
                         text = "Email already exists"

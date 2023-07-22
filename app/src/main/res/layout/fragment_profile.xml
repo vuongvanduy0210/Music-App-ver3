@@ -45,16 +45,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="10dp"
             android:hint="@string/name_hint"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/tv_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/red"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/bt_update_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
             android:background="@drawable/custom_button"
             android:backgroundTint="@color/yellow"
             android:text="@string/update_profile"
