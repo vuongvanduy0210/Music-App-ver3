@@ -17,11 +17,15 @@ class SongRepository @Inject constructor(
         return songRemoteService.getAllSongsFromFirebase()
     }
 
-    fun getFavouriteSongs(): LiveData<List<Song>> {
-        return songRemoteService.getListFavouriteSongs()
-    }
-
     suspend fun getDeviceSongs() = withContext(Dispatchers.IO) {
         songLocalService.getLocalMusic()
+    }
+
+    fun pushSongToFavourites(email: String, song: Song) {
+        songRemoteService.pushSongToFirebase(email, song)
+    }
+
+    fun removeSongOnFavourites(email: String, song: Song) {
+        songRemoteService.removeSongOnFirebase(email, song)
     }
 }

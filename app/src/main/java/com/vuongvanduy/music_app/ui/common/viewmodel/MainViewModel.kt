@@ -1,4 +1,4 @@
-package com.vuongvanduy.music_app.activites.main
+package com.vuongvanduy.music_app.ui.common.viewmodel
 
 
 import android.content.Intent
@@ -17,11 +17,11 @@ class MainViewModel : BaseViewModel() {
     val isShowMiniPlayer = MutableLiveData(false)
     val isShowBtPlayAll = MutableLiveData(false)
 
-    var isPlaying = MutableLiveData(false)
-    var isLooping = MutableLiveData(false)
-    var isShuffling = MutableLiveData(false)
+    val isPlaying = MutableLiveData(false)
+    val isLooping = MutableLiveData(false)
+    val isShuffling = MutableLiveData(false)
 
-    var actionMusic = MutableLiveData(0)
+    val actionMusic = MutableLiveData(0)
     val finalTime = MutableLiveData(0)
     val currentTime = MutableLiveData(0)
 

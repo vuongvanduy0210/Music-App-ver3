@@ -33,7 +33,7 @@ class SongAdapter constructor(private val iClickSongListener: IClickSongListener
     }
 
     override fun getItemCount(): Int {
-        return if (songs != null && songs!!.isNotEmpty()) {
+        return if (!songs.isNullOrEmpty()) {
             songs!!.size
         } else 0
     }

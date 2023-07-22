@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.vuongvanduy.music_app.activites.main.MainViewModel" />
+            type="com.vuongvanduy.music_app.ui.common.viewmodel.MainViewModel" />
 
         <import type="android.view.View" />
     </data>
@@ -71,23 +71,22 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_play_all"
                         android:layout_gravity="center"
-                        android:layout_marginStart="4dp"/>
+                        android:layout_marginStart="4dp"
+                        android:src="@drawable/ic_play_all" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:lines="1"
                         android:text="@string/play_all"
                         android:textAllCaps="false"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
                         android:textColor="@color/text_color"
-                        android:lines="1"/>
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
-
 
 
             </androidx.appcompat.widget.Toolbar>

@@ -1,7 +1,10 @@
 package com.vuongvanduy.music_app.common
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -94,6 +97,9 @@ const val EMAIL_CONTACT = "vuongvanduyit03@gmail.com"
 const val MICROSOFT_CONTACT = "duycon123bn@outlook.com"
 const val URI_FB = "https://www.facebook.com/vuongduy03"
 const val URI_ZALO = "https://zalo.me/0987786011"
+
+const val GUEST = "Guest"
+const val GUEST_EMAIL = "someone@gmail.com"
 
 fun hideKeyboard(context: Context, view: View) {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
 import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.data.models.Song
@@ -75,7 +76,7 @@ class OnlineSongsFragment : BaseFragment() {
             }
 
             override fun onClickAddFavourites(song: Song) {
-//                addToFavourites(currentSong)
+                addToFavourites(song)
             }
 
             override fun onClickRemoveFavourites(song: Song) {}
@@ -99,6 +100,19 @@ class OnlineSongsFragment : BaseFragment() {
 
     private fun playSong(song: Song) {
         requestPermissionPostNotification(song)
+    }
+
+    private fun addToFavourites(song: Song) {
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            Toast.makeText(
+                mainActivity,
+                "You need to log in to use this feature",
+                Toast.LENGTH_LONG
+            )
+                .show()
+        } else {
+            songViewModel.favSong.postValue(song)
+        }
     }
 
     private fun requestPermissionPostNotification(song: Song) {

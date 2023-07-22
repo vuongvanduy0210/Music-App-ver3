@@ -1,14 +1,12 @@
 package com.vuongvanduy.music_app.ui.settings.appearance
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
 import com.vuongvanduy.music_app.common.TITLE_APPEARANCE
-import com.vuongvanduy.music_app.common.TITLE_CONTACT
 
 class AppearanceFragment : BaseFragment() {
 

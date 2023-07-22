@@ -12,7 +12,6 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -22,11 +21,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.ActivityMainBinding
 import com.vuongvanduy.music_app.ui.common.adapter.FragmentViewPagerAdapter
+import com.vuongvanduy.music_app.ui.common.viewmodel.MainViewModel
 import com.vuongvanduy.music_app.ui.common.viewmodel.SongViewModel
 import com.vuongvanduy.music_app.ui.music_player.MusicPlayerFragment
 import com.vuongvanduy.music_app.ui.transformer.ZoomOutPageTransformer
@@ -113,7 +114,10 @@ class MainActivity : AppCompatActivity() {
     private fun init() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         songViewModel = ViewModelProvider(this)[SongViewModel::class.java]
-        songViewModel.fetchData()
+        songViewModel.getListOnline()
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            songViewModel.getFavouriteSongs()
+        }
         requestPermissionReadStorage()
         binding.viewModel = mainViewModel
         binding.lifecycleOwner = this

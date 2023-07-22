@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import com.vuongvanduy.music_app.R
+import com.google.firebase.auth.FirebaseAuth
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
 import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.databinding.FragmentSettingOptionsBinding
@@ -29,8 +29,29 @@ class SettingOptionsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        findNavController().enableOnBackPressed(true)
+        initListener()
 
+        registerObserver()
+    }
+
+    private fun registerObserver() {
+
+        binding.tvName.text = if (FirebaseAuth.getInstance().currentUser != null) {
+            "( ${FirebaseAuth.getInstance().currentUser?.displayName} )"
+        } else {
+            "( $GUEST )"
+        }
+
+        accountViewModel.user.observe(viewLifecycleOwner) { user ->
+            binding.tvName.text = if (user != null) {
+                "( ${FirebaseAuth.getInstance().currentUser?.displayName} )"
+            } else {
+                "( $GUEST )"
+            }
+        }
+    }
+
+    private fun initListener() {
         binding.tvAccount.setOnClickListener {
             val action =
                 SettingOptionsFragmentDirections.actionSettingOptionsFragmentToAccountFragment()
@@ -59,34 +80,5 @@ class SettingOptionsFragment : BaseFragment() {
     private fun goToFragment(action: NavDirections, title: String) {
         findNavController().navigate(action)
         mainActivity.binding.toolBarTitle.text = title
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        log("SettingOptionsFragment", "onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        log("SettingOptionsFragment", "onStop")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        log("SettingOptionsFragment", "onDestroyView")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        log("SettingOptionsFragment", "onDestroy")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        log("SettingOptionsFragment", "onDetach")
     }
 }

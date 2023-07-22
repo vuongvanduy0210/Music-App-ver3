@@ -17,10 +17,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
-import com.vuongvanduy.music_app.common.ACTION_START
-import com.vuongvanduy.music_app.common.TITLE_DEVICE_SONGS
-import com.vuongvanduy.music_app.common.TITLE_FAVOURITE_SONGS
-import com.vuongvanduy.music_app.common.TITLE_ONLINE_SONGS
+import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.common.sendDataToService
 import com.vuongvanduy.music_app.common.sendListSongToService
 import com.vuongvanduy.music_app.data.models.Song
@@ -34,6 +31,8 @@ class HomeFragment : BaseFragment() {
     private lateinit var binding: FragmentHomeBinding
 
     private lateinit var photosAdapter: PhotoViewPager2Adapter
+
+    private lateinit var categoryAdapter: CategoryAdapter
 
     private var myHandler = Handler(Looper.getMainLooper())
     private val runnable = Runnable {
@@ -84,29 +83,34 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setRecyclerViewCategory()
+
         registerObserver()
 
         setAutoSlideImage()
     }
 
     private fun registerObserver() {
-        songViewModel.onlineSongs.observe(mainActivity) {
-            songViewModel.getListPhotos()
-            setRecyclerViewCategory()
-        }
-        songViewModel.favouriteSongs.observe(mainActivity) {
-            songViewModel.getListPhotos()
-            setRecyclerViewCategory()
-        }
-        songViewModel.deviceSongs.observe(mainActivity) {
-            songViewModel.getListPhotos()
-            setRecyclerViewCategory()
+        songViewModel.apply {
+            onlineSongs.observe(mainActivity) {
+                getListPhotos()
+                categoryAdapter.setData(getListCategories())
+            }
+            favouriteSongs.observe(mainActivity) {
+                if (it.isNullOrEmpty()) {
+                    favouriteSongsShow.value = null
+                }
+                categoryAdapter.setData(getListCategories())
+            }
+            deviceSongs.observe(mainActivity) {
+                getListPhotos()
+                categoryAdapter.setData(getListCategories())
+            }
         }
     }
 
     private fun setRecyclerViewCategory() {
-        val categoryAdapter = CategoryAdapter(
-            songViewModel.getListCategories(),
+        categoryAdapter = CategoryAdapter(
             mainActivity,
             object : IClickCategoryListener {
                 override fun clickButtonViewAll(categoryName: String) {
