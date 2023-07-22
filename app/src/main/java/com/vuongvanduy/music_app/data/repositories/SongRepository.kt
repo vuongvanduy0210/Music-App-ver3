@@ -20,4 +20,12 @@ class SongRepository @Inject constructor(
     suspend fun getDeviceSongs() = withContext(Dispatchers.IO) {
         songLocalService.getLocalMusic()
     }
+
+    fun pushSongToFavourites(email: String, song: Song) {
+        songRemoteService.pushSongToFirebase(email, song)
+    }
+
+    fun removeSongOnFavourites(email: String, song: Song) {
+        songRemoteService.removeSongOnFirebase(email, song)
+    }
 }

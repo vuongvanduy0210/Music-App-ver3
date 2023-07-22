@@ -23,22 +23,20 @@ class SongViewModel @Inject constructor(private val songRepository: SongReposito
     BaseViewModel() {
 
     var onlineSongs = MutableLiveData<List<Song>>()
-        private set
 
-    var favouriteSongs = MutableLiveData<List<Song>>()
-        private set
+    val favouriteSongs = MutableLiveData<List<Song>>()
 
-    var deviceSongs = MutableLiveData<List<Song>>()
-        private set
+    val deviceSongs = MutableLiveData<List<Song>>()
 
-    var photos = MutableLiveData<List<Photo>>()
-        private set
+    val photos = MutableLiveData<List<Photo>>()
 
-    private var onlineSongsShow = MutableLiveData<List<Song>>()
+    private val onlineSongsShow = MutableLiveData<List<Song>>()
 
-    var favouriteSongsShow = MutableLiveData<List<Song>>()
+    val favouriteSongsShow = MutableLiveData<List<Song>>()
 
-    private var deviceSongsShow = MutableLiveData<List<Song>>()
+    private val deviceSongsShow = MutableLiveData<List<Song>>()
+
+    val favSong = MutableLiveData<Song>()
 
     fun getListOnline() {
         onlineSongs = songRepository.getOnlineSongs() as MutableLiveData<List<Song>>
@@ -157,5 +155,18 @@ class SongViewModel @Inject constructor(private val songRepository: SongReposito
             }
             deviceSongsShow.value = list
         }
+    }
+
+    fun addSongToFavourites(song: Song) {
+        FirebaseAuth.getInstance().currentUser?.email?.let {
+            songRepository.pushSongToFavourites(it, song)
+        }
+    }
+
+    fun removeSongFromFirebase(song: Song) {
+        FirebaseAuth.getInstance().currentUser?.email?.let {
+            songRepository.removeSongOnFavourites(it, song)
+        }
+        getFavouriteSongs()
     }
 }

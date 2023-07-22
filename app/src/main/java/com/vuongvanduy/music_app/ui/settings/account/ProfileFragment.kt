@@ -144,7 +144,7 @@ class ProfileFragment : BaseFragment() {
                 dialog.dismiss()
                 if (task.isSuccessful) {
                     Toast.makeText(
-                        activity,
+                        mainActivity,
                         "Update profile success.",
                         Toast.LENGTH_LONG
                     ).show()

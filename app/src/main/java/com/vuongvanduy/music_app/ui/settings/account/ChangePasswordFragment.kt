@@ -113,7 +113,7 @@ class ChangePasswordFragment : BaseFragment() {
                                     edtConfirmPassword.setText("")
                                 }
                                 Toast.makeText(
-                                    activity,
+                                    mainActivity,
                                     "Change password success.",
                                     Toast.LENGTH_LONG
                                 ).show()

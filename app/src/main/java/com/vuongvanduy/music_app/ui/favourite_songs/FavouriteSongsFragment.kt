@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,10 +77,11 @@ class FavouriteSongsFragment : BaseFragment() {
                 playSong(song)
             }
 
-            override fun onClickAddFavourites(song: Song) {
-            }
+            override fun onClickAddFavourites(song: Song) {}
 
-            override fun onClickRemoveFavourites(song: Song) {}
+            override fun onClickRemoveFavourites(song: Song) {
+                removeSong(song)
+            }
         }, TITLE_FAVOURITE_SONGS)
         val decoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         binding.rcvListSongs.apply {
@@ -100,6 +102,10 @@ class FavouriteSongsFragment : BaseFragment() {
 
     private fun playSong(song: Song) {
         requestPermissionPostNotification(song)
+    }
+
+    private fun removeSong(song: Song) {
+        songViewModel.removeSongFromFirebase(song)
     }
 
     private fun requestPermissionPostNotification(song: Song) {
@@ -128,10 +134,36 @@ class FavouriteSongsFragment : BaseFragment() {
     private fun registerObserverFetchDataFinish() {
         songViewModel.favouriteSongs.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
+                Log.e(FAVOURITE_SONGS_FRAGMENT_TAG, "List favourite change")
                 songViewModel.isLoadingFavourite.postValue(false)
                 extendSongAdapter.setData(it)
+                if (mainViewModel.currentListName == TITLE_FAVOURITE_SONGS) {
+                    sendListSongToService(mainActivity, it)
+                }
             } else {
                 songViewModel.isLoadingFavourite.postValue(true)
+
+            }
+        }
+
+        songViewModel.favSong.observe(viewLifecycleOwner) {
+            if (it != null) {
+                if (songViewModel.favouriteSongs.value != null
+                    && isSongExists(songViewModel.favouriteSongs.value!!, it)
+                ) {
+                    Toast.makeText(
+                        mainActivity,
+                        "This song is exist in favourites", Toast.LENGTH_SHORT
+                    ).show()
+                    return@observe
+                }
+
+                songViewModel.addSongToFavourites(it)
+
+                Toast.makeText(
+                    mainActivity,
+                    "Add song to favourites success", Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

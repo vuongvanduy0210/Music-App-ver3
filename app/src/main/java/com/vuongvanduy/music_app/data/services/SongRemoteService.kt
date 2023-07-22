@@ -1,8 +1,9 @@
 package com.vuongvanduy.music_app.data.services
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -12,10 +13,11 @@ import com.google.firebase.ktx.Firebase
 import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.data.common.*
 import com.vuongvanduy.music_app.data.models.Song
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.lang.Exception
 import javax.inject.Inject
 
-class SongRemoteService @Inject constructor() {
+class SongRemoteService @Inject constructor(@ApplicationContext private val context: Context) {
 
     fun getAllSongsFromFirebase(): LiveData<List<Song>> {
         val songsLiveData = MutableLiveData<List<Song>>()
@@ -44,5 +46,37 @@ class SongRemoteService @Inject constructor() {
         })
 
         return songsLiveData
+    }
+
+    fun pushSongToFirebase(email: String, song: Song) {
+        val database = Firebase.database
+        val myRef = database.getReference("favourite_songs")
+            .child(email.substringBefore("."))
+        myRef.child(song.name!!).setValue(song)
+    }
+
+    fun removeSongOnFirebase(email: String, song: Song) {
+        val database = Firebase.database
+        val myRef = song.name?.let { name ->
+            database.getReference("favourite_songs")
+                .child(email.substringBefore(".")).child(name)
+        }
+        myRef?.removeValue { databaseError, _ ->
+            if (databaseError == null) {
+                // Removal successful
+                Toast.makeText(
+                    context,
+                    "Remove song success",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                // Removal failed
+                Toast.makeText(
+                    context,
+                    "Failed to remove song: ${databaseError.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 }
