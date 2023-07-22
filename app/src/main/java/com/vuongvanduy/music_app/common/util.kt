@@ -52,7 +52,7 @@ const val DEVICE_SONGS_FRAGMENT_TAG = "DeviceMusicFragment"
 const val SETTINGS_FRAGMENT_TAG = "SettingsFragment"
 
 const val KEY_THEME_MODE = "KEY_THEME_MODE"
-const val SYSTEM_MODE = "Mirror system preferences"
+const val SYSTEM_MODE = "Follow system"
 const val LIGHT_MODE = "Light"
 const val DARK_MODE = "Dark"
 

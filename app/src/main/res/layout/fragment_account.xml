@@ -61,7 +61,7 @@
                 android:backgroundTint="@android:color/holo_green_light"
                 android:text="@string/sign_in"
                 android:textAllCaps="false"
-                android:textColor="@color/bg_color"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <Button
@@ -73,7 +73,7 @@
                 android:backgroundTint="@android:color/holo_blue_light"
                 android:text="@string/sign_up"
                 android:textAllCaps="false"
-                android:textColor="@color/bg_color"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
         </LinearLayout>
@@ -94,7 +94,7 @@
                 android:backgroundTint="@color/yellow"
                 android:text="@string/change_profile"
                 android:textAllCaps="false"
-                android:textColor="@color/bg_color"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <Button
@@ -106,7 +106,7 @@
                 android:backgroundTint="@color/orange"
                 android:text="@string/change_password"
                 android:textAllCaps="false"
-                android:textColor="@color/bg_color"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <Button
@@ -118,7 +118,7 @@
                 android:backgroundTint="@color/red"
                 android:text="@string/sign_out"
                 android:textAllCaps="false"
-                android:textColor="@color/bg_color"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
         </LinearLayout>

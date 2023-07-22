@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.os.Build
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.common.CHANNEL_ID
+import com.vuongvanduy.music_app.data.sharedPreferences.DataLocalManager
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -31,6 +32,6 @@ class MyApplication : Application() {
     }
 
     private fun createDataLocalManager() {
-//        DataLocalManager.init(applicationContext)
+        DataLocalManager.init(applicationContext)
     }
 }

@@ -12,11 +12,13 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
@@ -25,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.data.models.Song
+import com.vuongvanduy.music_app.data.sharedPreferences.DataLocalManager
 import com.vuongvanduy.music_app.databinding.ActivityMainBinding
 import com.vuongvanduy.music_app.ui.common.adapter.FragmentViewPagerAdapter
 import com.vuongvanduy.music_app.ui.common.viewmodel.MainViewModel
@@ -95,10 +98,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         init()
-
-        setContentView(binding.root)
 
         checkServiceIsRunning()
 
@@ -365,6 +367,11 @@ class MainActivity : AppCompatActivity() {
                 if (current != null) {
                     binding.progressBar.progress = current
                 }
+            }
+
+            themeMode.observe(this@MainActivity) {
+                Log.e(MAIN_ACTIVITY_TAG, "theme before put: ${mainViewModel.themeMode.value}")
+                mainViewModel.themeMode.value?.let { DataLocalManager.putStringThemeMode(it) }
             }
         }
     }

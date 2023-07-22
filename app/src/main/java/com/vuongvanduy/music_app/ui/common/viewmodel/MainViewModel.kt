@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.vuongvanduy.music_app.base.viewmodel.BaseViewModel
 import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.data.models.Song
+import com.vuongvanduy.music_app.data.sharedPreferences.DataLocalManager
 
 class MainViewModel : BaseViewModel() {
 
@@ -24,6 +25,7 @@ class MainViewModel : BaseViewModel() {
     val actionMusic = MutableLiveData(0)
     val finalTime = MutableLiveData(0)
     val currentTime = MutableLiveData(0)
+    var themeMode = MutableLiveData<String>(DataLocalManager.getStringThemeMode())
 
     fun receiveDataFromReceiver(intent: Intent) {
         val bundle = intent.extras ?: return
