@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
 import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.databinding.FragmentSettingOptionsBinding

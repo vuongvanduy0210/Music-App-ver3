@@ -12,13 +12,11 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
@@ -370,7 +368,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             themeMode.observe(this@MainActivity) {
-                Log.e(MAIN_ACTIVITY_TAG, "theme before put: ${mainViewModel.themeMode.value}")
                 mainViewModel.themeMode.value?.let { DataLocalManager.putStringThemeMode(it) }
             }
         }

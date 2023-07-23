@@ -1,7 +1,6 @@
 package com.vuongvanduy.music_app.ui.settings.appearance
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import com.vuongvanduy.music_app.common.DARK_MODE
 import com.vuongvanduy.music_app.common.LIGHT_MODE
 import com.vuongvanduy.music_app.common.SYSTEM_MODE
 import com.vuongvanduy.music_app.common.TITLE_APPEARANCE
-import com.vuongvanduy.music_app.data.sharedPreferences.DataLocalManager
 import com.vuongvanduy.music_app.databinding.FragmentAppearanceBinding
 
 class AppearanceFragment : BaseFragment() {

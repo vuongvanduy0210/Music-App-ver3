@@ -138,8 +138,8 @@
                 android:layout_height="match_parent"
                 android:layout_below="@id/progress_bar"
                 android:alpha="0.6"
-                android:scaleType="centerCrop"
-                android:foreground="@color/bg_color"/>
+                android:foreground="@color/bg_color"
+                android:scaleType="centerCrop" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_music"

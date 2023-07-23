@@ -39,7 +39,7 @@
             android:lines="1"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:textColor="@color/text_color"/>
+            android:textColor="@color/text_color" />
 
         <EditText
             android:id="@+id/edt_name"
@@ -52,7 +52,7 @@
             android:inputType="text"
             android:textSize="20sp"
             android:textColor="@color/text_color"
-            android:backgroundTint="@color/text_color"/>
+            android:backgroundTint="@color/text_color" />
 
         <TextView
             android:id="@+id/tv_error"

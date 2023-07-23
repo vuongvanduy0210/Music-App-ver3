@@ -70,7 +70,7 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun registerObserver() {
-        accountViewModel.user.observe(viewLifecycleOwner) {user ->
+        accountViewModel.user.observe(viewLifecycleOwner) { user ->
             accountViewModel.isShowSignOut.postValue(user != null)
 
             if (user != null) {

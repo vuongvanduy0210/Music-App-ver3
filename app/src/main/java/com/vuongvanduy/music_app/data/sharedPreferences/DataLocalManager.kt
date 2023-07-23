@@ -7,6 +7,7 @@ import com.vuongvanduy.music_app.common.KEY_THEME_MODE
 object DataLocalManager {
 
     private var instance: DataLocalManager? = null
+
     @SuppressLint("StaticFieldLeak")
     private var sharedPreferences: MySharedPreferences? = null
 

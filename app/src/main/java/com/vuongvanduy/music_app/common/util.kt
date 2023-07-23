@@ -1,10 +1,7 @@
 package com.vuongvanduy.music_app.common
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -32,7 +29,6 @@ const val ACTION_RELOAD_DATA = 10
 
 const val KEY_SONG = "key_song"
 const val KEY_LIST_SONGS = "key_list_song"
-const val KEY_LIST_NAME = "key_list_name"
 const val KEY_ACTION = "key_action"
 const val KEY_FINAL_TIME = "key_final_time"
 const val KEY_CURRENT_TIME = "key_current_time"
@@ -58,9 +54,7 @@ const val DARK_MODE = "Dark"
 
 const val MY_SHARED_PREFERENCES = "MY_SHARED_PREFERENCES"
 
-const val TAG_LIST_DEVICE_SONG = "ListDeviceSong"
-
-const val HOME_FRAGMENT = 1
+/*const val HOME_FRAGMENT = 1
 const val ONLINE_SONGS_FRAGMENT = 2
 const val FAVOURITE_SONGS_FRAGMENT = 3
 const val DEVICE_SONGS_FRAGMENT = 4
@@ -69,7 +63,7 @@ const val APPEARANCE_FRAGMENT = 6
 const val APP_INFO_FRAGMENT = 7
 const val CONTACT_FRAGMENT = 8
 const val MUSIC_PLAYER_FRAGMENT = 9
-const val CHANGE_PASSWORD_FRAGMENT = 10
+const val CHANGE_PASSWORD_FRAGMENT = 10*/
 
 const val TITLE_HOME = "Home"
 const val TITLE_ONLINE_SONGS = "Online Songs"
@@ -82,13 +76,13 @@ const val TITLE_APP_INFO = "About"
 const val TITLE_CONTACT = "Contact"
 const val TITLE_MUSIC_PLAYER = "Music Player"
 
-const val EMPTY_LIST_SONG_TEXT_ONLINE = "No currentSong in list. " +
+/*const val EMPTY_LIST_SONG_TEXT_ONLINE = "No currentSong in list. " +
         "Please check your internet connection."
 const val EMPTY_LIST_SONG_TEXT_DEVICE = "No currentSong in list. " +
         "Please allow access photos and " +
         "media on your device or add new currentSong to your media storage."
 const val EMPTY_LIST_SONG_TEXT_FAVOURITE = "No currentSong in list. " +
-        "Please check your internet connection or sign in to see your favourites."
+        "Please check your internet connection or sign in to see your favourites."*/
 
 const val TEXT_ADD_FAVOURITES = "Add To \n Favourites"
 const val TEXT_REMOVE_FAVOURITES = "Remove \n This Song"

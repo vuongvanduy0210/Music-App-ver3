@@ -7,19 +7,19 @@
         android:id="@+id/message_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/text_color"/>
+        android:textColor="@color/text_color" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:progressTint="@color/red"
         android:layout_below="@id/message_text_view"
-        android:layout_marginTop="16dp"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:progressTint="@color/red" />
 
 </RelativeLayout>
