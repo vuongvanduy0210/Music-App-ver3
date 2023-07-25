@@ -9,6 +9,7 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.vuongvanduy.music_app.common.*
+import com.vuongvanduy.music_app.data.common.containsIgnoreCaseWithDiacritics
 import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.ItemExtendSongBinding
 import com.vuongvanduy.music_app.ui.common.myinterface.IClickSongListener
@@ -84,20 +85,15 @@ class ExtendSongAdapter constructor(
                 } else {
                     val list = ArrayList<Song>()
                     listSongsOld?.forEach {
-                        if ((it.name?.lowercase()
-                                ?.contains(strSearch.lowercase()) == true) && !isSongExists(
-                                list,
-                                it
-                            )
-                        ) {
+                        if (it.name?.let { it1 ->
+                                containsIgnoreCaseWithDiacritics(it1, strSearch)
+                        } == true && !isSongExists(list, it)) {
                             list.add(it)
                         }
-                        if ((it.singer?.lowercase()
-                                ?.contains(strSearch.lowercase()) == true) && !isSongExists(
-                                list,
-                                it
-                            )
-                        ) {
+
+                        if (it.singer?.let { it1 ->
+                                containsIgnoreCaseWithDiacritics(it1, strSearch)
+                            } == true && !isSongExists(list, it)) {
                             list.add(it)
                         }
                     }

@@ -2,6 +2,7 @@ package com.vuongvanduy.music_app.data.common
 
 import com.vuongvanduy.music_app.data.models.Song
 import java.text.Collator
+import java.text.Normalizer
 import java.util.Locale
 
 
@@ -22,4 +23,15 @@ fun isListSortedAscending(list: MutableList<Song>): Boolean {
         }
     }
     return true
+}
+
+fun containsIgnoreCaseWithDiacritics(mainString: String, subString: String): Boolean {
+    val mainNormalized = removeDiacritics(mainString).lowercase()
+    val subNormalized = removeDiacritics(subString).lowercase()
+    return mainNormalized.contains(subNormalized)
+}
+
+fun removeDiacritics(input: String): String {
+    val normalized = Normalizer.normalize(input, Normalizer.Form.NFD)
+    return normalized.replace("\\p{InCombiningDiacriticalMarks}+".toRegex(), "")
 }
