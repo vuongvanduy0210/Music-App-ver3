@@ -104,7 +104,8 @@ class DeviceSongsFragment : BaseFragment() {
     private fun requestPermissionPostNotification(song: Song) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (mainActivity.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
-                == PackageManager.PERMISSION_GRANTED) {
+                == PackageManager.PERMISSION_GRANTED
+            ) {
                 playMusic(song)
             } else {
                 activityResultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)

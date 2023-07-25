@@ -139,7 +139,7 @@ class SignUpFragment : BaseFragment() {
         val auth = FirebaseAuth.getInstance()
         progressDialog.show()
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener() { task ->
+            .addOnCompleteListener { task ->
                 progressDialog.dismiss()
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information

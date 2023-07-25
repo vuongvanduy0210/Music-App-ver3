@@ -38,7 +38,8 @@
             android:ellipsize="end"
             android:lines="1"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textColor="@color/text_color" />
 
         <EditText
             android:id="@+id/edt_name"
@@ -49,7 +50,9 @@
             android:hint="@string/name_hint"
             android:imeOptions="actionDone"
             android:inputType="text"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textColor="@color/text_color"
+            android:backgroundTint="@color/text_color" />
 
         <TextView
             android:id="@+id/tv_error"
@@ -71,7 +74,7 @@
             android:backgroundTint="@color/yellow"
             android:text="@string/update_profile"
             android:textAllCaps="false"
-            android:textColor="@color/bg_color"
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
     </LinearLayout>

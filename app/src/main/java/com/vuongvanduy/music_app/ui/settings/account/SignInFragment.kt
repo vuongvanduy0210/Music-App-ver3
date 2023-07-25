@@ -97,7 +97,7 @@ class SignInFragment : BaseFragment() {
 
         progressDialog.show()
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener() { task ->
+            .addOnCompleteListener { task ->
                 progressDialog.dismiss()
                 if (task.isSuccessful) {
                     // Sign in success

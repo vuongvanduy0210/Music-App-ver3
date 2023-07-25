@@ -34,6 +34,7 @@ class SettingOptionsFragment : BaseFragment() {
         registerObserver()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun registerObserver() {
 
         binding.tvName.text = if (FirebaseAuth.getInstance().currentUser != null) {
@@ -49,28 +50,32 @@ class SettingOptionsFragment : BaseFragment() {
                 "( $GUEST )"
             }
         }
+
+        mainViewModel.themeMode.observe(mainActivity) { mode ->
+            binding.tvTheme.text = "( $mode )"
+        }
     }
 
     private fun initListener() {
-        binding.tvAccount.setOnClickListener {
+        binding.layoutAccount.setOnClickListener {
             val action =
                 SettingOptionsFragmentDirections.actionSettingOptionsFragmentToAccountFragment()
             goToFragment(action, TITLE_ACCOUNT)
         }
 
-        binding.tvAppearance.setOnClickListener {
+        binding.layoutAppearance.setOnClickListener {
             val action =
                 SettingOptionsFragmentDirections.actionSettingOptionsFragmentToAppearanceFragment()
             goToFragment(action, TITLE_APPEARANCE)
         }
 
-        binding.tvAppInfo.setOnClickListener {
+        binding.layoutAppInfo.setOnClickListener {
             val action =
                 SettingOptionsFragmentDirections.actionSettingOptionsFragmentToAppInfoFragment()
             goToFragment(action, TITLE_APP_INFO)
         }
 
-        binding.tvContact.setOnClickListener {
+        binding.layoutContact.setOnClickListener {
             val action =
                 SettingOptionsFragmentDirections.actionSettingOptionsFragmentToContactFragment()
             goToFragment(action, TITLE_CONTACT)

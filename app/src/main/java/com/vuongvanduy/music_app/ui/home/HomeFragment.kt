@@ -51,7 +51,7 @@ class HomeFragment : BaseFragment() {
     private val activityResultLauncherNotification =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                mainViewModel.currentSong.value?.let {song ->
+                mainViewModel.currentSong.value?.let { song ->
                     mainViewModel.currentListName?.let { titleList ->
                         playMusic(song, titleList)
                     }

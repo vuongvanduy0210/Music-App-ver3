@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -111,7 +110,8 @@ class FavouriteSongsFragment : BaseFragment() {
     private fun requestPermissionPostNotification(song: Song) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (mainActivity.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
-                == PackageManager.PERMISSION_GRANTED) {
+                == PackageManager.PERMISSION_GRANTED
+            ) {
                 playMusic(song)
             } else {
                 activityResultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
@@ -134,7 +134,6 @@ class FavouriteSongsFragment : BaseFragment() {
     private fun registerObserverFetchDataFinish() {
         songViewModel.favouriteSongs.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
-                Log.e(FAVOURITE_SONGS_FRAGMENT_TAG, "List favourite change")
                 songViewModel.isLoadingFavourite.postValue(false)
                 extendSongAdapter.setData(it)
                 if (mainViewModel.currentListName == TITLE_FAVOURITE_SONGS) {

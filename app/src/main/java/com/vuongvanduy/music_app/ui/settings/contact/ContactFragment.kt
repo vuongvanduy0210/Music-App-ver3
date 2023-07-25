@@ -69,7 +69,8 @@ class ContactFragment : BaseFragment() {
         dialogMailBinding.tvEmail.text = title
         dialogMailBinding.tvEmail.isSelected = true
         dialogMailBinding.btCopyEmail.setOnClickListener {
-            val clipboard = mainActivity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipboard =
+                mainActivity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("Email", dialogMailBinding.tvEmail.text)
             clipboard.setPrimaryClip(clip)
             Toast.makeText(mainActivity, "Email copied", Toast.LENGTH_SHORT).show()

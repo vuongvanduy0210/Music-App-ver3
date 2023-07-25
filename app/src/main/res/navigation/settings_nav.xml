@@ -8,7 +8,7 @@
         android:id="@+id/settingOptionsFragment"
         android:name="com.vuongvanduy.music_app.ui.settings.SettingOptionsFragment"
         android:label="fragment_setting_options"
-        tools:layout="@layout/fragment_setting_options" >
+        tools:layout="@layout/fragment_setting_options">
         <action
             android:id="@+id/action_settingOptionsFragment_to_accountFragment"
             app:destination="@id/accountFragment"
@@ -34,7 +34,7 @@
         android:id="@+id/accountFragment"
         android:name="com.vuongvanduy.music_app.ui.settings.account.AccountFragment"
         android:label="fragment_account"
-        tools:layout="@layout/fragment_account" >
+        tools:layout="@layout/fragment_account">
         <action
             android:id="@+id/action_accountFragment_to_signInFragment"
             app:destination="@id/signInFragment"
@@ -65,7 +65,7 @@
         android:id="@+id/signInFragment"
         android:name="com.vuongvanduy.music_app.ui.settings.account.SignInFragment"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" >
+        tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment"
@@ -81,7 +81,7 @@
         android:id="@+id/signUpFragment"
         android:name="com.vuongvanduy.music_app.ui.settings.account.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" >
+        tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
             app:destination="@id/signInFragment"
@@ -111,7 +111,7 @@
     <fragment
         android:id="@+id/forgotPasswordFragment"
         android:name="com.vuongvanduy.music_app.ui.settings.account.ForgotPasswordFragment"
-        android:label="ForgotPasswordFragment" >
+        android:label="ForgotPasswordFragment">
         <action
             android:id="@+id/action_forgotPasswordFragment_to_signInFragment"
             app:destination="@id/signInFragment"

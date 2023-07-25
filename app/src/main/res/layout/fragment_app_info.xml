@@ -12,7 +12,7 @@
         android:layout_height="120dp"
         android:src="@mipmap/ic_launcher"
         android:layout_centerHorizontal="true"
-        android:layout_above="@id/tv_music"/>
+        android:layout_above="@id/tv_music" />
 
     <TextView
         android:id="@+id/tv_music"
@@ -34,7 +34,7 @@
         android:textColor="@color/text_color"
         android:textStyle="bold"
         android:layout_below="@id/tv_music"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -47,6 +47,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:maxLines="3"
-        android:textAlignment="center"/>
+        android:textAlignment="center" />
 
 </RelativeLayout>

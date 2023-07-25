@@ -84,7 +84,7 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
             .setOnAudioFocusChangeListener { focusChange ->
                 when (focusChange) {
                     AudioManager.AUDIOFOCUS_GAIN -> {
-                        resumeMusic()
+                        Handler(Looper.myLooper()!!).postDelayed({ resumeMusic() }, 500)
                     }
 
                     AudioManager.AUDIOFOCUS_LOSS -> {
@@ -96,7 +96,7 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
                     }
 
                     AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
-                        resumeMusic()
+                        Handler(Looper.myLooper()!!).postDelayed({ resumeMusic() }, 500)
                     }
                 }
             }

@@ -15,7 +15,7 @@
         tools:context=".ui.settings.SettingOptionsFragment">
 
         <LinearLayout
-            android:id="@+id/tv_account"
+            android:id="@+id/layout_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_tv"
@@ -50,7 +50,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/tv_appearance"
+            android:id="@+id/layout_appearance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -79,7 +79,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
-                android:text="( Light )"
                 android:textColor="@color/text_color"
                 android:textSize="20sp"
                 android:textStyle="bold|italic" />
@@ -87,7 +86,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/tv_app_info"
+            android:id="@+id/layout_app_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -124,7 +123,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/tv_contact"
+            android:id="@+id/layout_contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

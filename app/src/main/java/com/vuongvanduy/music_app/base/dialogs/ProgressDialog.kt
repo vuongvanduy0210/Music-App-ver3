@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Context
 import android.widget.TextView
 import com.vuongvanduy.music_app.R
-import com.vuongvanduy.music_app.databinding.ProgressDialogBinding
 
 class ProgressDialog constructor(context: Context, message: String) {
 
