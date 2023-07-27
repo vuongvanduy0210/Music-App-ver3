@@ -50,7 +50,7 @@ class ExtendSongAdapter constructor(
         val song = songs?.get(position)
         if (song != null) {
             holder.binding.apply {
-                Glide.with(holder.binding.root)
+                Glide.with(this.root)
                     .load(Uri.parse(song.imageUri))
                     .into(imgMusicInList)
                 tvMusicNameInList.text = song.name

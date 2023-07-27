@@ -9,6 +9,7 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.vuongvanduy.music_app.common.isSongExists
+import com.vuongvanduy.music_app.data.common.containsIgnoreCaseWithDiacritics
 import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.ItemSongBinding
 import com.vuongvanduy.music_app.ui.common.myinterface.IClickSongListener
@@ -45,9 +46,10 @@ class SongAdapter constructor(private val iClickSongListener: IClickSongListener
         val song = songs?.get(position)
         if (song != null) {
             holder.binding.apply {
-                Glide.with(holder.binding.root)
+                Glide.with(this.root)
                     .load(Uri.parse(song.imageUri))
                     .into(imgMusicInList)
+//                imgMusicInList.setImageURI(Uri.parse(song.imageUri))
                 tvMusicNameInList.text = song.name
                 tvSingerInList.text = song.singer
                 layoutItem.setOnClickListener {
@@ -66,20 +68,15 @@ class SongAdapter constructor(private val iClickSongListener: IClickSongListener
                 } else {
                     val list = ArrayList<Song>()
                     listSongsOld?.forEach {
-                        if ((it.name?.lowercase()
-                                ?.contains(strSearch.lowercase()) == true) && !isSongExists(
-                                list,
-                                it
-                            )
-                        ) {
+                        if (it.name?.let { it1 ->
+                                containsIgnoreCaseWithDiacritics(it1, strSearch)
+                            } == true && !isSongExists(list, it)) {
                             list.add(it)
                         }
-                        if ((it.singer?.lowercase()
-                                ?.contains(strSearch.lowercase()) == true) && !isSongExists(
-                                list,
-                                it
-                            )
-                        ) {
+
+                        if (it.singer?.let { it1 ->
+                                containsIgnoreCaseWithDiacritics(it1, strSearch)
+                            } == true && !isSongExists(list, it)) {
                             list.add(it)
                         }
                     }
