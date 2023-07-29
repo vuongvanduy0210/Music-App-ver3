@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -27,6 +28,8 @@ import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.base.dialogs.ProgressDialog
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
 import com.vuongvanduy.music_app.common.TITLE_ACCOUNT
+import com.vuongvanduy.music_app.common.showDialog
+import com.vuongvanduy.music_app.databinding.DialogLoginBinding
 import com.vuongvanduy.music_app.databinding.FragmentSignInBinding
 
 
@@ -183,7 +186,17 @@ class SignInFragment : BaseFragment() {
                 progressDialog.dismiss()
                 if (task.isSuccessful) {
                     // Sign in success
-                    findNavController().popBackStack(R.id.accountFragment, false)
+                    val user = FirebaseAuth.getInstance().currentUser
+                    if (user != null) {
+                        if (!user.isEmailVerified) {
+                            val message = "Your account is not verified. " +
+                                    "Please check your email (${user.email}) to continue."
+                            showDialog(mainActivity, layoutInflater, message)
+                            FirebaseAuth.getInstance().signOut()
+                        } else {
+                            findNavController().popBackStack(R.id.accountFragment, false)
+                        }
+                    }
                 }
             }
             .addOnFailureListener { exception ->

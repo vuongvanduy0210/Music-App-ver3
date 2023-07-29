@@ -3,10 +3,13 @@ package com.vuongvanduy.music_app.common
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AlertDialog
 import com.vuongvanduy.music_app.MusicService
 import com.vuongvanduy.music_app.data.models.Song
+import com.vuongvanduy.music_app.databinding.DialogLoginBinding
 import java.io.Serializable
 
 const val CHANNEL_ID = "channel_service"
@@ -137,4 +140,13 @@ fun sendCurrentTimeToService(context: Context, progress: Int) {
     intentActivity.putExtra(KEY_ACTION, ACTION_CONTROL_SEEK_BAR)
     intentActivity.putExtra(KEY_PROGRESS, progress)
     context.startService(intentActivity)
+}
+
+fun showDialog(context: Context, inflater: LayoutInflater, message: String) {
+    val builder = AlertDialog.Builder(context)
+    val dialogLogin = DialogLoginBinding.inflate(inflater)
+    dialogLogin.tvMessage.text = message
+    builder.setView(dialogLogin.root)
+    val dialog = builder.create()
+    dialog.show()
 }

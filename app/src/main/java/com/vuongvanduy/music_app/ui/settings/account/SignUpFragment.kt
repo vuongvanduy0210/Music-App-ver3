@@ -11,11 +11,13 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.ktx.actionCodeSettings
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.base.dialogs.ProgressDialog
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
 import com.vuongvanduy.music_app.common.TITLE_ACCOUNT
+import com.vuongvanduy.music_app.common.showDialog
 import com.vuongvanduy.music_app.databinding.FragmentSignUpBinding
 
 
@@ -140,7 +142,6 @@ class SignUpFragment : BaseFragment() {
         progressDialog.show()
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                progressDialog.dismiss()
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     setNameForUser(name)
@@ -166,15 +167,23 @@ class SignUpFragment : BaseFragment() {
 
     private fun setNameForUser(name: String) {
         val user = FirebaseAuth.getInstance().currentUser
+        user?.sendEmailVerification()
         val nameUpdates = userProfileChangeRequest {
             displayName = name
         }
         user?.updateProfile(nameUpdates)?.addOnCompleteListener {
             progressDialog.dismiss()
             if (it.isSuccessful) {
+                //back to account fragment
                 findNavController().popBackStack(R.id.accountFragment, false)
+
+                //show dialog
+                val message = "Sign up success. " +
+                        "Please check your email (${user.email}) to verify account."
+                showDialog(mainActivity, layoutInflater, message)
             }
         }
+        FirebaseAuth.getInstance().signOut()
     }
 
     private fun goToSignIn() {

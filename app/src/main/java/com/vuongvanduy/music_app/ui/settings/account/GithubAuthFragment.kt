@@ -85,6 +85,11 @@ class GithubAuthFragment : BaseFragment() {
                 }
                 .addOnFailureListener {
                     Log.e("GithubAuthFragment", it.message.toString())
+                    progressDialog.dismiss()
+                    if (it.message?.contains("An account already exists") == true) {
+                        binding.tvError.text = "Email is already registered with another account."
+                        binding.tvError.visibility = View.VISIBLE
+                    }
                 }
         }
     }
