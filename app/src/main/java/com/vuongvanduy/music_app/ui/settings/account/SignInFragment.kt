@@ -1,24 +1,81 @@
 package com.vuongvanduy.music_app.ui.settings.account
 
 import android.annotation.SuppressLint
+import android.content.IntentSender
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.base.dialogs.ProgressDialog
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
 import com.vuongvanduy.music_app.common.TITLE_ACCOUNT
 import com.vuongvanduy.music_app.databinding.FragmentSignInBinding
 
+
 class SignInFragment : BaseFragment() {
 
     private lateinit var binding: FragmentSignInBinding
+
+    private lateinit var oneTapClient: SignInClient
+    private lateinit var signUpRequest: BeginSignInRequest
+
+    private val activityResultLauncherGoogle =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                try {
+                    val credential = oneTapClient.getSignInCredentialFromIntent(result.data)
+                    val idToken = credential.googleIdToken
+                    when {
+                        idToken != null -> {
+                            val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+                            Firebase.auth.signInWithCredential(firebaseCredential)
+                                .addOnCompleteListener(mainActivity) { task ->
+                                    if (task.isSuccessful) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.e("SignInFragment", "SignInSuccess")
+                                        findNavController().popBackStack(
+                                            R.id.accountFragment,
+                                            false
+                                        )
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Log.e("SignInFragment", "SignIn Fail")
+                                    }
+                                }
+                        }
+
+                        else -> {
+                            // Shouldn't happen.
+                            Log.e("SignInFragment", "No ID token!")
+                        }
+                    }
+                } catch (e: ApiException) {
+                    when (e.statusCode) {
+                        CommonStatusCodes.CANCELED -> {
+                            Log.e("SignInFragment", "One-tap dialog was closed.")
+                        }
+                    }
+                }
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +90,23 @@ class SignInFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initListener()
+
+        setSignInWithGoogle()
+    }
+
+    private fun setSignInWithGoogle() {
+        oneTapClient = Identity.getSignInClient(mainActivity)
+        signUpRequest = BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    // Your server's client ID, not your Android client ID.
+                    .setServerClientId(getString(R.string.your_web_client_id))
+                    // Show all accounts on the device.
+                    .setFilterByAuthorizedAccounts(false)
+                    .build()
+            )
+            .build()
     }
 
     private fun initListener() {
@@ -47,6 +121,10 @@ class SignInFragment : BaseFragment() {
 
         binding.layoutForgotPassword.setOnClickListener {
             goToForgotPassword()
+        }
+
+        binding.btSignInGoogle.setOnClickListener {
+            onClickSignInWithGoogle()
         }
     }
 
@@ -136,6 +214,26 @@ class SignInFragment : BaseFragment() {
             val action = SignInFragmentDirections.actionSignInFragmentToForgotPasswordFragment()
             findNavController().navigate(action)
         }
+    }
+
+    private fun onClickSignInWithGoogle() {
+        val progressDialog = ProgressDialog(mainActivity, "Loading...")
+        progressDialog.show()
+        oneTapClient.beginSignIn(signUpRequest)
+            .addOnSuccessListener(mainActivity) { result ->
+                Log.e("Duy", "Begin Sign In")
+                try {
+                    progressDialog.dismiss()
+                    val intentSenderRequest =
+                        IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
+                    activityResultLauncherGoogle.launch(intentSenderRequest)
+                } catch (e: IntentSender.SendIntentException) {
+                    Log.e("Duy", "Couldn't start One Tap UI: ${e.localizedMessage}")
+                }
+            }
+            .addOnFailureListener(mainActivity) { e ->
+                Log.e("Duy", e.message.toString())
+            }
     }
 
     override fun onResume() {

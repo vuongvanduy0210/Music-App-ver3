@@ -92,6 +92,23 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
 
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/bt_sign_in_google"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_margin="15dp"
+                android:src="@drawable/ic_google" />
+
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/layout_sign_up"
             android:layout_width="wrap_content"
@@ -119,6 +136,7 @@
                 android:textStyle="italic" />
 
         </LinearLayout>
+
 
     </LinearLayout>
 </layout>

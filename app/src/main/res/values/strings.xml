@@ -39,6 +39,7 @@
     <string name="change_profile">Change Profile</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
+    <string name="sign_in_with_google">Sign In With Google</string>
     <string name="email_hint">Email</string>
     <string name="password_hint">Password</string>
     <string name="forgot_password">Forgot password?</string>
@@ -63,5 +64,10 @@
     <string name="gmail">Gmail</string>
     <string name="microsoft">Microsoft</string>
 
+    <string name="your_web_client_id">864398814382-td38lk28rgo5tcl5kn2semmt7tssvopj.apps.googleusercontent.com</string>
+
+    <string name="facebook_app_id">1234</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">56789</string>
 
 </resources>
