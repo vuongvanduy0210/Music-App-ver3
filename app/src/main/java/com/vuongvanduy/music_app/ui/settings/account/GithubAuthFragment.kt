@@ -1,0 +1,95 @@
+package com.vuongvanduy.music_app.ui.settings.account
+
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.util.Log
+import android.util.Patterns
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.OAuthProvider
+import com.vuongvanduy.music_app.R
+import com.vuongvanduy.music_app.base.dialogs.ProgressDialog
+import com.vuongvanduy.music_app.base.fragment.BaseFragment
+import com.vuongvanduy.music_app.databinding.FragmentGithubAuthBinding
+
+class GithubAuthFragment : BaseFragment() {
+
+    private lateinit var binding: FragmentGithubAuthBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentGithubAuthBinding.inflate(inflater, container, false)
+        init()
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initListener()
+    }
+
+    private fun initListener() {
+        binding.btSignIn.setOnClickListener {
+            onClickSignIn()
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun onClickSignIn() {
+        val email = binding.edtEmail.text.toString()
+        if (email.isEmpty() || email.isBlank()) {
+            binding.apply {
+                tvError.text = "Email can't blank"
+                edtEmail.setText("")
+                tvError.visibility = View.VISIBLE
+            }
+            return
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.apply {
+                tvError.text = "Email is wrong format"
+                edtEmail.setText("")
+                tvError.visibility = View.VISIBLE
+            }
+            return
+        }
+
+        binding.tvError.visibility = View.GONE
+        val provider = OAuthProvider.newBuilder("github.com")
+        provider.addCustomParameter("login", email)
+        provider.scopes = listOf("user:email")
+
+        val progressDialog = ProgressDialog(mainActivity, "Loading...")
+        progressDialog.show()
+        val pendingResultTask = FirebaseAuth.getInstance().pendingAuthResult
+        if (pendingResultTask != null) {
+            // There's something already here! Finish the sign-in for your user.
+            pendingResultTask
+                .addOnSuccessListener {
+                    openNextActivity()
+                }
+                .addOnFailureListener {
+                    Log.e("GithubAuthFragment", "pendingResultTask: ${it.message.toString()}")
+                }
+        } else {
+            FirebaseAuth.getInstance()
+                .startActivityForSignInWithProvider(mainActivity, provider.build())
+                .addOnSuccessListener {
+                    progressDialog.dismiss()
+                    openNextActivity()
+                }
+                .addOnFailureListener {
+                    Log.e("GithubAuthFragment", it.message.toString())
+                }
+        }
+    }
+
+    private fun openNextActivity() {
+        findNavController().popBackStack(R.id.accountFragment, false)
+    }
+}

@@ -126,6 +126,10 @@ class SignInFragment : BaseFragment() {
         binding.btSignInGoogle.setOnClickListener {
             onClickSignInWithGoogle()
         }
+
+        binding.btSignInGithub.setOnClickListener {
+            goToGithubAuthFragment()
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -221,7 +225,6 @@ class SignInFragment : BaseFragment() {
         progressDialog.show()
         oneTapClient.beginSignIn(signUpRequest)
             .addOnSuccessListener(mainActivity) { result ->
-                Log.e("Duy", "Begin Sign In")
                 try {
                     progressDialog.dismiss()
                     val intentSenderRequest =
@@ -231,9 +234,11 @@ class SignInFragment : BaseFragment() {
                     Log.e("Duy", "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
-            .addOnFailureListener(mainActivity) { e ->
-                Log.e("Duy", e.message.toString())
-            }
+    }
+
+    private fun goToGithubAuthFragment() {
+        val action = SignInFragmentDirections.actionSignInFragmentToGithubAuthFragment()
+        findNavController().navigate(action)
     }
 
     override fun onResume() {

@@ -14,5 +14,5 @@
 
     <dimen name="seekbar_height">3dp</dimen>
 
-    <dimen name="ic_size">50dp</dimen>
+    <dimen name="ic_size">45dp</dimen>
 </resources>
