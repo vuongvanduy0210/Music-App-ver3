@@ -86,21 +86,15 @@ class SongViewModel @Inject constructor(private val songRepository: SongReposito
     fun getListPhotos() {
         val list = mutableListOf<Photo>()
         if (!onlineSongs.value.isNullOrEmpty()) {
-            val copy = onlineSongs.value!!.map { it } as MutableList<Song>
-            copy.shuffle()
-            copy.forEach { song ->
-                if (list.size < 5) {
-                    song.imageUri?.let { list.add(Photo(it)) }
-                }
+            val listSongs = onlineSongs.value!!.shuffled().take(5)
+            listSongs.forEach { song ->
+                song.imageUri?.let { list.add(Photo(it)) }
             }
             photos.value = list
         } else if (!deviceSongs.value.isNullOrEmpty()) {
-            val copy = deviceSongs.value!!.map { it } as MutableList<Song>
-            copy.shuffle()
-            copy.forEach { song ->
-                if (list.size < 5) {
-                    song.imageUri?.let { list.add(Photo(it)) }
-                }
+            val listSongs = deviceSongs.value!!.shuffled().take(5)
+            listSongs.forEach { song ->
+                song.imageUri?.let { list.add(Photo(it)) }
             }
             photos.value = list
         }
@@ -124,15 +118,9 @@ class SongViewModel @Inject constructor(private val songRepository: SongReposito
     }
 
     private fun getSongsShow(songs: MutableList<Song>?): MutableList<Song> {
-        val list = mutableListOf<Song>()
+        var list = mutableListOf<Song>()
         if (!songs.isNullOrEmpty()) {
-            val copy = songs.map { it } as MutableList<Song>
-            copy.shuffle()
-            copy.forEach {
-                if (list.size < 10) {
-                    list.add(it)
-                }
-            }
+            list = songs.shuffled().take(10) as MutableList<Song>
         }
         return list
     }
