@@ -16,6 +16,7 @@ import com.vuongvanduy.music_app.data.models.*
 import com.vuongvanduy.music_app.data.repositories.SongRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.util.Random
 import javax.inject.Inject
 
 @HiltViewModel
@@ -84,23 +85,21 @@ class SongViewModel @Inject constructor(private val songRepository: SongReposito
 
     fun getListPhotos() {
         val list = mutableListOf<Photo>()
-        if (onlineSongs.value != null) {
-            for (i in 0 until onlineSongs.value?.size!!) {
-                when (i) {
-                    1, 2, 3, 4, 5 -> {
-                        val photo = onlineSongs.value!![i].imageUri?.let { Photo(it) }
-                        if (photo != null) {
-                            list.add(photo)
-                        }
-                    }
+        if (!onlineSongs.value.isNullOrEmpty()) {
+            val copy = onlineSongs.value!!.map { it } as MutableList<Song>
+            copy.shuffle()
+            copy.forEach { song ->
+                if (list.size < 5) {
+                    song.imageUri?.let { list.add(Photo(it)) }
                 }
             }
             photos.value = list
-        } else if (deviceSongs.value != null) {
-            for (i in 0 until deviceSongs.value?.size!!) {
-                val photo = deviceSongs.value!![i].imageUri?.let { Photo(it) }
-                if (photo != null) {
-                    list.add(photo)
+        } else if (!deviceSongs.value.isNullOrEmpty()) {
+            val copy = deviceSongs.value!!.map { it } as MutableList<Song>
+            copy.shuffle()
+            copy.forEach { song ->
+                if (list.size < 5) {
+                    song.imageUri?.let { list.add(Photo(it)) }
                 }
             }
             photos.value = list
@@ -108,9 +107,9 @@ class SongViewModel @Inject constructor(private val songRepository: SongReposito
     }
 
     fun getListCategories(): MutableList<Category> {
-        getOnlineSongsShow()
-        getFavouriteSongsShow()
-        getDeviceSongsShow()
+        onlineSongsShow.value = getSongsShow(onlineSongs.value as MutableList<Song>?)
+        favouriteSongsShow.value = getSongsShow(favouriteSongs.value as MutableList<Song>?)
+        deviceSongsShow.value = getSongsShow(deviceSongs.value as MutableList<Song>?)
         val list = mutableListOf<Category>()
         if (!onlineSongsShow.value.isNullOrEmpty()) {
             list.add(Category(TITLE_ONLINE_SONGS, onlineSongsShow.value as MutableList<Song>))
@@ -124,37 +123,18 @@ class SongViewModel @Inject constructor(private val songRepository: SongReposito
         return list
     }
 
-    private fun getOnlineSongsShow() {
+    private fun getSongsShow(songs: MutableList<Song>?): MutableList<Song> {
         val list = mutableListOf<Song>()
-        if (onlineSongs.value != null) {
-            for (i in 0 until onlineSongs.value!!.size / 3) {
-                val song = onlineSongs.value!![i]
-                list.add(song)
+        if (!songs.isNullOrEmpty()) {
+            val copy = songs.map { it } as MutableList<Song>
+            copy.shuffle()
+            copy.forEach {
+                if (list.size < 10) {
+                    list.add(it)
+                }
             }
-            onlineSongsShow.value = list
         }
-    }
-
-    private fun getFavouriteSongsShow() {
-        val list = mutableListOf<Song>()
-        if (favouriteSongs.value != null) {
-            for (i in 0 until favouriteSongs.value!!.size / 3) {
-                val song = favouriteSongs.value!![i]
-                list.add(song)
-            }
-            favouriteSongsShow.value = list
-        }
-    }
-
-    private fun getDeviceSongsShow() {
-        val list = mutableListOf<Song>()
-        if (deviceSongs.value != null) {
-            for (i in 0 until deviceSongs.value!!.size) {
-                val song = deviceSongs.value!![i]
-                list.add(song)
-            }
-            deviceSongsShow.value = list
-        }
+        return list
     }
 
     fun addSongToFavourites(song: Song) {
