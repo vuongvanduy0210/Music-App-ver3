@@ -45,16 +45,13 @@ class SongAdapter constructor(private val iClickSongListener: IClickSongListener
         }
         val song = songs?.get(position)
         if (song != null) {
+
+            holder.bind(song)
+
             holder.binding.apply {
                 Glide.with(this.root)
                     .load(Uri.parse(song.imageUri))
                     .into(imgMusicInList)
-//                imgMusicInList.setImageURI(Uri.parse(song.imageUri))
-                tvMusicNameInList.text = song.name
-                tvSingerInList.text = song.singer
-                layoutItem.setOnClickListener {
-                    iClickSongListener.onClickSong(song)
-                }
             }
         }
     }
@@ -99,6 +96,13 @@ class SongAdapter constructor(private val iClickSongListener: IClickSongListener
     }
 
     inner class SongViewHolder constructor(val binding: ItemSongBinding) :
-        RecyclerView.ViewHolder(binding.root)
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(song: Song) {
+            binding.song = song
+            binding.listener = iClickSongListener
+            binding.executePendingBindings()
+        }
+    }
 
 }

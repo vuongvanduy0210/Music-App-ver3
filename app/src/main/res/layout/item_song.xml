@@ -1,48 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_item"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/bg_color"
-    android:padding="10dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/img_music_in_list"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:scaleType="centerCrop" />
+    <data>
 
-    <LinearLayout
+        <variable
+            name="song"
+            type="com.vuongvanduy.music_app.data.models.Song" />
+        <variable
+            name="listener"
+            type="com.vuongvanduy.music_app.ui.common.myinterface.IClickSongListener" />
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="10dp"
-        android:layout_toEndOf="@+id/img_music_in_list"
         android:background="@color/bg_color"
-        android:orientation="vertical">
+        android:padding="10dp"
+        android:onClick="@{() -> listener.onClickSong(song)}">
 
-        <TextView
-            android:id="@+id/tv_music_name_in_list"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_music_in_list"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:lines="1"
-            android:textColor="@color/text_color"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/img_music_in_list"
+            android:background="@color/bg_color"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_singer_in_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:lines="1"
-            android:textColor="@color/text_color"
-            android:textSize="15sp"
-            android:textStyle="italic" />
+            <TextView
+                android:id="@+id/tv_music_name_in_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@{song.name}"
+                android:textColor="@color/text_color"
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_singer_in_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@{song.singer}"
+                android:textColor="@color/text_color"
+                android:textSize="15sp"
+                android:textStyle="italic" />
 
-</RelativeLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>

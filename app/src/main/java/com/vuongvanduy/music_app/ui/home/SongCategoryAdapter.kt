@@ -27,17 +27,22 @@ class SongCategoryAdapter constructor(
 
     override fun onBindViewHolder(holder: SongCategoryViewHolder, position: Int) {
         val song = listSongShow[position]
+
+        holder.bind(song)
+
         val imageUri = Uri.parse(song.imageUri)
         holder.binding.apply {
             Glide.with(this.root).load(imageUri).into(imgSong)
-            tvNameSong.text = song.name
-            tvSinger.text = song.singer
-            layoutItemSong.setOnClickListener {
-                listener.onClickSong(song)
-            }
         }
     }
 
     inner class SongCategoryViewHolder(val binding: ItemSongInCategoryBinding) :
-        RecyclerView.ViewHolder(binding.root)
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(song: Song) {
+            binding.song = song
+            binding.listener = listener
+            binding.executePendingBindings()
+        }
+    }
 }

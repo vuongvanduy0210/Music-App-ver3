@@ -49,27 +49,22 @@ class ExtendSongAdapter constructor(
         holder.binding.layoutItemOnlineSong.close(false)
         val song = songs?.get(position)
         if (song != null) {
+
+            holder.bind(song)
+
             holder.binding.apply {
                 Glide.with(this.root)
                     .load(Uri.parse(song.imageUri))
                     .into(imgMusicInList)
-                tvMusicNameInList.text = song.name
-                tvSingerInList.text = song.singer
-                layoutItem.setOnClickListener {
-                    iClickSongListener.onClickSong(song)
-                }
-                if (name == TITLE_FAVOURITE_SONGS) {
-                    holder.binding.tvAction.text = TEXT_REMOVE_FAVOURITES
+
+                holder.binding.tvAction.text = if (name == TITLE_FAVOURITE_SONGS) {
+                    TEXT_REMOVE_FAVOURITES
                 } else {
-                    holder.binding.tvAction.text = TEXT_ADD_FAVOURITES
+                    TEXT_ADD_FAVOURITES
                 }
 
                 layoutAddFavourites.setOnClickListener {
-                    if (name == TITLE_FAVOURITE_SONGS) {
-                        iClickSongListener.onClickRemoveFavourites(song)
-                    } else {
-                        iClickSongListener.onClickAddFavourites(song)
-                    }
+                    iClickSongListener.onClickExtendFavourites(song)
                     holder.binding.layoutItemOnlineSong.close(true)
                 }
             }
@@ -87,7 +82,7 @@ class ExtendSongAdapter constructor(
                     listSongsOld?.forEach {
                         if (it.name?.let { it1 ->
                                 containsIgnoreCaseWithDiacritics(it1, strSearch)
-                        } == true && !isSongExists(list, it)) {
+                            } == true && !isSongExists(list, it)) {
                             list.add(it)
                         }
 
@@ -116,6 +111,13 @@ class ExtendSongAdapter constructor(
     }
 
     inner class SongViewHolder constructor(val binding: ItemExtendSongBinding) :
-        RecyclerView.ViewHolder(binding.root)
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(song: Song) {
+            binding.song = song
+            binding.listener = iClickSongListener
+            binding.executePendingBindings()
+        }
+    }
 
 }
