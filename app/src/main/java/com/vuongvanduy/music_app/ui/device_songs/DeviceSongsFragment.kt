@@ -73,12 +73,10 @@ class DeviceSongsFragment : BaseFragment() {
         songAdapter = SongAdapter(object : IClickSongListener {
             override fun onClickSong(song: Song) {
                 mainViewModel.currentSong.postValue(song)
-                playSong(song)
+                requestPermissionPostNotification(song)
             }
 
-            override fun onClickAddFavourites(song: Song) {}
-
-            override fun onClickRemoveFavourites(song: Song) {}
+            override fun onClickExtendFavourites(song: Song) {}
         })
         val decoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         binding.rcvListSongs.apply {
@@ -95,10 +93,6 @@ class DeviceSongsFragment : BaseFragment() {
                 }
             })
         }
-    }
-
-    private fun playSong(song: Song) {
-        requestPermissionPostNotification(song)
     }
 
     private fun requestPermissionPostNotification(song: Song) {

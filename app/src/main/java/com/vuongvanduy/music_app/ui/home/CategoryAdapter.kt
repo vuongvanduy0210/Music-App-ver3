@@ -44,8 +44,10 @@ class CategoryAdapter constructor(
         }
         val category = listCategories?.get(position)
         if (category != null) {
+
+            holder.bind(category)
+
             holder.binding.apply {
-                tvNameCategory.text = category.name
                 btViewAll.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
                 val songCategoryAdapter = SongCategoryAdapter(category.listSongs,
@@ -54,26 +56,25 @@ class CategoryAdapter constructor(
                             iClickCategoryListener.onClickSong(song, category.name)
                         }
 
-                        override fun onClickAddFavourites(song: Song) {}
-
-                        override fun onClickRemoveFavourites(song: Song) {}
+                        override fun onClickExtendFavourites(song: Song) {}
                     })
 
                 val manger = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
                 holder.binding.rcvSong.apply {
                     adapter = songCategoryAdapter
                     layoutManager = manger
-                    btViewAll.setOnClickListener {
-                        iClickCategoryListener.clickButtonViewAll(category.name)
-                    }
-                    tvNameCategory.setOnClickListener {
-                        iClickCategoryListener.clickButtonViewAll(category.name)
-                    }
                 }
             }
         }
     }
 
     inner class CategoryViewHolder constructor(val binding: ItemCategoryBinding) :
-        RecyclerView.ViewHolder(binding.root)
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(category: Category) {
+            binding.category = category
+            binding.listener = iClickCategoryListener
+            binding.executePendingBindings()
+        }
+    }
 }

@@ -75,11 +75,10 @@ class OnlineSongsFragment : BaseFragment() {
                 playSong(song)
             }
 
-            override fun onClickAddFavourites(song: Song) {
+            override fun onClickExtendFavourites(song: Song) {
                 addToFavourites(song)
             }
 
-            override fun onClickRemoveFavourites(song: Song) {}
         }, TITLE_ONLINE_SONGS)
         val decoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         binding.rcvListSongs.apply {
