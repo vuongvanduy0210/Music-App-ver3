@@ -22,83 +22,72 @@
             android:id="@+id/layout_music_player"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/app_bar"
+            android:layout_below="@id/tool_bar"
             android:visibility="@{viewModel.isShowMusicPlayer() ? View.VISIBLE : View.GONE}" />
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tool_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
+            android:layout_height="?attr/actionBarSize"
+            app:contentInsetEnd="10dp"
+            app:popupTheme="@style/Theme.AppCompat.Light">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/tool_bar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/bg_toolbar_color"
-                app:contentInsetEnd="10dp"
-                app:popupTheme="@style/Theme.AppCompat.Light">
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_back"
+                android:visibility="@{viewModel.isShowMusicPlayer() ? View.VISIBLE : View.GONE}" />
+
+            <TextView
+                android:id="@+id/tool_bar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/title_home"
+                android:textColor="@color/text_color"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/bt_play_all"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:layout_gravity="end"
+                android:background="@drawable/custom_button_play_all"
+                android:visibility="@{viewModel.isShowBtPlayAll() ? View.VISIBLE : View.GONE}">
 
                 <ImageView
-                    android:id="@+id/img_back"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@color/bg_toolbar_color"
-                    android:src="@drawable/ic_back"
-                    android:visibility="@{viewModel.isShowMusicPlayer() ? View.VISIBLE : View.GONE}" />
-
-                <TextView
-                    android:id="@+id/tool_bar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/title_home"
+                    android:layout_marginStart="4dp"
+                    android:src="@drawable/ic_play_all" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:lines="1"
+                    android:text="@string/play_all"
+                    android:textAllCaps="false"
                     android:textColor="@color/text_color"
-                    android:textSize="22sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <LinearLayout
-                    android:id="@+id/bt_play_all"
-                    android:layout_width="80dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="end"
-                    android:background="@drawable/custom_button_play_all"
-                    android:visibility="@{viewModel.isShowBtPlayAll() ? View.VISIBLE : View.GONE}">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="4dp"
-                        android:src="@drawable/ic_play_all" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:lines="1"
-                        android:text="@string/play_all"
-                        android:textAllCaps="false"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
+            </LinearLayout>
 
 
-            </androidx.appcompat.widget.Toolbar>
-
-        </com.google.android.material.appbar.AppBarLayout>
+        </androidx.appcompat.widget.Toolbar>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/mini_player"
-            android:layout_below="@id/app_bar"
+            android:layout_below="@id/tool_bar"
             android:background="@color/bg_color"
             android:visibility="@{viewModel.isShowMusicPlayer() ? View.GONE : View.VISIBLE}" />
 

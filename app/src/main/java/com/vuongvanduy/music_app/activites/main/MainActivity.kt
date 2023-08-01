@@ -172,11 +172,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.home -> setLayout(0, getColor(R.color.teal_200), TITLE_HOME)
-                R.id.online -> setLayout(1, getColor(R.color.orange), TITLE_ONLINE_SONGS)
-                R.id.favourite -> setLayout(2, getColor(R.color.red), TITLE_FAVOURITE_SONGS)
-                R.id.device -> setLayout(3, getColor(R.color.blueLight), TITLE_DEVICE_SONGS)
-                R.id.settings -> setLayout(4, getColor(R.color.yellow), TITLE_SETTINGS)
+                R.id.home -> setLayout(0, getColor(R.color.home_bg_color), TITLE_HOME)
+                R.id.online -> setLayout(1, getColor(R.color.online_bg_color), TITLE_ONLINE_SONGS)
+                R.id.favourite -> setLayout(2, getColor(R.color.favourite_bg_color), TITLE_FAVOURITE_SONGS)
+                R.id.device -> setLayout(3, getColor(R.color.device_bg_color), TITLE_DEVICE_SONGS)
+                R.id.settings -> setLayout(4, getColor(R.color.settings_bg_color), TITLE_SETTINGS)
             }
             true
         }
@@ -184,9 +184,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setLayout(item: Int, color: Int, title: String) {
-        binding.viewPager.currentItem = item
-        binding.bottomNav.setBackgroundColor(color)
-        binding.toolBarTitle.text = title
+        binding.apply {
+            viewPager.currentItem = item
+            bottomNav.setBackgroundColor(color)
+            toolBar.setBackgroundColor(color)
+            toolBarTitle.text = title
+        }
+        window.statusBarColor = color
+
         when (item) {
             1, 2, 3 -> mainViewModel.isShowBtPlayAll.postValue(true)
             else -> mainViewModel.isShowBtPlayAll.postValue(false)
