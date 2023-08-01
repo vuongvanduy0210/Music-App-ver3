@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Music-App</string>
+    <string name="app_name">Music</string>
     <string name="app_name_description">( Music )</string>
 
     <string name="nav_account">Account</string>

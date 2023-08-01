@@ -1,40 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img_bg_splash"
-    android:gravity="center"
-    android:orientation="vertical"
     tools:context=".activites.SplashActivity">
 
     <ImageView
+        android:id="@+id/img_icon"
         android:layout_width="120dp"
         android:layout_height="120dp"
+        android:layout_centerInParent="true"
         android:src="@drawable/icon_app" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/img_icon"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
-        android:text="@string/app_name"
-        android:textColor="@color/blueLight"
-        android:textSize="40sp"
-        android:textStyle="bold" />
+        android:layout_marginEnd="40dp"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/animation_play_music" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="35dp"
-        android:src="@drawable/img_avatar" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/dev_name"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:textStyle="bold" />
-
-</LinearLayout>
+</RelativeLayout>

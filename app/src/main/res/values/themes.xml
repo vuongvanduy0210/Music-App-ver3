@@ -3,7 +3,6 @@
     <style name="Base.Theme.MusicApp" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/blueLight</item>
-        <!-- Status bar color. -->
     </style>
 
     <style name="Theme.MusicApp" parent="Base.Theme.MusicApp" />

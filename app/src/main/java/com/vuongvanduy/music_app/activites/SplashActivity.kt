@@ -7,21 +7,33 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatDelegate
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.activites.main.MainActivity
 import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.data.sharedPreferences.DataLocalManager
+import com.vuongvanduy.music_app.databinding.ActivitySplashBinding
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivitySplashBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setThemeMode()
 
-        Handler(Looper.myLooper()!!).postDelayed({ nextActivity() }, 2000)
+        addAnimation()
+
+        Handler(Looper.myLooper()!!).postDelayed({ nextActivity() }, 2500)
+    }
+
+    private fun addAnimation() {
+        val slideInAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_in_splash)
+        binding.imgIcon.startAnimation(slideInAnimation)
     }
 
     private fun setThemeMode() {
