@@ -34,8 +34,8 @@
             android:padding="5dp">
 
             <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="50dp"
-                android:layout_height="60dp"
+                android:layout_width="40dp"
+                android:layout_height="@dimen/icon_settings_height"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/animation_account" />
@@ -43,7 +43,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:padding="10dp"
                 android:text="@string/nav_account"
                 android:textColor="@color/text_color"
                 android:textSize="20sp"
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
-                android:padding="15dp"
+                android:padding="10dp"
                 android:textColor="@color/text_color"
                 android:textSize="20sp"
                 android:textStyle="bold|italic"
@@ -74,8 +74,8 @@
             android:padding="5dp">
 
             <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="@dimen/icon_settings_height"
+                android:layout_height="@dimen/icon_settings_height"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/animation_appearance" />
@@ -83,7 +83,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:padding="10dp"
                 android:text="@string/nav_appearance"
                 android:textColor="@color/text_color"
                 android:textSize="20sp"
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
-                android:padding="15dp"
+                android:padding="10dp"
                 android:textColor="@color/text_color"
                 android:textSize="20sp"
                 android:textStyle="bold|italic"
@@ -114,8 +114,8 @@
             android:padding="5dp">
 
             <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="@dimen/icon_settings_height"
+                android:layout_height="@dimen/icon_settings_height"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/animation_information" />
@@ -123,7 +123,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:padding="10dp"
                 android:text="@string/nav_info"
                 android:textColor="@color/text_color"
                 android:textSize="20sp"
@@ -134,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
-                android:padding="15dp"
+                android:padding="10dp"
                 android:text="@string/app_name_description"
                 android:textColor="@color/text_color"
                 android:textSize="20sp"
@@ -153,8 +153,8 @@
             android:padding="5dp">
 
             <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="@dimen/icon_settings_height"
+                android:layout_height="@dimen/icon_settings_height"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/animation_contact" />
@@ -162,7 +162,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:padding="10dp"
                 android:text="@string/nav_contact"
                 android:textColor="@color/text_color"
                 android:textSize="20sp"
@@ -173,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
-                android:padding="15dp"
+                android:padding="10dp"
                 android:text="@string/dev_description"
                 android:textColor="@color/text_color"
                 android:textSize="20sp"
