@@ -16,7 +16,7 @@
         android:id="@+id/layout_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activites.main.MainActivity">
+        tools:context=".activity.main.MainActivity">
 
         <FrameLayout
             android:id="@+id/layout_music_player"

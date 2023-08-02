@@ -104,4 +104,7 @@ dependencies {
     //animation
     def lottie_version = "6.1.0"
     implementation "com.airbnb.android:lottie:$lottie_version"
+
+    // splash screen
+    implementation "androidx.core:core-splashscreen:1.0.1"
 }

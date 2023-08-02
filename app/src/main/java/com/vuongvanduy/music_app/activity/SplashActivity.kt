@@ -1,7 +1,8 @@
-package com.vuongvanduy.music_app.activites
+package com.vuongvanduy.music_app.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -10,7 +11,7 @@ import android.util.Log
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatDelegate
 import com.vuongvanduy.music_app.R
-import com.vuongvanduy.music_app.activites.main.MainActivity
+import com.vuongvanduy.music_app.activity.main.MainActivity
 import com.vuongvanduy.music_app.common.*
 import com.vuongvanduy.music_app.data.sharedPreferences.DataLocalManager
 import com.vuongvanduy.music_app.databinding.ActivitySplashBinding
@@ -28,7 +29,11 @@ class SplashActivity : AppCompatActivity() {
 
         addAnimation()
 
-        Handler(Looper.myLooper()!!).postDelayed({ nextActivity() }, 2500)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            nextActivity()
+        } else {
+            Handler(Looper.myLooper()!!).postDelayed({ nextActivity() }, 2500)
+        }
     }
 
     private fun addAnimation() {
