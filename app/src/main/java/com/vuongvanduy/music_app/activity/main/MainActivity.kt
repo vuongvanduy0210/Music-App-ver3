@@ -1,4 +1,4 @@
-package com.vuongvanduy.music_app.activites.main
+package com.vuongvanduy.music_app.activity.main
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity() {
         val runningServices = activityManager.getRunningServices(Int.MAX_VALUE)
         for (serviceInfo in runningServices) {
             if (serviceInfo.service.className
-                == "com.vuongvanduy.music_app.MusicService"
+                == "com.vuongvanduy.music_app.service.MusicService"
             ) {
                 sendActionToService(this, ACTION_RELOAD_DATA)
                 break

@@ -3,7 +3,7 @@ package com.vuongvanduy.music_app.broadcast_receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.vuongvanduy.music_app.MusicService
+import com.vuongvanduy.music_app.service.MusicService
 import com.vuongvanduy.music_app.common.*
 
 class MyReceiver : BroadcastReceiver() {

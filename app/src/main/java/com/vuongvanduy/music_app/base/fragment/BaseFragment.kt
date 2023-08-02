@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.vuongvanduy.music_app.activites.main.MainActivity
+import com.vuongvanduy.music_app.activity.main.MainActivity
 import com.vuongvanduy.music_app.ui.common.viewmodel.MainViewModel
 import com.vuongvanduy.music_app.ui.common.adapter.ExtendSongAdapter
 import com.vuongvanduy.music_app.ui.common.adapter.SongAdapter

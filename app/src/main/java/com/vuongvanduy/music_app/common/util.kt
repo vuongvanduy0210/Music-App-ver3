@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
-import com.vuongvanduy.music_app.MusicService
+import com.vuongvanduy.music_app.service.MusicService
 import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.DialogLoginBinding
 import java.io.Serializable

@@ -65,7 +65,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcv_list_songs"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/bg_color"
             android:visibility="@{viewModel.isLoadingOnline() ? View.GONE : View.VISIBLE}" />
 
