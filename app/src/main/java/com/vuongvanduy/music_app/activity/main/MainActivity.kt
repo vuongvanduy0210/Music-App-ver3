@@ -10,13 +10,13 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
@@ -174,7 +174,12 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.home -> setLayout(0, getColor(R.color.home_bg_color), TITLE_HOME)
                 R.id.online -> setLayout(1, getColor(R.color.online_bg_color), TITLE_ONLINE_SONGS)
-                R.id.favourite -> setLayout(2, getColor(R.color.favourite_bg_color), TITLE_FAVOURITE_SONGS)
+                R.id.favourite -> setLayout(
+                    2,
+                    getColor(R.color.favourite_bg_color),
+                    TITLE_FAVOURITE_SONGS
+                )
+
                 R.id.device -> setLayout(3, getColor(R.color.device_bg_color), TITLE_DEVICE_SONGS)
                 R.id.settings -> setLayout(4, getColor(R.color.settings_bg_color), TITLE_SETTINGS)
             }
@@ -402,17 +407,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun setLayoutMiniPlayer(song: Song) {
 
-        val imageUri = Uri.parse(song.imageUri)
+
         // set layout
         binding.apply {
-            Glide.with(this@MainActivity).load(imageUri).into(imgMusic)
+            if (song.imageUri != null) {
+                val imageUri = Uri.parse(song.imageUri)
+                Glide.with(this@MainActivity).load(imageUri).into(imgMusic)
+                Glide.with(this@MainActivity).load(imageUri).into(imgBgMiniPlayer)
+            } else {
+                val bitmap = getBitmapFromUri(this@MainActivity, song.resourceUri)
+                Glide.with(this@MainActivity).load(bitmap).into(imgMusic)
+                    .onLoadFailed(getDrawable(R.drawable.icon_app))
+                Glide.with(this@MainActivity).load(bitmap).into(imgBgMiniPlayer)
+                    .onLoadFailed(getDrawable(R.drawable.icon_app))
+            }
+
             tvMusicName.isSelected = true
             tvSinger.isSelected = true
-            Glide.with(this@MainActivity).load(imageUri).into(imgBgMiniPlayer)
+            progressBar.isEnabled = false
         }
-        binding.progressBar.isEnabled = false
     }
 
     private fun replaceMusicPlayer() {

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.Context
-import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
@@ -36,21 +35,18 @@ class SongLocalService @Inject constructor(@ApplicationContext val context: Cont
             val idColumn = cursor.getColumnIndex(MediaStore.Audio.Media._ID)
             val titleColumn = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
             val artistColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)
-            val albumIdColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)
 
             do {
                 val resourceId = cursor.getLong(idColumn)
                 val name = cursor.getString(titleColumn)
                 val singer = cursor.getString(artistColumn)
-                val imageId = cursor.getLong(albumIdColumn)
 
                 val resourceUri = ContentUris.withAppendedId(
                     MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, resourceId
                 ).toString()
-                val albumArtUri = Uri
-                    .parse("content://media/external/audio/albumart/$imageId")
-                    .toString()
-                val song = Song(name, singer, resourceUri, albumArtUri)
+
+                val song = Song(name, singer, resourceUri, null)
+                Log.e("Duy", song.toString())
                 list.add(song)
             } while (cursor.moveToNext())
 

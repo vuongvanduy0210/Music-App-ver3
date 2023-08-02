@@ -1,20 +1,25 @@
 package com.vuongvanduy.music_app.ui.common.adapter
 
 import android.annotation.SuppressLint
-import android.net.Uri
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.vuongvanduy.music_app.R
+import com.vuongvanduy.music_app.common.getBitmapFromUri
 import com.vuongvanduy.music_app.common.isSongExists
 import com.vuongvanduy.music_app.data.common.containsIgnoreCaseWithDiacritics
 import com.vuongvanduy.music_app.data.models.Song
 import com.vuongvanduy.music_app.databinding.ItemSongBinding
 import com.vuongvanduy.music_app.ui.common.myinterface.IClickSongListener
 
-class SongAdapter constructor(private val iClickSongListener: IClickSongListener) :
+class SongAdapter constructor(
+    private val context: Context,
+    private val iClickSongListener: IClickSongListener
+) :
     RecyclerView.Adapter<SongAdapter.SongViewHolder>(), Filterable {
 
     private var songs: List<Song>? = null
@@ -39,6 +44,7 @@ class SongAdapter constructor(private val iClickSongListener: IClickSongListener
         } else 0
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
         if (songs?.isEmpty() == true) {
             return
@@ -48,11 +54,9 @@ class SongAdapter constructor(private val iClickSongListener: IClickSongListener
 
             holder.bind(song)
 
-            holder.binding.apply {
-                Glide.with(this.root)
-                    .load(Uri.parse(song.imageUri))
-                    .into(imgMusicInList)
-            }
+            val bitmap = getBitmapFromUri(context, song.resourceUri)
+            Glide.with(context).load(bitmap).into(holder.binding.imgMusicInList)
+                .onLoadFailed(context.getDrawable(R.drawable.icon_app))
         }
     }
 

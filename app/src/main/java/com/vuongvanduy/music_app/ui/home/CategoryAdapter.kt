@@ -50,7 +50,7 @@ class CategoryAdapter constructor(
             holder.binding.apply {
                 btViewAll.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
-                val songCategoryAdapter = SongCategoryAdapter(category.listSongs,
+                val songCategoryAdapter = SongCategoryAdapter(context, category.listSongs,
                     object : IClickSongListener {
                         override fun onClickSong(song: Song) {
                             iClickCategoryListener.onClickSong(song, category.name)

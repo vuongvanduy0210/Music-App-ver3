@@ -143,13 +143,23 @@ class MusicPlayerFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun setLayoutForMusicPlayer(song: Song) {
         binding.apply {
-            val imageUri = Uri.parse(song.imageUri)
-            Glide.with(mainActivity).load(imageUri).into(circleImageView)
             tvMusicName.isSelected = true
             tvSinger.isSelected = true
-            Glide.with(mainActivity).load(imageUri).into(imgBackGround)
+            if (song.imageUri != null) {
+                val imageUri = Uri.parse(song.imageUri)
+                Glide.with(mainActivity).load(imageUri).into(circleImageView)
+                Glide.with(mainActivity).load(imageUri).into(imgBackGround)
+            } else {
+                val bitmap = getBitmapFromUri(mainActivity, song.resourceUri)
+                Glide.with(mainActivity).load(bitmap).into(binding.circleImageView)
+                    .onLoadFailed(mainActivity.getDrawable(R.drawable.icon_app))
+                Glide.with(mainActivity).load(bitmap).into(binding.imgBackGround)
+                    .onLoadFailed(mainActivity.getDrawable(R.drawable.icon_app))
+            }
+
         }
         setSeekBarStatus()
     }

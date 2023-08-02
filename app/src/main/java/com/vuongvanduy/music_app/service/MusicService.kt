@@ -36,7 +36,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 
 class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener,
@@ -291,7 +290,6 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
 
     private fun sendNotification() {
 
-        val imageUri = Uri.parse(currentSong?.imageUri)
         val notificationLayout = RemoteViews(packageName, R.layout.custom_notification_music)
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
 
@@ -334,32 +332,45 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
                 .setContentIntent(getPendingIntentClickNotification())
                 .setOngoing(true)
 
-            if (imageUri.toString().contains("firebasestorage.googleapis.com")) {
+            if (currentSong?.imageUri != null) {
+                val imageUri = Uri.parse(currentSong?.imageUri)
+                if (imageUri.toString().contains("firebasestorage.googleapis.com")) {
 
-                Glide.with(this@MusicService).asBitmap().load(imageUri)
-                    .into(object : CustomTarget<Bitmap>() {
-                        override fun onResourceReady(
-                            resource: Bitmap,
-                            transition: Transition<in Bitmap>?
-                        ) {
-                            // set background
-                            notificationLayout.setImageViewBitmap(
-                                R.id.img_bg_noti,
-                                resource
-                            )
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                notificationBuilder.setCustomBigContentView(notificationLayout)
-                            } else {
-                                notificationBuilder.setCustomContentView(notificationLayout)
+                    Glide.with(this@MusicService).asBitmap().load(imageUri)
+                        .into(object : CustomTarget<Bitmap>() {
+                            override fun onResourceReady(
+                                resource: Bitmap,
+                                transition: Transition<in Bitmap>?
+                            ) {
+                                // set background
+                                notificationLayout.setImageViewBitmap(
+                                    R.id.img_bg_noti,
+                                    resource
+                                )
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                    notificationBuilder.setCustomBigContentView(notificationLayout)
+                                } else {
+                                    notificationBuilder.setCustomContentView(notificationLayout)
+                                }
+                                val notification = notificationBuilder.build()
+                                startForeground(1, notification)
                             }
-                            val notification = notificationBuilder.build()
-                            startForeground(1, notification)
-                        }
 
-                        override fun onLoadCleared(placeholder: Drawable?) {}
-                    })
+                            override fun onLoadCleared(placeholder: Drawable?) {}
+                        })
+                } else {
+                    notificationLayout.setImageViewUri(R.id.img_bg_noti, imageUri)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        notificationBuilder.setCustomBigContentView(notificationLayout)
+                    } else {
+                        notificationBuilder.setCustomContentView(notificationLayout)
+                    }
+                    val notification = notificationBuilder.build()
+                    startForeground(1, notification)
+                }
             } else {
-                notificationLayout.setImageViewUri(R.id.img_bg_noti, imageUri)
+                val bitmap = getBitmapFromUri(this@MusicService, currentSong?.resourceUri)
+                notificationLayout.setImageViewBitmap(R.id.img_bg_noti, bitmap)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     notificationBuilder.setCustomBigContentView(notificationLayout)
                 } else {

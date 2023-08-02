@@ -2,6 +2,10 @@ package com.vuongvanduy.music_app.common
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.media.MediaMetadataRetriever
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -149,4 +153,12 @@ fun showDialog(context: Context, inflater: LayoutInflater, message: String) {
     builder.setView(dialogLogin.root)
     val dialog = builder.create()
     dialog.show()
+}
+
+fun getBitmapFromUri(context: Context, uri: String?): Bitmap? {
+    val mmr = MediaMetadataRetriever()
+    mmr.setDataSource(context, Uri.parse(uri))
+    return mmr.embeddedPicture?.size?.let {
+        BitmapFactory.decodeByteArray(mmr.embeddedPicture, 0, it)
+    }
 }

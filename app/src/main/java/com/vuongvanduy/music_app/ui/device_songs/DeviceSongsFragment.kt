@@ -70,7 +70,7 @@ class DeviceSongsFragment : BaseFragment() {
     }
 
     private fun setRecyclerViewSongs() {
-        songAdapter = SongAdapter(object : IClickSongListener {
+        songAdapter = SongAdapter(mainActivity, object : IClickSongListener {
             override fun onClickSong(song: Song) {
                 mainViewModel.currentSong.postValue(song)
                 requestPermissionPostNotification(song)
