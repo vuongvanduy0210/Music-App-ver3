@@ -154,10 +154,13 @@ class MusicPlayerFragment : BaseFragment() {
                 Glide.with(mainActivity).load(imageUri).into(imgBackGround)
             } else {
                 val bitmap = getBitmapFromUri(mainActivity, song.resourceUri)
-                Glide.with(mainActivity).load(bitmap).into(binding.circleImageView)
-                    .onLoadFailed(mainActivity.getDrawable(R.drawable.icon_app))
-                Glide.with(mainActivity).load(bitmap).into(binding.imgBackGround)
-                    .onLoadFailed(mainActivity.getDrawable(R.drawable.icon_app))
+                if (bitmap == null) {
+                    binding.imgBackGround.setImageResource(R.drawable.icon_app)
+                    binding.circleImageView.setImageResource(R.drawable.icon_app)
+                } else {
+                    binding.imgBackGround.setImageBitmap(bitmap)
+                    binding.circleImageView.setImageBitmap(bitmap)
+                }
             }
 
         }
@@ -177,7 +180,7 @@ class MusicPlayerFragment : BaseFragment() {
                         // gui current time lai cho service
                         sendCurrentTimeToService(mainActivity, progress)
                         if (mainViewModel.isPlaying.value == false) {
-                            mainViewModel.isPlaying.postValue(true)
+                            sendActionToService(mainActivity, ACTION_RESUME)
                         }
                     }
                 }

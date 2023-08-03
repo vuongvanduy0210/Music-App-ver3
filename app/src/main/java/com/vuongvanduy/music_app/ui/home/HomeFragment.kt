@@ -17,7 +17,10 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.vuongvanduy.music_app.R
 import com.vuongvanduy.music_app.base.fragment.BaseFragment
-import com.vuongvanduy.music_app.common.*
+import com.vuongvanduy.music_app.common.ACTION_START
+import com.vuongvanduy.music_app.common.TITLE_DEVICE_SONGS
+import com.vuongvanduy.music_app.common.TITLE_FAVOURITE_SONGS
+import com.vuongvanduy.music_app.common.TITLE_ONLINE_SONGS
 import com.vuongvanduy.music_app.common.sendDataToService
 import com.vuongvanduy.music_app.common.sendListSongToService
 import com.vuongvanduy.music_app.data.models.Song
@@ -205,5 +208,15 @@ class HomeFragment : BaseFragment() {
                 binding.slideImage.visibility = View.GONE
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        myHandler.removeCallbacks(runnable)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        myHandler.postDelayed(runnable, 2500)
     }
 }

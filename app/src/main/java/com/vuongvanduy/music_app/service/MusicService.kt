@@ -52,7 +52,6 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
     private var isLooping: Boolean = false
     private var isShuffling: Boolean = false
 
-    private var currentTime: Int = 0
     private var finalTime: Int = 0
     private var progressReceive: Int = 0
 
@@ -61,15 +60,15 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
     private val handler = Looper.myLooper()
     private var runnable = Runnable {
         if (mediaPlayer != null && isPlaying) {
-            currentTime = mediaPlayer!!.currentPosition
             updateCurrentTime()
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
-        checkOtherMusic()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            checkOtherMusic()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -114,7 +113,7 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
         return null
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         val bundle = intent?.extras
@@ -208,6 +207,9 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
             isPlaying = false
             sendNotification()
             sendData(ACTION_PAUSE)
+            if (handler != null) {
+                Handler(handler).removeCallbacks(runnable)
+            }
         }
     }
 
@@ -370,7 +372,11 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
                 }
             } else {
                 val bitmap = getBitmapFromUri(this@MusicService, currentSong?.resourceUri)
-                notificationLayout.setImageViewBitmap(R.id.img_bg_noti, bitmap)
+                if (bitmap != null) {
+                    notificationLayout.setImageViewBitmap(R.id.img_bg_noti, bitmap)
+                } else {
+                    notificationLayout.setImageViewResource(R.id.img_bg_noti, R.drawable.icon_app)
+                }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     notificationBuilder.setCustomBigContentView(notificationLayout)
                 } else {
@@ -422,7 +428,7 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
         sendCurrentTime()
         handler.let {
             if (it != null) {
-                Handler(it).postDelayed(runnable, 10)
+                Handler(it).postDelayed(runnable, 1000)
             }
         }
     }
@@ -443,7 +449,8 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
     private fun sendCurrentTime() {
         val intent = Intent(SEND_CURRENT_TIME)
         val bundle = Bundle()
-        bundle.putSerializable(KEY_CURRENT_TIME, currentTime)
+        bundle.putSerializable(KEY_CURRENT_TIME, mediaPlayer!!.currentPosition)
+        Log.e(MUSIC_SERVICE_TAG, mediaPlayer!!.currentPosition.toString())
         intent.putExtras(bundle)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
@@ -472,6 +479,9 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
             mediaPlayer = null
         }
         audioManager.abandonAudioFocusRequest(audioFocusRequest)
+        if (handler != null) {
+            Handler(handler).removeCallbacks(runnable)
+        }
     }
 
     @SuppressLint("ShowToast")

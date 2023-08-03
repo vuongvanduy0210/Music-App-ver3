@@ -46,7 +46,6 @@ class SongLocalService @Inject constructor(@ApplicationContext val context: Cont
                 ).toString()
 
                 val song = Song(name, singer, resourceUri, null)
-                Log.e("Duy", song.toString())
                 list.add(song)
             } while (cursor.moveToNext())
 
