@@ -450,7 +450,6 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
         val intent = Intent(SEND_CURRENT_TIME)
         val bundle = Bundle()
         bundle.putSerializable(KEY_CURRENT_TIME, mediaPlayer!!.currentPosition)
-        Log.e(MUSIC_SERVICE_TAG, mediaPlayer!!.currentPosition.toString())
         intent.putExtras(bundle)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
