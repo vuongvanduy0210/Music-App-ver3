@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.vuongvanduy.music_app.ui.common.viewmodel.MainViewModel" />
+            type="com.vuongvanduy.music.ui.common.viewmodel.MainViewModel" />
     </data>
 
     <RelativeLayout

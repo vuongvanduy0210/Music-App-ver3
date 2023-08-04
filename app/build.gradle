@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace 'com.vuongvanduy.music_app'
+    namespace 'com.vuongvanduy.music'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.vuongvanduy.music_app"
+        applicationId "com.vuongvanduy.music"
         minSdk 23
         targetSdk 33
         versionCode 1

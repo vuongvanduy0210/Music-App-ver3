@@ -6,7 +6,7 @@
     app:startDestination="@id/settingOptionsFragment">
     <fragment
         android:id="@+id/settingOptionsFragment"
-        android:name="com.vuongvanduy.music_app.ui.settings.SettingOptionsFragment"
+        android:name="com.vuongvanduy.music.ui.settings.SettingOptionsFragment"
         android:label="fragment_setting_options"
         tools:layout="@layout/fragment_setting_options">
         <action
@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/accountFragment"
-        android:name="com.vuongvanduy.music_app.ui.settings.account.AccountFragment"
+        android:name="com.vuongvanduy.music.ui.settings.account.AccountFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account">
         <action
@@ -58,12 +58,12 @@
     </fragment>
     <fragment
         android:id="@+id/appearanceFragment"
-        android:name="com.vuongvanduy.music_app.ui.settings.appearance.AppearanceFragment"
+        android:name="com.vuongvanduy.music.ui.settings.appearance.AppearanceFragment"
         android:label="fragment_appearance"
         tools:layout="@layout/fragment_appearance" />
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.vuongvanduy.music_app.ui.settings.account.SignInFragment"
+        android:name="com.vuongvanduy.music.ui.settings.account.SignInFragment"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in">
         <action
@@ -84,7 +84,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.vuongvanduy.music_app.ui.settings.account.SignUpFragment"
+        android:name="com.vuongvanduy.music.ui.settings.account.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up">
         <action
@@ -95,27 +95,27 @@
     </fragment>
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.vuongvanduy.music_app.ui.settings.account.ChangePasswordFragment"
+        android:name="com.vuongvanduy.music.ui.settings.account.ChangePasswordFragment"
         android:label="fragment_change_password"
         tools:layout="@layout/fragment_change_password" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.vuongvanduy.music_app.ui.settings.account.ProfileFragment"
+        android:name="com.vuongvanduy.music.ui.settings.account.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/contactFragment"
-        android:name="com.vuongvanduy.music_app.ui.settings.contact.ContactFragment"
+        android:name="com.vuongvanduy.music.ui.settings.contact.ContactFragment"
         android:label="fragment_contact"
         tools:layout="@layout/fragment_contact" />
     <fragment
         android:id="@+id/appInfoFragment"
-        android:name="com.vuongvanduy.music_app.ui.settings.app_info.AppInfoFragment"
+        android:name="com.vuongvanduy.music.ui.settings.app_info.AppInfoFragment"
         android:label="fragment_app_info"
         tools:layout="@layout/fragment_app_info" />
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.vuongvanduy.music_app.ui.settings.account.ForgotPasswordFragment"
+        android:name="com.vuongvanduy.music.ui.settings.account.ForgotPasswordFragment"
         android:label="ForgotPasswordFragment">
         <action
             android:id="@+id/action_forgotPasswordFragment_to_signInFragment"
@@ -125,7 +125,7 @@
     </fragment>
     <fragment
         android:id="@+id/githubAuthFragment"
-        android:name="com.vuongvanduy.music_app.ui.settings.account.GithubAuthFragment"
+        android:name="com.vuongvanduy.music.ui.settings.account.GithubAuthFragment"
         android:label="fragment_github_auth"
         tools:layout="@layout/fragment_github_auth" />
 </navigation>

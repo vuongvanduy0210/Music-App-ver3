@@ -6,11 +6,11 @@
 
         <variable
             name="song"
-            type="com.vuongvanduy.music_app.data.models.Song" />
+            type="com.vuongvanduy.music.data.models.Song" />
 
         <variable
             name="listener"
-            type="com.vuongvanduy.music_app.ui.common.myinterface.IClickSongListener" />
+            type="com.vuongvanduy.music.ui.common.myinterface.IClickSongListener" />
     </data>
 
     <androidx.cardview.widget.CardView

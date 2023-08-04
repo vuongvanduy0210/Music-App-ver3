@@ -5,11 +5,11 @@
 
         <variable
             name="category"
-            type="com.vuongvanduy.music_app.data.models.Category" />
+            type="com.vuongvanduy.music.data.models.Category" />
 
         <variable
             name="listener"
-            type="com.vuongvanduy.music_app.ui.home.IClickCategoryListener" />
+            type="com.vuongvanduy.music.ui.home.IClickCategoryListener" />
     </data>
 
     <RelativeLayout

@@ -23,7 +23,7 @@
           }
         },
         {
-          "client_id": "864398814382-td38lk28rgo5tcl5kn2semmt7tssvopj.apps.googleusercontent.com",
+          "client_id": "864398814382-l35j1n762rf61s666al7pelq7ot4f6t3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -36,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "864398814382-td38lk28rgo5tcl5kn2semmt7tssvopj.apps.googleusercontent.com",
+              "client_id": "864398814382-l35j1n762rf61s666al7pelq7ot4f6t3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -52,7 +52,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "864398814382-td38lk28rgo5tcl5kn2semmt7tssvopj.apps.googleusercontent.com",
+          "client_id": "864398814382-83luunraeun2jcs4mh4b6g7omfpgim3n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vuongvanduy.music_app",
+            "certificate_hash": "284d62846da05195ebcd376e3f38956cbb6caadc"
+          }
+        },
+        {
+          "client_id": "864398814382-l35j1n762rf61s666al7pelq7ot4f6t3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -65,7 +73,36 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "864398814382-td38lk28rgo5tcl5kn2semmt7tssvopj.apps.googleusercontent.com",
+              "client_id": "864398814382-l35j1n762rf61s666al7pelq7ot4f6t3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864398814382:android:af14aeed80dfece84a913f",
+        "android_client_info": {
+          "package_name": "com.vuongvanduy.tool_config_database"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864398814382-l35j1n762rf61s666al7pelq7ot4f6t3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7wPe2NcKXeGq0ym9cjyp6sdl510vZnlk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864398814382-l35j1n762rf61s666al7pelq7ot4f6t3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
