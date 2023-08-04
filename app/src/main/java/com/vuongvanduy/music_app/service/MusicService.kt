@@ -428,7 +428,7 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
         sendCurrentTime()
         handler.let {
             if (it != null) {
-                Handler(it).postDelayed(runnable, 1000)
+                Handler(it).postDelayed(runnable, 500)
             }
         }
     }
@@ -478,7 +478,9 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
             mediaPlayer!!.release()
             mediaPlayer = null
         }
-        audioManager.abandonAudioFocusRequest(audioFocusRequest)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            audioManager.abandonAudioFocusRequest(audioFocusRequest)
+        }
         if (handler != null) {
             Handler(handler).removeCallbacks(runnable)
         }
