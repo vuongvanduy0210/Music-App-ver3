@@ -478,7 +478,9 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
             mediaPlayer!!.release()
             mediaPlayer = null
         }
-        audioManager.abandonAudioFocusRequest(audioFocusRequest)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            audioManager.abandonAudioFocusRequest(audioFocusRequest)
+        }
         if (handler != null) {
             Handler(handler).removeCallbacks(runnable)
         }
