@@ -16,14 +16,15 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vuongvanduy.music.base.fragment.BaseFragment
-import com.vuongvanduy.music.common.*
+import com.vuongvanduy.music.common.ACTION_START
+import com.vuongvanduy.music.common.TITLE_DEVICE_SONGS
 import com.vuongvanduy.music.common.hideKeyboard
 import com.vuongvanduy.music.common.sendDataToService
 import com.vuongvanduy.music.common.sendListSongToService
 import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.FragmentDeviceSongsBinding
-import com.vuongvanduy.music.ui.common.myinterface.IClickSongListener
 import com.vuongvanduy.music.ui.common.adapter.SongAdapter
+import com.vuongvanduy.music.ui.common.myinterface.IClickSongListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

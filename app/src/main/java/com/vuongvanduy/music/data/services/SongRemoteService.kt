@@ -10,11 +10,10 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import com.vuongvanduy.music.common.*
-import com.vuongvanduy.music.data.common.*
+import com.vuongvanduy.music.common.isSongExists
+import com.vuongvanduy.music.data.common.sortListAscending
 import com.vuongvanduy.music.data.models.Song
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.lang.Exception
 import javax.inject.Inject
 
 class SongRemoteService @Inject constructor(@ApplicationContext private val context: Context) {

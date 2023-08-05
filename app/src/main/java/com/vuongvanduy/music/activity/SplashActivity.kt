@@ -3,12 +3,12 @@ package com.vuongvanduy.music.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.animation.AnimationUtils
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.vuongvanduy.music.R
 import com.vuongvanduy.music.activity.main.MainActivity
@@ -42,7 +42,6 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun setThemeMode() {
-        Log.e("SplashActivity", "theme from local: ${DataLocalManager.getStringThemeMode()}")
         when (DataLocalManager.getStringThemeMode()) {
             SYSTEM_MODE ->
                 setThemeMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)

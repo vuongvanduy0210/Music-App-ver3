@@ -4,7 +4,14 @@ package com.vuongvanduy.music.ui.common.viewmodel
 import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import com.vuongvanduy.music.base.viewmodel.BaseViewModel
-import com.vuongvanduy.music.common.*
+import com.vuongvanduy.music.common.KEY_ACTION
+import com.vuongvanduy.music.common.KEY_CURRENT_TIME
+import com.vuongvanduy.music.common.KEY_FINAL_TIME
+import com.vuongvanduy.music.common.KEY_SONG
+import com.vuongvanduy.music.common.KEY_STATUS_LOOP
+import com.vuongvanduy.music.common.KEY_STATUS_MUSIC
+import com.vuongvanduy.music.common.KEY_STATUS_SHUFFLE
+import com.vuongvanduy.music.common.SEND_CURRENT_TIME
 import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.data.sharedPreferences.DataLocalManager
 

@@ -68,8 +68,8 @@ class MainActivity : AppCompatActivity() {
                 songViewModel.getLocalData()
                 Toast.makeText(
                     this,
-                    "Get music from your phone success",
-                    Toast.LENGTH_SHORT
+                    "You can see your list songs from device in Device Songs tab.",
+                    Toast.LENGTH_LONG
                 ).show()
             } else {
                 Toast.makeText(

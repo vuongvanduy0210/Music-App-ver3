@@ -26,13 +26,12 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-
+import com.vuongvanduy.music.R
 import com.vuongvanduy.music.activity.main.MainActivity
 import com.vuongvanduy.music.broadcast_receiver.MyReceiver
 import com.vuongvanduy.music.common.*
 import com.vuongvanduy.music.data.common.*
 import com.vuongvanduy.music.data.models.Song
-import com.vuongvanduy.music.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel

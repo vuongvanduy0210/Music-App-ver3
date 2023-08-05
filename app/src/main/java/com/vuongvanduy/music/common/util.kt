@@ -11,9 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
-import com.vuongvanduy.music.service.MusicService
 import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.DialogLoginBinding
+import com.vuongvanduy.music.service.MusicService
 import java.io.Serializable
 
 const val CHANNEL_ID = "channel_service"

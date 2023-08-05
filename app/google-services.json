@@ -8,22 +8,14 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:864398814382:android:3836b5a5f4faee164a913f",
+        "mobilesdk_app_id": "1:864398814382:android:b0fb7ff2cf8c32014a913f",
         "android_client_info": {
           "package_name": "com.vuongvanduy.music"
         }
       },
       "oauth_client": [
         {
-          "client_id": "864398814382-cs0nhrp4tapj7nege3o60tuf9kucn2mo.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.vuongvanduy.music",
-            "certificate_hash": "4a79d2823d0e2eb425e9a1f080260bd94d117047"
-          }
-        },
-        {
-          "client_id": "864398814382-l35j1n762rf61s666al7pelq7ot4f6t3.apps.googleusercontent.com",
+          "client_id": "864398814382-8slm7nhh9hmr6ju9oqgcjkfm5vpjiafm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -36,44 +28,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "864398814382-l35j1n762rf61s666al7pelq7ot4f6t3.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:864398814382:android:c636f7190c55d26f4a913f",
-        "android_client_info": {
-          "package_name": "com.vuongvanduy.music_app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "864398814382-83luunraeun2jcs4mh4b6g7omfpgim3n.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.vuongvanduy.music_app",
-            "certificate_hash": "284d62846da05195ebcd376e3f38956cbb6caadc"
-          }
-        },
-        {
-          "client_id": "864398814382-l35j1n762rf61s666al7pelq7ot4f6t3.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB7wPe2NcKXeGq0ym9cjyp6sdl510vZnlk"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "864398814382-l35j1n762rf61s666al7pelq7ot4f6t3.apps.googleusercontent.com",
+              "client_id": "864398814382-8slm7nhh9hmr6ju9oqgcjkfm5vpjiafm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -89,7 +44,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "864398814382-l35j1n762rf61s666al7pelq7ot4f6t3.apps.googleusercontent.com",
+          "client_id": "864398814382-8slm7nhh9hmr6ju9oqgcjkfm5vpjiafm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -102,7 +57,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "864398814382-l35j1n762rf61s666al7pelq7ot4f6t3.apps.googleusercontent.com",
+              "client_id": "864398814382-8slm7nhh9hmr6ju9oqgcjkfm5vpjiafm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
