@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -15,6 +16,7 @@ import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.DialogLoginBinding
 import com.vuongvanduy.music.service.MusicService
 import java.io.Serializable
+import java.lang.Exception
 
 const val CHANNEL_ID = "channel_service"
 
@@ -157,7 +159,13 @@ fun showDialog(context: Context, inflater: LayoutInflater, message: String) {
 
 fun getBitmapFromUri(context: Context, uri: String?): Bitmap? {
     val mmr = MediaMetadataRetriever()
-    mmr.setDataSource(context, Uri.parse(uri))
+
+    try {
+        mmr.setDataSource(context, Uri.parse(uri))
+    } catch (e: Exception) {
+        Log.e("Get bitmap mmr", e.message.toString())
+    }
+
     return mmr.embeddedPicture?.size?.let {
         BitmapFactory.decodeByteArray(mmr.embeddedPicture, 0, it)
     }
