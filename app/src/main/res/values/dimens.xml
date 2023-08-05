@@ -18,5 +18,5 @@
 
     <dimen name="button_height">45dp</dimen>
 
-    <dimen name="icon_settings_height">55dp</dimen>
+    <dimen name="icon_settings_height">45dp</dimen>
 </resources>

@@ -55,8 +55,12 @@ class SongAdapter constructor(
             holder.bind(song)
 
             val bitmap = getBitmapFromUri(context, song.resourceUri)
-            Glide.with(context).load(bitmap).into(holder.binding.imgMusicInList)
-                .onLoadFailed(context.getDrawable(R.drawable.icon_app))
+            if (bitmap != null) {
+                Glide.with(context).load(bitmap).into(holder.binding.imgMusicInList)
+                    .onLoadFailed(context.getDrawable(R.drawable.icon_app))
+            } else {
+                Glide.with(context).load(R.drawable.icon_app).into(holder.binding.imgMusicInList)
+            }
         }
     }
 
