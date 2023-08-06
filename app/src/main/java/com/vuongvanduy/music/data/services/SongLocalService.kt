@@ -19,8 +19,11 @@ class SongLocalService @Inject constructor(@ApplicationContext val context: Cont
     fun getLocalMusic(): List<Song> {
         val list = mutableListOf<Song>()
         val contentResolver: ContentResolver = context.contentResolver
+        val selection = ("${MediaStore.Audio.Media.IS_MUSIC} != 0" +
+                " AND ${MediaStore.Audio.Media.IS_RINGTONE} == 0" +
+                " AND ${MediaStore.Audio.Media.IS_ALARM} == 0" +
+                " AND ${MediaStore.Audio.Media.IS_NOTIFICATION} == 0")
         val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-        val selection = "${MediaStore.Audio.Media.IS_MUSIC} != 0"
         val cursor = contentResolver.query(
             uri,
             null, selection,
