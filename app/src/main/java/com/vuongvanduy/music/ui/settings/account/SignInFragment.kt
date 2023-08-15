@@ -12,6 +12,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -90,9 +91,16 @@ class SignInFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        drawUI()
+
         initListener()
 
         setSignInWithGoogle()
+    }
+
+    private fun drawUI() {
+        Glide.with(mainActivity).load(R.drawable.ic_google).into(binding.btSignInGoogle)
+        Glide.with(mainActivity).load(R.drawable.ic_github).into(binding.btSignInGithub)
     }
 
     private fun setSignInWithGoogle() {

@@ -46,11 +46,11 @@
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_facebook"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="7dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_fb" />
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -75,11 +75,11 @@
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_zalo"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="7dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_zalo" />
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/tv_name"
@@ -112,11 +112,11 @@
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_gmail"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="7dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_gmail" />
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -141,11 +141,11 @@
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_microsoft"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="7dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_microsoft" />
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:layout_width="wrap_content"

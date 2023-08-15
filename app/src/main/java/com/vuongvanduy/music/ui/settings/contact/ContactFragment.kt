@@ -11,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.bumptech.glide.Glide
+import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.fragment.BaseFragment
 import com.vuongvanduy.music.common.*
 import com.vuongvanduy.music.databinding.DialogMailBinding
@@ -32,7 +34,16 @@ class ContactFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        drawUI()
+
         setOnClickListener()
+    }
+
+    private fun drawUI() {
+        Glide.with(mainActivity).load(R.drawable.img_fb).into(binding.imgFacebook)
+        Glide.with(mainActivity).load(R.drawable.img_zalo).into(binding.imgZalo)
+        Glide.with(mainActivity).load(R.drawable.img_gmail).into(binding.imgGmail)
+        Glide.with(mainActivity).load(R.drawable.img_microsoft).into(binding.imgMicrosoft)
     }
 
     private fun setOnClickListener() {
