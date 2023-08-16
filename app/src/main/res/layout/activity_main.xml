@@ -54,23 +54,22 @@
 
             <LinearLayout
                 android:id="@+id/bt_play_all"
-                android:layout_width="80dp"
-                android:layout_height="35dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:background="@drawable/custom_button_play_all"
+                android:padding="6dp"
+                android:gravity="center"
                 android:visibility="@{viewModel.isShowBtPlayAll() ? View.VISIBLE : View.GONE}">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="4dp"
                     android:src="@drawable/ic_play_all" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:lines="1"
                     android:text="@string/play_all"
                     android:textAllCaps="false"
