@@ -491,7 +491,7 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
             pauseMusic()
             Toast.makeText(
                 this@MusicService,
-                "Can't play this currentSong. Check your internet connection or reload app.",
+                "Can't play music. Check your internet connection or reload app.",
                 Toast.LENGTH_SHORT
             ).show()
         }
