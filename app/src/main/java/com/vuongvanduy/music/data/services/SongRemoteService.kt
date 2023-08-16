@@ -18,11 +18,12 @@ import javax.inject.Inject
 
 class SongRemoteService @Inject constructor(@ApplicationContext private val context: Context) {
 
+    private val database = Firebase.database
+
     fun getAllSongsFromFirebase(): LiveData<List<Song>> {
         val songsLiveData = MutableLiveData<List<Song>>()
         val list = mutableListOf<Song>()
 
-        val database = Firebase.database
         val myRef = database.getReference("all_songs")
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -48,14 +49,12 @@ class SongRemoteService @Inject constructor(@ApplicationContext private val cont
     }
 
     fun pushSongToFirebase(email: String, song: Song) {
-        val database = Firebase.database
         val myRef = database.getReference("favourite_songs")
             .child(email.substringBefore("."))
         myRef.child(song.name!!).setValue(song)
     }
 
     fun removeSongOnFirebase(email: String, song: Song) {
-        val database = Firebase.database
         val myRef = song.name?.let { name ->
             database.getReference("favourite_songs")
                 .child(email.substringBefore(".")).child(name)
