@@ -13,6 +13,7 @@ import com.vuongvanduy.music.base.dialogs.ProgressDialog
 import com.vuongvanduy.music.base.fragment.BaseFragment
 import com.vuongvanduy.music.common.TITLE_ACCOUNT
 import com.vuongvanduy.music.common.hideKeyboard
+import com.vuongvanduy.music.common.showDialog
 import com.vuongvanduy.music.databinding.FragmentForgotPasswordBinding
 
 class ForgotPasswordFragment : BaseFragment() {
@@ -74,15 +75,11 @@ class ForgotPasswordFragment : BaseFragment() {
             .addOnCompleteListener { task ->
                 dialog.dismiss()
                 if (task.isSuccessful) {
-                    binding.tvNoti.apply {
-                        text = "Email sent. Check your email to complete reset password."
-                        visibility = View.VISIBLE
-                    }
+                    val message = "Email sent. Check your email to complete reset password."
+                    showDialog(mainActivity, layoutInflater, message)
                 } else {
-                    binding.tvNoti.apply {
-                        text = "Email sent fail. Please check your email or network connection."
-                        visibility = View.VISIBLE
-                    }
+                    val message = "Email sent fail. Please check your email or network connection."
+                    showDialog(mainActivity, layoutInflater, message)
                 }
             }
     }
