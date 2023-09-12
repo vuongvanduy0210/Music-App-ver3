@@ -1,7 +1,6 @@
 package com.vuongvanduy.music.service
 
 import android.annotation.SuppressLint
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -27,8 +26,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.vuongvanduy.music.R
-import com.vuongvanduy.music.activity.main.MainActivity
-import com.vuongvanduy.music.broadcast_receiver.MyReceiver
 import com.vuongvanduy.music.common.*
 import com.vuongvanduy.music.data.common.*
 import com.vuongvanduy.music.data.models.Song
@@ -331,7 +328,7 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
 
             notificationBuilder.setSmallIcon(R.drawable.ic_music)
                 .setSound(null)
-                .setContentIntent(getPendingIntentClickNotification())
+                .setContentIntent(getPendingIntentClickNotification(this@MusicService))
                 .setOngoing(true)
 
             if (currentSong?.imageUri != null) {
@@ -388,42 +385,6 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
         }
     }
 
-    private fun getPendingIntent(context: Context, action: Int): PendingIntent? {
-        val intent = Intent(this, MyReceiver::class.java)
-        intent.putExtra(ACTION_MUSIC_NAME, action)
-        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-            PendingIntent.getBroadcast(
-                context.applicationContext,
-                action, intent, PendingIntent.FLAG_UPDATE_CURRENT
-            )
-        } else {
-            PendingIntent.getBroadcast(
-                context.applicationContext,
-                action, intent, PendingIntent.FLAG_IMMUTABLE
-            )
-        }
-    }
-
-    private fun getPendingIntentClickNotification(): PendingIntent {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-            val intent = Intent(this, MainActivity::class.java)
-            return PendingIntent.getActivity(
-                this,
-                0,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
-        } else {
-            val intent = Intent(this, MainActivity::class.java)
-            return PendingIntent.getActivity(
-                this,
-                0,
-                intent,
-                PendingIntent.FLAG_IMMUTABLE
-            )
-        }
-    }
-
     private fun updateCurrentTime() {
         sendCurrentTime()
         handler.let {
@@ -458,8 +419,7 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
         var index = -1
         if (songs != null) {
             for (i in songs!!.indices) {
-                if (songs!![i].name.equals(s.name, true) &&
-                    songs!![i].singer.equals(s.singer, true)
+                if (songs!![i].resourceUri.equals(s.resourceUri, true)
                 ) {
                     index = i
                     break

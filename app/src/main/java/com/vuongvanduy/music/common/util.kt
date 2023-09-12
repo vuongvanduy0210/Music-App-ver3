@@ -118,6 +118,15 @@ fun isSongExists(songList: List<Song>, song: Song): Boolean {
     return false
 }
 
+fun isExistSameName(songList: List<Song>, song: Song): Boolean {
+    for (s in songList) {
+        if (s.name == song.name && s.singer == song.singer) {
+            return true
+        }
+    }
+    return false
+}
+
 fun sendListSongToService(context: Context, songs: List<Song>) {
     val intent = Intent(context, MusicService::class.java)
     val bundle = Bundle()

@@ -8,6 +8,8 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import com.vuongvanduy.music.common.DEVICE_SONGS_FRAGMENT_TAG
+import com.vuongvanduy.music.common.isExistSameName
+import com.vuongvanduy.music.common.isSongExists
 import com.vuongvanduy.music.data.common.sortListAscending
 import com.vuongvanduy.music.data.models.Song
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -50,7 +52,9 @@ class SongLocalService @Inject constructor(@ApplicationContext val context: Cont
                 ).toString()
 
                 val song = Song(name, singer, resourceUri, null)
-                list.add(song)
+                if (!isExistSameName(list, song)) {
+                    list.add(song)
+                }
             } while (cursor.moveToNext())
 
             sortListAscending(list)
