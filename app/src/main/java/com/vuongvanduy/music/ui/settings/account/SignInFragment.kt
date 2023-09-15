@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.IntentSender
 import android.os.Bundle
 import android.util.Log
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -156,32 +155,15 @@ class SignInFragment : BaseFragment() {
         val email = binding.edtEmail.text.trim().toString()
         val password = binding.edtPassword.text.trim().toString()
 
-        if (email.isEmpty() || email.isBlank()) {
+        ValidationUtils.checkValidSignInInput(email, password)?.let {
             binding.apply {
-                tvError.text = "Email can't blank"
-                edtEmail.setText("")
+                tvError.text = it
                 tvError.visibility = View.VISIBLE
-            }
-            return
-        } else if (password.isEmpty() || password.isBlank()) {
-            binding.apply {
-                tvError.text = "Password can't blank"
-                edtPassword.setText("")
-                tvError.visibility = View.VISIBLE
-            }
-            return
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.apply {
-                tvError.text = "Email is wrong format"
-                edtEmail.setText("")
-                tvError.visibility = View.VISIBLE
-            }
-            return
-        } else if (password.length < 6) {
-            binding.apply {
-                tvError.text = "Password must contain at least 6 characters"
-                edtPassword.setText("")
-                tvError.visibility = View.VISIBLE
+                if (it.contains("email", true)) {
+                    edtEmail.setText("")
+                } else {
+                    edtPassword.setText("")
+                }
             }
             return
         }

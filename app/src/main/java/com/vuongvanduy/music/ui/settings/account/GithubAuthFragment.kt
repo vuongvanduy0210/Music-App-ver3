@@ -43,18 +43,11 @@ class GithubAuthFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun onClickSignIn() {
         val email = binding.edtEmail.text.toString()
-        if (email.isEmpty() || email.isBlank()) {
+        ValidationUtils.checkValidEmail(email)?.let {
             binding.apply {
-                tvError.text = "Email can't blank"
-                edtEmail.setText("")
+                tvError.text = it
                 tvError.visibility = View.VISIBLE
-            }
-            return
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.apply {
-                tvError.text = "Email is wrong format"
                 edtEmail.setText("")
-                tvError.visibility = View.VISIBLE
             }
             return
         }

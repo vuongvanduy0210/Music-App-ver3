@@ -3,7 +3,6 @@ package com.vuongvanduy.music.ui.settings.account
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,47 +67,21 @@ class SignUpFragment : BaseFragment() {
         val password = binding.edtPassword.text.trim().toString()
         val confirmPassword = binding.edtConfirmPassword.text.trim().toString()
 
-        if (email.isEmpty() || email.isBlank()) {
+        ValidationUtils.checkValidSignUpInput(email, name, password, confirmPassword)?.let {
             binding.apply {
-                tvError.text = "Email can't blank"
-                edtEmail.setText("")
+                tvError.text = it
                 tvError.visibility = View.VISIBLE
-            }
-            return
-        } else if (name.isEmpty() || name.isBlank()) {
-            binding.apply {
-                tvError.text = "Name can't blank"
-                edtName.setText("")
-                tvError.visibility = View.VISIBLE
-            }
-            return
-        } else if (password.isEmpty() || password.isBlank()) {
-            binding.apply {
-                tvError.text = "Password can't blank"
-                edtPassword.setText("")
-                tvError.visibility = View.VISIBLE
-            }
-            return
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.apply {
-                tvError.text = "Email is wrong format"
-                edtEmail.setText("")
-                tvError.visibility = View.VISIBLE
-            }
-            return
-        } else if (password.length < 6) {
-            binding.apply {
-                tvError.text = "Password must contain at least 6 characters"
-                edtPassword.setText("")
-                tvError.visibility = View.VISIBLE
-            }
-            return
-        } else if (password != confirmPassword) {
-            binding.apply {
-                tvError.text = "Those passwords did’t match. Try again."
-                edtPassword.setText("")
-                edtConfirmPassword.setText("")
-                tvError.visibility = View.VISIBLE
+                if (it.contains("email", true)) {
+                    edtEmail.setText("")
+                } else if (it.contains("name", true)) {
+                    edtName.setText("")
+                } else if (it.contains("confirm password", true)) {
+                    edtConfirmPassword.setText("")
+                } else if (it.contains("password", true)
+                    || it.contains("passwords", true)) {
+                    edtConfirmPassword.setText("")
+                    edtPassword.setText("")
+                }
             }
             return
         }

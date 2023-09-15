@@ -51,21 +51,15 @@ class ForgotPasswordFragment : BaseFragment() {
         val dialog = ProgressDialog(mainActivity, "Loading...")
 
         val email = binding.edtEmail.text.trim().toString()
-        binding.tvNoti.apply {
+        binding.tvError.apply {
             text = ""
             visibility = View.GONE
         }
-        if (email.isEmpty() || email.isBlank()) {
+        ValidationUtils.checkValidEmail(email)?.let {
             binding.apply {
-                tvNoti.text = "Email can't blank"
-                tvNoti.visibility = View.VISIBLE
-            }
-            return
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.apply {
-                tvNoti.text = "Email is wrong format"
+                tvError.text = it
+                tvError.visibility = View.VISIBLE
                 edtEmail.setText("")
-                tvNoti.visibility = View.VISIBLE
             }
             return
         }

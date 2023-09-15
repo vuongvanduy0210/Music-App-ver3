@@ -48,7 +48,7 @@
     <string name="confirm_password_hint">Confirm Password</string>
     <string name="you_have_an_account">You have an account?</string>
     <string name="new_password_hint">New Password</string>
-    <string name="send_reset_password">send email verification</string>
+    <string name="send_reset_password">Send email verification</string>
     <string name="text_send_email">Enter your email to reset password:</string>
     <string name="continue_with_guest">Continue with Guest</string>
     <string name="play_all">Play all</string>

@@ -56,41 +56,19 @@ class ChangePasswordFragment : BaseFragment() {
         val newPass = binding.edtNewPassword.text.trim().toString()
         val confirmPass = binding.edtConfirmPassword.text.trim().toString()
 
-        if (oldPass.isEmpty() || oldPass.isBlank()) {
+        ValidationUtils.checkValidChangePasswordInput(oldPass, newPass, confirmPass)?.let {
             binding.apply {
-                tvError.text = "Password can't blank"
-                edtNewPassword.setText("")
+                tvError.text = it
                 tvError.visibility = View.VISIBLE
-            }
-            return
-        } else if (newPass.isEmpty() || newPass.isBlank()) {
-            binding.apply {
-                tvError.text = "New password can't blank"
-                edtNewPassword.setText("")
-                tvError.visibility = View.VISIBLE
-            }
-            return
-        } else if (confirmPass.isEmpty() || confirmPass.isBlank()) {
-            binding.apply {
-                tvError.text = "Confirm password can't blank"
-                edtConfirmPassword.setText("")
-                tvError.visibility = View.VISIBLE
-            }
-            return
-        } else if (newPass.length < 6) {
-            binding.apply {
-                tvError.text = "Password must contain at least 6 characters"
-                edtNewPassword.setText("")
-                edtConfirmPassword.setText("")
-                tvError.visibility = View.VISIBLE
-            }
-            return
-        } else if (newPass != confirmPass) {
-            binding.apply {
-                tvError.text = "Those passwords did’t match. Try again."
-                edtNewPassword.setText("")
-                edtConfirmPassword.setText("")
-                tvError.visibility = View.VISIBLE
+                if (it.contains("confirm", true)) {
+                    edtConfirmPassword.setText("")
+                } else if (it.contains("new", true) ||
+                    it.contains("passwords", true)) {
+                    edtNewPassword.setText("")
+                    edtConfirmPassword.setText("")
+                } else {
+                    edtOldPassword.setText("")
+                }
             }
             return
         }
