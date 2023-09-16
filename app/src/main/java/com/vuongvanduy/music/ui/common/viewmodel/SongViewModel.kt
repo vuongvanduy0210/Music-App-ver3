@@ -57,8 +57,11 @@ class SongViewModel @Inject constructor(private val songRepository: SongReposito
 
         val list = mutableListOf<Song>()
         val email = FirebaseAuth.getInstance().currentUser?.email?.substringBefore(".")
-        val database = Firebase.database
-        val myRef = email?.let { database.getReference("favourite_songs").child(it) }
+        val myRef = email?.let {
+            Firebase.database.getReference("users")
+                .child(it.substringBefore("."))
+                .child("favourite_songs")
+        }
         myRef?.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (postSnapshot in dataSnapshot.children) {

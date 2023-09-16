@@ -49,15 +49,19 @@ class SongRemoteService @Inject constructor(@ApplicationContext private val cont
     }
 
     fun pushSongToFirebase(email: String, song: Song) {
-        val myRef = database.getReference("favourite_songs")
+        val myRef = database.getReference("users")
             .child(email.substringBefore("."))
-        myRef.child(song.name!!).setValue(song)
+            .child("favourite_songs")
+        val path = song.name!!.replace("/", "-")
+        myRef.child(path).setValue(song)
     }
 
     fun removeSongOnFirebase(email: String, song: Song) {
         val myRef = song.name?.let { name ->
-            database.getReference("favourite_songs")
-                .child(email.substringBefore(".")).child(name)
+            database.getReference("users")
+                .child(email.substringBefore("."))
+                .child("favourite_songs")
+                .child(name)
         }
         myRef?.removeValue { databaseError, _ ->
             if (databaseError == null) {
