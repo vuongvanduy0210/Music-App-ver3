@@ -83,7 +83,7 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:src="@drawable/ic_favourite_bored"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="8dp" />
 
             <RelativeLayout
                 android:id="@+id/layout_seekbar"
@@ -113,7 +113,7 @@
                         android:textColor="@color/text_color"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        tools:text="00:00"/>
+                        tools:text="00:00" />
 
                     <TextView
                         android:id="@+id/tv_final_time"
@@ -124,7 +124,7 @@
                         android:textSize="18sp"
                         android:textStyle="bold"
                         tools:ignore="RelativeOverlap"
-                        tools:text="05:00"/>
+                        tools:text="05:00" />
 
                 </RelativeLayout>
 

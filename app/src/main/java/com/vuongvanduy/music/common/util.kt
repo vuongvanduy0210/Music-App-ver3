@@ -182,7 +182,7 @@ fun getBitmapFromUri(context: Context, uri: String?): Bitmap? {
 }
 
 inline fun <T> sdk33AndUp(onSdk33: () -> T): T? {
-    return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         onSdk33()
     } else null
 }

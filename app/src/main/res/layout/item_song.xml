@@ -6,6 +6,7 @@
         <variable
             name="song"
             type="com.vuongvanduy.music.data.models.Song" />
+
         <variable
             name="listener"
             type="com.vuongvanduy.music.ui.common.myinterface.IClickSongListener" />
