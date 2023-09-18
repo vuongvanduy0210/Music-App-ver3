@@ -2,18 +2,19 @@ package com.vuongvanduy.music.ui.common.bottom_sheet
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.vuongvanduy.music.R
@@ -53,24 +54,25 @@ class SongBSDFragment : BottomSheetDialogFragment() {
             }
         }
 
-    @SuppressLint("InflateParams")
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val inflater = LayoutInflater.from(requireContext())
-            .inflate(R.layout.layout_song_bottom_sheet, null)
-        binding = LayoutSongBottomSheetBinding.bind(inflater)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        Log.e("BottomSheetDialogFragment", "onCreateView")
+        binding = LayoutSongBottomSheetBinding.inflate(inflater, container, false)
 
         mainActivity = requireActivity() as MainActivity
-
         songViewModel = ViewModelProvider(mainActivity)[SongViewModel::class.java]
         mainViewModel = ViewModelProvider(mainActivity)[MainViewModel::class.java]
 
+        return binding.root
+    }
 
-        val bottomSheetDialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
-        bottomSheetDialog.setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setData()
-
-        return bottomSheetDialog
     }
 
     private fun setData() {
