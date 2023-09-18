@@ -53,7 +53,7 @@ class SongBSDFragment : BottomSheetDialogFragment() {
     private fun setUIAddFavourites() {
         binding.apply {
             if (
-                isFavouriteSong(
+                isSongExists(
                     songViewModel.favouriteSongs.value,
                     songViewModel.optionSong.value
                 )
@@ -66,37 +66,37 @@ class SongBSDFragment : BottomSheetDialogFragment() {
             }
 
             layoutAddFavourites.setOnClickListener {
-                if (FirebaseAuth.getInstance().currentUser == null) {
-                    Toast.makeText(
-                        context,
-                        "You must sign in to use this feature.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
-                }
-                songViewModel.apply {
-                    if (
-                        isFavouriteSong(
-                            favouriteSongs.value!!,
-                            optionSong.value!!
-                        )
-                    ) {
-                        optionSong.value?.let {
-                            removeSongFromFirebase(it)
-                            dismiss()
-                        }
-                    } else {
-                        optionSong.value?.let {
-                            addSongToFavourites(it)
-                            dismiss()
-                        }
-                    }
-                }
+                onClickAddFavourites()
             }
         }
     }
 
-    private fun isFavouriteSong(list: List<Song>?, song: Song?): Boolean {
-        return list != null && song != null && isSongExists(list, song)
+    private fun onClickAddFavourites() {
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            Toast.makeText(
+                context,
+                "You must sign in to use this feature.",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+        songViewModel.apply {
+            if (
+                isSongExists(
+                    favouriteSongs.value,
+                    optionSong.value
+                )
+            ) {
+                optionSong.value?.let {
+                    removeSongFromFirebase(it)
+                    dismiss()
+                }
+            } else {
+                optionSong.value?.let {
+                    addSongToFavourites(it)
+                    dismiss()
+                }
+            }
+        }
     }
 }

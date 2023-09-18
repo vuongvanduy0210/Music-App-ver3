@@ -106,7 +106,10 @@ fun hideKeyboard(context: Context, view: View) {
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
-fun isSongExists(songList: List<Song>, song: Song): Boolean {
+fun isSongExists(songList: List<Song>?, song: Song?): Boolean {
+    if (songList == null || song == null || songList.isEmpty()) {
+        return false
+    }
     for (s in songList) {
         if (s.resourceUri == song.resourceUri) {
             return true

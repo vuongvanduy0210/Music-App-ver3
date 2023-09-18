@@ -63,7 +63,8 @@ class ChangePasswordFragment : BaseFragment() {
                 if (it.contains("confirm", true)) {
                     edtConfirmPassword.setText("")
                 } else if (it.contains("new", true) ||
-                    it.contains("passwords", true)) {
+                    it.contains("passwords", true)
+                ) {
                     edtNewPassword.setText("")
                     edtConfirmPassword.setText("")
                 } else {

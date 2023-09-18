@@ -78,7 +78,8 @@ class SignUpFragment : BaseFragment() {
                 } else if (it.contains("confirm password", true)) {
                     edtConfirmPassword.setText("")
                 } else if (it.contains("password", true)
-                    || it.contains("passwords", true)) {
+                    || it.contains("passwords", true)
+                ) {
                     edtConfirmPassword.setText("")
                     edtPassword.setText("")
                 }

@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.SeekBar
+import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.fragment.BaseFragment
 import com.vuongvanduy.music.common.*
@@ -114,6 +116,12 @@ class MusicPlayerFragment : BaseFragment() {
                 }
             }
         }
+
+        songViewModel.apply {
+            favouriteSongs.observe(viewLifecycleOwner) {
+                setUIAddFavourites()
+            }
+        }
     }
 
     private fun setClickButtonListener() {
@@ -140,6 +148,37 @@ class MusicPlayerFragment : BaseFragment() {
             btShuffle.setOnClickListener {
                 sendActionToService(requireContext(), ACTION_SHUFFLE)
             }
+
+            btAddFavourites.setOnClickListener {
+                onClickAddFavourites()
+            }
+        }
+    }
+
+    private fun onClickAddFavourites() {
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            Toast.makeText(
+                context,
+                "You must sign in to use this feature.",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+        songViewModel.apply {
+            if (
+                isSongExists(
+                    favouriteSongs.value,
+                    mainViewModel.currentSong.value
+                )
+            ) {
+                mainViewModel.currentSong.value?.let {
+                    removeSongFromFirebase(it)
+                }
+            } else {
+                mainViewModel.currentSong.value?.let {
+                    addSongToFavourites(it)
+                }
+            }
         }
     }
 
@@ -162,9 +201,25 @@ class MusicPlayerFragment : BaseFragment() {
                     binding.circleImageView.setImageBitmap(bitmap)
                 }
             }
-
         }
+        setUIAddFavourites()
         setSeekBarStatus()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setUIAddFavourites() {
+        binding.apply {
+            if (
+                isSongExists(
+                    songViewModel.favouriteSongs.value,
+                    mainViewModel.currentSong.value
+                )
+            ) {
+                btAddFavourites.setImageResource(R.drawable.ic_favourite_red)
+            } else {
+                btAddFavourites.setImageResource(R.drawable.ic_favourite_bored)
+            }
+        }
     }
 
     private fun setSeekBarStatus() {
