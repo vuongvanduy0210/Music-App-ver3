@@ -77,7 +77,9 @@ class DeviceSongsFragment : BaseFragment() {
                 requestPermissionPostNotification(song)
             }
 
-            override fun onClickExtendFavourites(song: Song) {}
+            override fun onLongClickSong(song: Song) {
+                TODO("Not yet implemented")
+            }
         })
         val decoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         binding.rcvListSongs.apply {

@@ -41,7 +41,7 @@ class SongViewModel @Inject constructor(private val songRepository: SongReposito
 
     private val deviceSongsShow = MutableLiveData<List<Song>>()
 
-    val favSong = MutableLiveData<Song>()
+    val optionSong = MutableLiveData<Song>()
 
     fun getListOnline() {
         onlineSongs = songRepository.getOnlineSongs() as MutableLiveData<List<Song>>

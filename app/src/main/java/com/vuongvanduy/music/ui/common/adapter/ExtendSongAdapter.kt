@@ -15,8 +15,7 @@ import com.vuongvanduy.music.databinding.ItemExtendSongBinding
 import com.vuongvanduy.music.ui.common.myinterface.IClickSongListener
 
 class ExtendSongAdapter constructor(
-    private val iClickSongListener: IClickSongListener,
-    private val name: String
+    private val iClickSongListener: IClickSongListener
 ) : RecyclerView.Adapter<ExtendSongAdapter.SongViewHolder>(), Filterable {
 
     private var songs: List<Song>? = null
@@ -46,7 +45,6 @@ class ExtendSongAdapter constructor(
         if (songs?.isEmpty() == true) {
             return
         }
-        holder.binding.layoutItemOnlineSong.close(false)
         val song = songs?.get(position)
         if (song != null) {
 
@@ -57,15 +55,13 @@ class ExtendSongAdapter constructor(
                     .load(Uri.parse(song.imageUri))
                     .into(imgMusicInList)
 
-                holder.binding.tvAction.text = if (name == TITLE_FAVOURITE_SONGS) {
-                    TEXT_REMOVE_FAVOURITES
-                } else {
-                    TEXT_ADD_FAVOURITES
+                layoutSong.setOnLongClickListener {
+                    iClickSongListener.onLongClickSong(song)
+                    true
                 }
 
-                layoutAddFavourites.setOnClickListener {
-                    iClickSongListener.onClickExtendFavourites(song)
-                    holder.binding.layoutItemOnlineSong.close(true)
+                btOptions.setOnClickListener {
+                    iClickSongListener.onLongClickSong(song)
                 }
             }
         }

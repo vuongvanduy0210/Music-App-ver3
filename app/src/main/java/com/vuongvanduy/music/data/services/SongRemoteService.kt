@@ -53,7 +53,13 @@ class SongRemoteService @Inject constructor(@ApplicationContext private val cont
             .child(email.substringBefore("."))
             .child("favourite_songs")
         val path = song.name!!.replace("/", "-")
-        myRef.child(path).setValue(song)
+        myRef.child(path).setValue(song).addOnSuccessListener {
+            Toast.makeText(
+                context,
+                "Add song from favourites success",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     fun removeSongOnFirebase(email: String, song: Song) {
@@ -68,7 +74,7 @@ class SongRemoteService @Inject constructor(@ApplicationContext private val cont
                 // Removal successful
                 Toast.makeText(
                     context,
-                    "Remove song success",
+                    "Remove song from favourites success",
                     Toast.LENGTH_SHORT
                 ).show()
             } else {

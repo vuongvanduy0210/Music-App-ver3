@@ -19,12 +19,12 @@ import com.vuongvanduy.music.base.fragment.BaseFragment
 import com.vuongvanduy.music.common.ACTION_START
 import com.vuongvanduy.music.common.TITLE_FAVOURITE_SONGS
 import com.vuongvanduy.music.common.hideKeyboard
-import com.vuongvanduy.music.common.isSongExists
 import com.vuongvanduy.music.common.sendDataToService
 import com.vuongvanduy.music.common.sendListSongToService
 import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.FragmentFavouriteSongsBinding
 import com.vuongvanduy.music.ui.common.adapter.ExtendSongAdapter
+import com.vuongvanduy.music.ui.common.bottom_sheet.SongBSDFragment
 import com.vuongvanduy.music.ui.common.myinterface.IClickSongListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -78,11 +78,11 @@ class FavouriteSongsFragment : BaseFragment() {
                 requestPermissionPostNotification(song)
             }
 
-            override fun onClickExtendFavourites(song: Song) {
-                songViewModel.removeSongFromFirebase(song)
+            override fun onLongClickSong(song: Song) {
+                showBottomSheetDialog(song)
             }
 
-        }, TITLE_FAVOURITE_SONGS)
+        })
         val decoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         binding.rcvListSongs.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -124,6 +124,13 @@ class FavouriteSongsFragment : BaseFragment() {
         sendDataToService(mainActivity, song, ACTION_START)
     }
 
+    private fun showBottomSheetDialog(song: Song) {
+        hideKeyboard(mainActivity, binding.root)
+        songViewModel.optionSong.value = song
+        val songBottomSheetDialog = SongBSDFragment()
+        songBottomSheetDialog.show(mainActivity.supportFragmentManager, songBottomSheetDialog.tag)
+    }
+
     private fun registerObserverFetchDataFinish() {
         songViewModel.favouriteSongs.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
@@ -135,27 +142,6 @@ class FavouriteSongsFragment : BaseFragment() {
             } else {
                 songViewModel.isLoadingFavourite.postValue(true)
 
-            }
-        }
-
-        songViewModel.favSong.observe(viewLifecycleOwner) {
-            if (it != null) {
-                if (songViewModel.favouriteSongs.value != null
-                    && isSongExists(songViewModel.favouriteSongs.value!!, it)
-                ) {
-                    Toast.makeText(
-                        mainActivity,
-                        "This song is exist in favourites", Toast.LENGTH_SHORT
-                    ).show()
-                    return@observe
-                }
-
-                songViewModel.addSongToFavourites(it)
-
-                Toast.makeText(
-                    mainActivity,
-                    "Add song to favourites success", Toast.LENGTH_SHORT
-                ).show()
             }
         }
     }

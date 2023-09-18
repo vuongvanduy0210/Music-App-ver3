@@ -15,12 +15,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
 import com.vuongvanduy.music.base.fragment.BaseFragment
 import com.vuongvanduy.music.common.*
 import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.FragmentOnlineSongsBinding
 import com.vuongvanduy.music.ui.common.adapter.ExtendSongAdapter
+import com.vuongvanduy.music.ui.common.bottom_sheet.SongBSDFragment
 import com.vuongvanduy.music.ui.common.myinterface.IClickSongListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -75,11 +75,11 @@ class OnlineSongsFragment : BaseFragment() {
                 playSong(song)
             }
 
-            override fun onClickExtendFavourites(song: Song) {
-                addToFavourites(song)
+            override fun onLongClickSong(song: Song) {
+                showBottomSheetDialog(song)
             }
 
-        }, TITLE_ONLINE_SONGS)
+        })
         val decoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         binding.rcvListSongs.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -101,17 +101,11 @@ class OnlineSongsFragment : BaseFragment() {
         requestPermissionPostNotification(song)
     }
 
-    private fun addToFavourites(song: Song) {
-        if (FirebaseAuth.getInstance().currentUser == null) {
-            Toast.makeText(
-                mainActivity,
-                "You need to log in to use this feature",
-                Toast.LENGTH_LONG
-            )
-                .show()
-        } else {
-            songViewModel.favSong.postValue(song)
-        }
+    private fun showBottomSheetDialog(song: Song) {
+        hideKeyboard(mainActivity, binding.root)
+        songViewModel.optionSong.value = song
+        val songBottomSheetDialog = SongBSDFragment()
+        songBottomSheetDialog.show(mainActivity.supportFragmentManager, songBottomSheetDialog.tag)
     }
 
     private fun requestPermissionPostNotification(song: Song) {

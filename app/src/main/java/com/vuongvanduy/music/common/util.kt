@@ -93,9 +93,6 @@ const val EMPTY_LIST_SONG_TEXT_DEVICE = "No currentSong in list. " +
 const val EMPTY_LIST_SONG_TEXT_FAVOURITE = "No currentSong in list. " +
         "Please check your internet connection or sign in to see your favourites."*/
 
-const val TEXT_ADD_FAVOURITES = "Add To \n Favourites"
-const val TEXT_REMOVE_FAVOURITES = "Remove \n This Song"
-
 const val EMAIL_CONTACT = "vuongvanduyit03@gmail.com"
 const val MICROSOFT_CONTACT = "duycon123bn@outlook.com"
 const val URI_FB = "https://www.facebook.com/vuongduy03"

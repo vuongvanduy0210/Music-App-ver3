@@ -5,5 +5,5 @@ import com.vuongvanduy.music.data.models.Song
 interface IClickSongListener {
 
     fun onClickSong(song: Song)
-    fun onClickExtendFavourites(song: Song)
+    fun onLongClickSong(song: Song)
 }

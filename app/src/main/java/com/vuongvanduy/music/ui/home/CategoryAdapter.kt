@@ -56,7 +56,9 @@ class CategoryAdapter constructor(
                             iClickCategoryListener.onClickSong(song, category.name)
                         }
 
-                        override fun onClickExtendFavourites(song: Song) {}
+                        override fun onLongClickSong(song: Song) {
+
+                        }
                     })
 
                 val manger = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)

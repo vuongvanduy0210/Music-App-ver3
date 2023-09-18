@@ -98,9 +98,6 @@ dependencies {
     //fragment
     implementation 'androidx.fragment:fragment:1.6.0'
 
-    //swipe layout
-    implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
-
     //animation
     def lottie_version = "6.1.0"
     implementation "com.airbnb.android:lottie:$lottie_version"
