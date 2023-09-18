@@ -20,6 +20,8 @@ import com.vuongvanduy.music.R
 import com.vuongvanduy.music.activity.main.MainActivity
 import com.vuongvanduy.music.common.ACTION_START
 import com.vuongvanduy.music.common.TITLE_DEVICE_SONGS
+import com.vuongvanduy.music.common.TITLE_FAVOURITE_SONGS
+import com.vuongvanduy.music.common.TITLE_ONLINE_SONGS
 import com.vuongvanduy.music.common.isSongExists
 import com.vuongvanduy.music.common.sdk33AndUp
 import com.vuongvanduy.music.common.sendDataToService
@@ -159,15 +161,20 @@ class SongBSDFragment : BottomSheetDialogFragment() {
         mainViewModel.apply {
             isShowMusicPlayer.postValue(true)
             isServiceRunning.postValue(true)
-            currentListName = TITLE_DEVICE_SONGS
         }
 
         when (mainActivity.binding.bottomNav.selectedItemId) {
-            R.id.online ->
+            R.id.online -> {
+                mainViewModel.currentListName = TITLE_ONLINE_SONGS
                 songViewModel.onlineSongs.value?.let { sendListSongToService(mainActivity, it) }
+            }
 
-            R.id.favourite ->
+
+            R.id.favourite -> {
+                mainViewModel.currentListName = TITLE_FAVOURITE_SONGS
                 songViewModel.favouriteSongs.value?.let { sendListSongToService(mainActivity, it) }
+            }
+
         }
 
         sendDataToService(mainActivity, song, ACTION_START)
