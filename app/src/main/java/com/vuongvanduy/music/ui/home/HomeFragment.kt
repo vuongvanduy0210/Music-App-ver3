@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -21,6 +22,7 @@ import com.vuongvanduy.music.common.ACTION_START
 import com.vuongvanduy.music.common.TITLE_DEVICE_SONGS
 import com.vuongvanduy.music.common.TITLE_FAVOURITE_SONGS
 import com.vuongvanduy.music.common.TITLE_ONLINE_SONGS
+import com.vuongvanduy.music.common.sdk33AndUp
 import com.vuongvanduy.music.common.sendDataToService
 import com.vuongvanduy.music.common.sendListSongToService
 import com.vuongvanduy.music.data.models.Song
@@ -149,18 +151,19 @@ class HomeFragment : BaseFragment() {
 
     private fun playSong(song: Song, categoryName: String) {
         mainViewModel.currentListName = categoryName
-        requestPermissionPostNotification(song, categoryName)
+        sdk33AndUp {
+            requestPermissionPostNotification(song, categoryName)
+        } ?: playMusic(song, categoryName)
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun requestPermissionPostNotification(song: Song, categoryName: String) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (mainActivity.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-                playMusic(song, categoryName)
-            } else {
-                activityResultLauncherNotification.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        } else {
+        if (mainActivity.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+            == PackageManager.PERMISSION_GRANTED
+        ) {
             playMusic(song, categoryName)
+        } else {
+            activityResultLauncherNotification.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
 

@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -178,4 +179,10 @@ fun getBitmapFromUri(context: Context, uri: String?): Bitmap? {
     return mmr.embeddedPicture?.size?.let {
         BitmapFactory.decodeByteArray(mmr.embeddedPicture, 0, it)
     }
+}
+
+inline fun <T> sdk33AndUp(onSdk33: () -> T): T? {
+    return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        onSdk33()
+    } else null
 }

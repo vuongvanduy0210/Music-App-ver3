@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,7 @@ import com.vuongvanduy.music.base.fragment.BaseFragment
 import com.vuongvanduy.music.common.ACTION_START
 import com.vuongvanduy.music.common.TITLE_FAVOURITE_SONGS
 import com.vuongvanduy.music.common.hideKeyboard
+import com.vuongvanduy.music.common.sdk33AndUp
 import com.vuongvanduy.music.common.sendDataToService
 import com.vuongvanduy.music.common.sendListSongToService
 import com.vuongvanduy.music.data.models.Song
@@ -75,7 +77,9 @@ class FavouriteSongsFragment : BaseFragment() {
         extendSongAdapter = ExtendSongAdapter(object : IClickSongListener {
             override fun onClickSong(song: Song) {
                 mainViewModel.currentSong.postValue(song)
-                requestPermissionPostNotification(song)
+                sdk33AndUp {
+                    requestPermissionPostNotification(song)
+                } ?: playMusic(song)
             }
 
             override fun onLongClickSong(song: Song) {
@@ -100,17 +104,14 @@ class FavouriteSongsFragment : BaseFragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun requestPermissionPostNotification(song: Song) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (mainActivity.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
-                == PackageManager.PERMISSION_GRANTED
-            ) {
-                playMusic(song)
-            } else {
-                activityResultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        } else {
+        if (mainActivity.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+            == PackageManager.PERMISSION_GRANTED
+        ) {
             playMusic(song)
+        } else {
+            activityResultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
 

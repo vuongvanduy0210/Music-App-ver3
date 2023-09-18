@@ -119,7 +119,7 @@ class MusicPlayerFragment : BaseFragment() {
 
         songViewModel.apply {
             favouriteSongs.observe(viewLifecycleOwner) {
-                setUIAddFavourites()
+                setUIAddFavourites(null)
             }
         }
     }
@@ -202,12 +202,18 @@ class MusicPlayerFragment : BaseFragment() {
                 }
             }
         }
-        setUIAddFavourites()
+        setUIAddFavourites(song)
         setSeekBarStatus()
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setUIAddFavourites() {
+    private fun setUIAddFavourites(song: Song?) {
+        if (song != null) {
+            if (song.resourceUri?.contains("https://firebasestorage.googleapis.com") == false) {
+                binding.btAddFavourites.visibility = View.GONE
+                return
+            }
+        }
         binding.apply {
             if (
                 isSongExists(
