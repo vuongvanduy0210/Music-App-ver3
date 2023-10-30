@@ -76,10 +76,34 @@
             android:background="@color/text_color" />
 
         <LinearLayout
-            android:id="@+id/layout_add_favourites"
+            android:id="@+id/layout_play"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:paddingVertical="10dp">
+
+            <ImageView
+                android:id="@+id/img_play"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_play_now" />
+
+            <TextView
+                android:id="@+id/tv_play"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
+                android:text="@string/play_now" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_add_favourites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:paddingVertical="10dp">
 
@@ -100,30 +124,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layout_play"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
 
-            android:gravity="center_vertical"
-            android:paddingVertical="10dp">
-
-            <ImageView
-                android:id="@+id/img_play"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_play_now" />
-
-            <TextView
-                android:id="@+id/tv_play"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/text_color"
-                android:textSize="18sp"
-                android:text="@string/play_now" />
-
-        </LinearLayout>
 
     </LinearLayout>
 </layout>
