@@ -13,7 +13,7 @@ import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.ItemSongInCategoryBinding
 import com.vuongvanduy.music.ui.common.myinterface.IClickSongListener
 
-class SongCategoryAdapter constructor(
+class SongCategoryAdapter(
     private val context: Context,
     private var listSongShow: MutableList<Song>,
     private val listener: IClickSongListener

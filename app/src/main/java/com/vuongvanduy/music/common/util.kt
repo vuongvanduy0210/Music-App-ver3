@@ -17,7 +17,6 @@ import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.DialogLoginBinding
 import com.vuongvanduy.music.service.MusicService
 import java.io.Serializable
-import java.lang.Exception
 
 const val CHANNEL_ID = "channel_service"
 

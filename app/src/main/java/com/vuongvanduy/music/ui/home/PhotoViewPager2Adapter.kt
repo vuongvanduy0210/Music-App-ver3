@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.vuongvanduy.music.data.models.Photo
 import com.vuongvanduy.music.databinding.ItemPhotoBinding
 
-class PhotoViewPager2Adapter constructor(
+class PhotoViewPager2Adapter(
     private val photos: List<Photo>,
     private val context: Context
 ) : RecyclerView.Adapter<PhotoViewPager2Adapter.PhotoViewHolder>() {
@@ -29,6 +29,6 @@ class PhotoViewPager2Adapter constructor(
         Glide.with(context).load(photo.imageUri).into(holder.binding.imgPhoto)
     }
 
-    inner class PhotoViewHolder constructor(val binding: ItemPhotoBinding) :
+    inner class PhotoViewHolder(val binding: ItemPhotoBinding) :
         RecyclerView.ViewHolder(binding.root)
 }

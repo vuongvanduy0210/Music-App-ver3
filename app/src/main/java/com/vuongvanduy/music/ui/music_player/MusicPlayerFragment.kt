@@ -19,6 +19,8 @@ import com.vuongvanduy.music.databinding.FragmentMusicPlayerBinding
 
 class MusicPlayerFragment : BaseFragment() {
 
+    override val TAG = MusicPlayerFragment::class.java.simpleName.toString()
+
     private lateinit var binding: FragmentMusicPlayerBinding
 
     override fun onCreateView(

@@ -12,10 +12,15 @@ import com.vuongvanduy.music.common.KEY_STATUS_LOOP
 import com.vuongvanduy.music.common.KEY_STATUS_MUSIC
 import com.vuongvanduy.music.common.KEY_STATUS_SHUFFLE
 import com.vuongvanduy.music.common.SEND_CURRENT_TIME
+import com.vuongvanduy.music.data.data_source.app_data.DataLocalManager
 import com.vuongvanduy.music.data.models.Song
-import com.vuongvanduy.music.data.sharedPreferences.DataLocalManager
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel : BaseViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    dataLocalManager: DataLocalManager
+) : BaseViewModel() {
 
     var currentSong = MutableLiveData<Song>()
     var currentListName: String? = null
@@ -32,7 +37,7 @@ class MainViewModel : BaseViewModel() {
     val actionMusic = MutableLiveData(0)
     val finalTime = MutableLiveData(0)
     val currentTime = MutableLiveData(0)
-    var themeMode = MutableLiveData<String>(DataLocalManager.getStringThemeMode())
+    var themeMode = MutableLiveData<String>(dataLocalManager.getStringThemeMode())
 
     fun receiveDataFromReceiver(intent: Intent) {
         val bundle = intent.extras ?: return

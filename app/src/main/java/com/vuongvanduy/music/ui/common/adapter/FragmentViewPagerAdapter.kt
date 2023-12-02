@@ -9,7 +9,7 @@ import com.vuongvanduy.music.ui.home.HomeFragment
 import com.vuongvanduy.music.ui.online_songs.OnlineSongsFragment
 import com.vuongvanduy.music.ui.settings.SettingsFragment
 
-class FragmentViewPagerAdapter constructor(fragmentActivity: FragmentActivity) :
+class FragmentViewPagerAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
 
     override fun getItemCount(): Int {

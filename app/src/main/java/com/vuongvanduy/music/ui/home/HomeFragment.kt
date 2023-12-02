@@ -33,6 +33,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
 
+    override val TAG = HomeFragment::class.java.simpleName.toString()
+
     private lateinit var binding: FragmentHomeBinding
 
     private lateinit var photosAdapter: PhotoViewPager2Adapter
