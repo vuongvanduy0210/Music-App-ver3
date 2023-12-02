@@ -12,12 +12,17 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.fragment.BaseFragment
-import com.vuongvanduy.music.common.*
+import com.vuongvanduy.music.common.GUEST
+import com.vuongvanduy.music.common.GUEST_EMAIL
+import com.vuongvanduy.music.common.TITLE_ACCOUNT
+import com.vuongvanduy.music.common.TITLE_FAVOURITE_SONGS
 import com.vuongvanduy.music.common.sendListSongToService
 import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.FragmentAccountBinding
 
 class AccountFragment : BaseFragment() {
+
+    override val TAG = AccountFragment::class.java.simpleName.toString()
 
     private lateinit var binding: FragmentAccountBinding
 

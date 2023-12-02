@@ -33,6 +33,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FavouriteSongsFragment : BaseFragment() {
 
+    override val TAG = FavouriteSongsFragment::class.java.simpleName.toString()
+
     private lateinit var binding: FragmentFavouriteSongsBinding
 
     private val activityResultLauncher =
