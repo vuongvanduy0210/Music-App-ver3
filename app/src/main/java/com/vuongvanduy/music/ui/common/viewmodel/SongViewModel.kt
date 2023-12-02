@@ -24,8 +24,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SongViewModel @Inject constructor(private val songRepository: SongRepository) :
-    BaseViewModel() {
+class SongViewModel @Inject constructor(
+    private val songRepository: SongRepository
+) : BaseViewModel() {
 
     var onlineSongs = MutableLiveData<List<Song>>()
 

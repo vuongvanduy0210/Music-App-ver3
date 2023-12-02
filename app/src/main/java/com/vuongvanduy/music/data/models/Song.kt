@@ -2,7 +2,7 @@ package com.vuongvanduy.music.data.models
 
 import java.io.Serializable
 
-class Song constructor(
+class Song(
     val name: String? = null,
     val singer: String? = null,
     val resourceUri: String? = null,

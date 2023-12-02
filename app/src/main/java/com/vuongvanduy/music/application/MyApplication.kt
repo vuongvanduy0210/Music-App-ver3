@@ -6,7 +6,6 @@ import android.app.NotificationManager
 import android.os.Build
 import com.vuongvanduy.music.R
 import com.vuongvanduy.music.common.CHANNEL_ID
-import com.vuongvanduy.music.data.sharedPreferences.DataLocalManager
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -15,7 +14,6 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
-        createDataLocalManager()
     }
 
     private fun createNotificationChannel() {
@@ -29,9 +27,5 @@ class MyApplication : Application() {
             val notificationManager = getSystemService(NotificationManager::class.java)
             notificationManager.createNotificationChannel(channel)
         }
-    }
-
-    private fun createDataLocalManager() {
-        DataLocalManager.init(applicationContext)
     }
 }

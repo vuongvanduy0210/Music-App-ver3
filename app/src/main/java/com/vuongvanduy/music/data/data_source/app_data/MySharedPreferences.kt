@@ -1,11 +1,11 @@
-package com.vuongvanduy.music.data.sharedPreferences
+package com.vuongvanduy.music.data.data_source.app_data
 
 import android.annotation.SuppressLint
 import android.content.Context
 import com.vuongvanduy.music.common.MY_SHARED_PREFERENCES
 import com.vuongvanduy.music.common.SYSTEM_MODE
 
-class MySharedPreferences constructor(private val context: Context) {
+class MySharedPreferences(private val context: Context) {
 
     @SuppressLint("CommitPrefEdits")
     fun putStringValue(key: String, value: String) {

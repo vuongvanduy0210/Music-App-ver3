@@ -16,7 +16,7 @@ import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.ItemSongBinding
 import com.vuongvanduy.music.ui.common.myinterface.IClickSongListener
 
-class SongAdapter constructor(
+class SongAdapter(
     private val context: Context,
     private val iClickSongListener: IClickSongListener
 ) :
@@ -103,7 +103,7 @@ class SongAdapter constructor(
         }
     }
 
-    inner class SongViewHolder constructor(val binding: ItemSongBinding) :
+    inner class SongViewHolder(val binding: ItemSongBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(song: Song) {

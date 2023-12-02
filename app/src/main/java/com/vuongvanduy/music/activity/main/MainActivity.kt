@@ -24,8 +24,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.activity.BaseActivity
 import com.vuongvanduy.music.common.*
+import com.vuongvanduy.music.data.data_source.app_data.DataLocalManager
 import com.vuongvanduy.music.data.models.Song
-import com.vuongvanduy.music.data.sharedPreferences.DataLocalManager
 import com.vuongvanduy.music.databinding.ActivityMainBinding
 import com.vuongvanduy.music.ui.common.adapter.FragmentViewPagerAdapter
 import com.vuongvanduy.music.ui.common.viewmodel.MainViewModel
@@ -34,6 +34,7 @@ import com.vuongvanduy.music.ui.music_player.MusicPlayerFragment
 import com.vuongvanduy.music.ui.transformer.ZoomOutPageTransformer
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Random
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
@@ -47,6 +48,9 @@ class MainActivity : BaseActivity() {
     private lateinit var songViewModel: SongViewModel
 
     private lateinit var onBackPressedCallback: OnBackPressedCallback
+
+    @Inject
+    lateinit var dataLocalManager: DataLocalManager
 
     private val serviceReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -380,7 +384,7 @@ class MainActivity : BaseActivity() {
             }
 
             themeMode.observe(this@MainActivity) {
-                mainViewModel.themeMode.value?.let { DataLocalManager.putStringThemeMode(it) }
+                mainViewModel.themeMode.value?.let { dataLocalManager.putStringThemeMode(it) }
             }
         }
     }
