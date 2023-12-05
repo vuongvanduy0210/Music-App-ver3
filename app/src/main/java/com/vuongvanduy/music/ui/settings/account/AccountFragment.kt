@@ -85,7 +85,7 @@ class AccountFragment : BaseFragment() {
             .setPositiveButton("Yes") { _, _ ->
                 Firebase.auth.signOut()
                 accountViewModel.user.value = null
-                songViewModel.favouriteSongs.value = null
+                songViewModel.favouriteSongs.value = emptyList()
                 if (mainViewModel.currentListName == TITLE_FAVOURITE_SONGS) {
                     val list = mutableListOf<Song>()
                     sendListSongToService(mainActivity, list)

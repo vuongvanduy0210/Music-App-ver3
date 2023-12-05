@@ -10,7 +10,6 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.vuongvanduy.music.R
-import com.vuongvanduy.music.activity.main.MainActivity
 import com.vuongvanduy.music.common.*
 import com.vuongvanduy.music.data.data_source.app_data.DataLocalManager
 import com.vuongvanduy.music.databinding.ActivitySplashBinding

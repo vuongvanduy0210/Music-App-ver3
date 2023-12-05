@@ -101,6 +101,8 @@ const val URI_ZALO = "https://zalo.me/0987786011"
 const val GUEST = "Guest"
 const val GUEST_EMAIL = "someone@gmail.com"
 
+const val DATABASE_NAME = "my_db"
+
 fun hideKeyboard(context: Context, view: View) {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(view.windowToken, 0)

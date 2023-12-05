@@ -1,6 +1,6 @@
 package com.vuongvanduy.music.data.repositories
 
-import androidx.lifecycle.LiveData
+import com.vuongvanduy.music.data.common.toSongEntity
 import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.data.services.SongLocalService
 import com.vuongvanduy.music.data.services.SongRemoteService
@@ -13,8 +13,12 @@ class SongRepository @Inject constructor(
     private val songLocalService: SongLocalService
 ) {
 
-    fun getOnlineSongs(): LiveData<List<Song>> {
-        return songRemoteService.getAllSongsFromFirebase()
+    fun getOnlineSongs(callback: (List<Song>) -> Unit) {
+        songRemoteService.getAllSongsFromFirebase(callback)
+    }
+
+    fun getFavouriteSongs(callback: (List<Song>) -> Unit) {
+        songRemoteService.getFavouriteSongsFromFirebase(callback)
     }
 
     suspend fun getDeviceSongs() = withContext(Dispatchers.IO) {
@@ -27,5 +31,16 @@ class SongRepository @Inject constructor(
 
     fun removeSongOnFavourites(email: String, song: Song) {
         songRemoteService.removeSongOnFirebase(email, song)
+    }
+
+    // cache data
+    suspend fun getAllSongsFromLocal() = withContext(Dispatchers.IO) {
+        songLocalService.getAllSongs()
+    }
+
+    suspend fun insertSongsToLocal(list: List<Song>) = withContext(Dispatchers.IO) {
+        songLocalService.insertAllSongs(list.map {
+            it.toSongEntity()
+        })
     }
 }

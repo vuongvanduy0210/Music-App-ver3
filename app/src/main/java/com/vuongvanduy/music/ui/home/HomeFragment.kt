@@ -105,7 +105,7 @@ class HomeFragment : BaseFragment() {
             }
             favouriteSongs.observe(mainActivity) {
                 if (it.isNullOrEmpty()) {
-                    favouriteSongsShow.value = null
+                    favouriteSongsShow.value = emptyList()
                 }
                 categoryAdapter.setData(getListCategories())
             }

@@ -7,14 +7,21 @@ import android.content.Context
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import com.vuongvanduy.music.base.service.BaseService
 import com.vuongvanduy.music.common.DEVICE_SONGS_FRAGMENT_TAG
 import com.vuongvanduy.music.common.isExistSameName
+import com.vuongvanduy.music.data.common.Response
 import com.vuongvanduy.music.data.common.sortListAscending
+import com.vuongvanduy.music.data.data_source.database.daos.SongDAO
+import com.vuongvanduy.music.data.data_source.database.entities.SongEntity
 import com.vuongvanduy.music.data.models.Song
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class SongLocalService @Inject constructor(@ApplicationContext val context: Context) {
+class SongLocalService @Inject constructor(
+    @ApplicationContext val context: Context,
+    private val songDAO: SongDAO
+) : BaseService() {
 
     @SuppressLint("Recycle")
     fun getLocalMusic(): List<Song> {
@@ -59,5 +66,17 @@ class SongLocalService @Inject constructor(@ApplicationContext val context: Cont
             sortListAscending(list)
         }
         return list
+    }
+
+    suspend fun getAllSongs(): Response<List<SongEntity>> {
+        return safeCallDao {
+            songDAO.getAllSongs()
+        }
+    }
+
+    suspend fun insertAllSongs(list: List<SongEntity>): Response<Unit> {
+        return safeCallDao {
+            songDAO.insertAllSongs(list)
+        }
     }
 }

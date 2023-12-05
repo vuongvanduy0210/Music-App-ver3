@@ -2,26 +2,26 @@ package com.vuongvanduy.music.data.services
 
 import android.content.Context
 import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import com.vuongvanduy.music.base.service.BaseService
 import com.vuongvanduy.music.common.isSongExists
 import com.vuongvanduy.music.data.common.sortListAscending
 import com.vuongvanduy.music.data.models.Song
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class SongRemoteService @Inject constructor(@ApplicationContext private val context: Context) {
-
+class SongRemoteService @Inject constructor(
+    @ApplicationContext private val context: Context
+) : BaseService() {
     private val database = Firebase.database
 
-    fun getAllSongsFromFirebase(): LiveData<List<Song>> {
-        val songsLiveData = MutableLiveData<List<Song>>()
+    fun getAllSongsFromFirebase(callback: (List<Song>) -> Unit) {
         val list = mutableListOf<Song>()
 
         val myRef = database.getReference("all_songs")
@@ -36,16 +36,41 @@ class SongRemoteService @Inject constructor(@ApplicationContext private val cont
                     }
                 }
                 sortListAscending(list)
-                songsLiveData.postValue(list)
+                callback(list)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                songsLiveData.postValue(list)
                 throw Exception(databaseError.message)
             }
         })
+    }
 
-        return songsLiveData
+    fun getFavouriteSongsFromFirebase(callback: (List<Song>) -> Unit) {
+
+        val list = mutableListOf<Song>()
+        val email = FirebaseAuth.getInstance().currentUser?.email?.substringBefore(".")
+        val myRef = email?.let {
+            Firebase.database.getReference("users")
+                .child(it.substringBefore("."))
+                .child("favourite_songs")
+        }
+        myRef?.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val song = postSnapshot.getValue<Song>()
+                    if (song != null) {
+                        if (!isSongExists(list, song)) {
+                            list.add(song)
+                        }
+                    }
+                }
+                sortListAscending(list)
+                callback(list)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
     }
 
     fun pushSongToFirebase(email: String, song: Song) {

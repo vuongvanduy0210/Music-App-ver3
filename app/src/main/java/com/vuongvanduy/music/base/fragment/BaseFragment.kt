@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.vuongvanduy.music.activity.main.MainActivity
+import com.vuongvanduy.music.activity.MainActivity
 import com.vuongvanduy.music.ui.common.adapter.ExtendSongAdapter
 import com.vuongvanduy.music.ui.common.adapter.SongAdapter
 import com.vuongvanduy.music.ui.common.viewmodel.MainViewModel

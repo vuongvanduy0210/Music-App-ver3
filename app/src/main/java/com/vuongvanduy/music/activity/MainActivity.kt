@@ -1,4 +1,4 @@
-package com.vuongvanduy.music.activity.main
+package com.vuongvanduy.music.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -120,7 +120,6 @@ class MainActivity : BaseActivity() {
     private fun init() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         songViewModel = ViewModelProvider(this)[SongViewModel::class.java]
-        songViewModel.getListOnline()
         if (FirebaseAuth.getInstance().currentUser != null) {
             songViewModel.getFavouriteSongs()
         }

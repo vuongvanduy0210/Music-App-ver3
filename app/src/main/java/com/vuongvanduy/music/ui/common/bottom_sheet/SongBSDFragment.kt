@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.vuongvanduy.music.R
-import com.vuongvanduy.music.activity.main.MainActivity
+import com.vuongvanduy.music.activity.MainActivity
 import com.vuongvanduy.music.common.ACTION_START
 import com.vuongvanduy.music.common.TITLE_FAVOURITE_SONGS
 import com.vuongvanduy.music.common.TITLE_ONLINE_SONGS

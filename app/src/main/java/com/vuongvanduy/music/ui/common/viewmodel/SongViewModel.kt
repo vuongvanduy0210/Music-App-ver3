@@ -3,18 +3,13 @@ package com.vuongvanduy.music.ui.common.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
 import com.vuongvanduy.music.base.viewmodel.BaseViewModel
 import com.vuongvanduy.music.common.TITLE_DEVICE_SONGS
 import com.vuongvanduy.music.common.TITLE_FAVOURITE_SONGS
 import com.vuongvanduy.music.common.TITLE_ONLINE_SONGS
-import com.vuongvanduy.music.common.isSongExists
+import com.vuongvanduy.music.data.common.Response
 import com.vuongvanduy.music.data.common.sortListAscending
+import com.vuongvanduy.music.data.common.toSongModel
 import com.vuongvanduy.music.data.models.Category
 import com.vuongvanduy.music.data.models.Photo
 import com.vuongvanduy.music.data.models.Song
@@ -28,7 +23,7 @@ class SongViewModel @Inject constructor(
     private val songRepository: SongRepository
 ) : BaseViewModel() {
 
-    var onlineSongs = MutableLiveData<List<Song>>()
+    val onlineSongs = MutableLiveData<List<Song>>()
 
     val favouriteSongs = MutableLiveData<List<Song>>()
 
@@ -44,42 +39,35 @@ class SongViewModel @Inject constructor(
 
     val optionSong = MutableLiveData<Song>()
 
-    fun getListOnline() {
-        onlineSongs = songRepository.getOnlineSongs() as MutableLiveData<List<Song>>
+    init {
+        getAllSongFromRemote()
+    }
+
+    private fun getAllSongFromRemote() {
+        viewModelScope.launch(exceptionHandler) {
+            val response = songRepository.getAllSongsFromLocal()
+            if (response is Response.Success) {
+                val songs = response.data?.map { it.toSongModel() }
+                sortListAscending(songs as MutableList<Song>)
+                songs.let {
+                    onlineSongs.value = it
+                }
+            }
+            songRepository.getOnlineSongs {
+                onlineSongs.value = it
+                viewModelScope.launch {
+                    songRepository.insertSongsToLocal(it)
+                }
+            }
+        }
     }
 
     fun getFavouriteSongs() {
         if (FirebaseAuth.getInstance().currentUser != null) {
-            getListFavouriteSongs()
-        }
-    }
-
-    private fun getListFavouriteSongs() {
-
-        val list = mutableListOf<Song>()
-        val email = FirebaseAuth.getInstance().currentUser?.email?.substringBefore(".")
-        val myRef = email?.let {
-            Firebase.database.getReference("users")
-                .child(it.substringBefore("."))
-                .child("favourite_songs")
-        }
-        myRef?.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val song = postSnapshot.getValue<Song>()
-                    if (song != null) {
-                        if (!isSongExists(list, song)) {
-                            list.add(song)
-                        }
-                    }
-                }
-                sortListAscending(list)
-                favouriteSongs.value = list
+            songRepository.getFavouriteSongs {
+                favouriteSongs.value = it
             }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        })
+        }
     }
 
     fun getLocalData() {
@@ -94,7 +82,7 @@ class SongViewModel @Inject constructor(
     fun getListPhotos() {
         val list = mutableListOf<Photo>()
         if (!onlineSongs.value.isNullOrEmpty()) {
-            val listSongs = onlineSongs.value!!.shuffled().take(5)
+            val listSongs = onlineSongs.value!!.take(5)
             listSongs.forEach { song ->
                 song.imageUri?.let { list.add(Photo(it)) }
             }
@@ -122,7 +110,7 @@ class SongViewModel @Inject constructor(
     private fun getSongsShow(songs: MutableList<Song>?): MutableList<Song> {
         var list = mutableListOf<Song>()
         if (!songs.isNullOrEmpty()) {
-            list = songs.shuffled().take(10) as MutableList<Song>
+            list = songs.take(10) as MutableList<Song>
         }
         return list
     }
