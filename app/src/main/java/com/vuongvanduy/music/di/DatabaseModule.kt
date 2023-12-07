@@ -2,6 +2,7 @@ package com.vuongvanduy.music.di
 
 import android.content.Context
 import com.vuongvanduy.music.data.data_source.database.AppDatabase
+import com.vuongvanduy.music.data.data_source.database.daos.FavouriteSongDAO
 import com.vuongvanduy.music.data.data_source.database.daos.SongDAO
 import dagger.Module
 import dagger.Provides
@@ -25,5 +26,11 @@ object DatabaseModule {
     @Singleton
     fun provideSongDao(appDatabase: AppDatabase): SongDAO {
         return appDatabase.songDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFavouriteSongDao(appDatabase: AppDatabase): FavouriteSongDAO {
+        return appDatabase.favouriteSongDao()
     }
 }

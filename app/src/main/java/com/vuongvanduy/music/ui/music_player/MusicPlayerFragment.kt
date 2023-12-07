@@ -174,7 +174,7 @@ class MusicPlayerFragment : BaseFragment() {
                 )
             ) {
                 mainViewModel.currentSong.value?.let {
-                    removeSongFromFirebase(it)
+                    removeSongFromFavourites(it)
                 }
             } else {
                 mainViewModel.currentSong.value?.let {

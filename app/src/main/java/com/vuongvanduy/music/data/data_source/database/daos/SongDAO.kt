@@ -9,9 +9,9 @@ import com.vuongvanduy.music.data.data_source.database.entities.SongEntity
 @Dao
 interface SongDAO {
 
-    @Query("select * from songs")
+    @Query("select * from online_songs")
     suspend fun getAllSongs(): List<SongEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllSongs(songs: List<SongEntity>)
+    suspend fun insertSongs(songs: List<SongEntity>)
 }

@@ -134,7 +134,7 @@ class SongBSDFragment : BottomSheetDialogFragment() {
                 )
             ) {
                 optionSong.value?.let {
-                    removeSongFromFirebase(it)
+                    removeSongFromFavourites(it)
                     dismiss()
                 }
             } else {

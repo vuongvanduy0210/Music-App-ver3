@@ -1,5 +1,6 @@
 package com.vuongvanduy.music.data.repositories
 
+import com.vuongvanduy.music.data.common.toFavouriteSongEntity
 import com.vuongvanduy.music.data.common.toSongEntity
 import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.data.services.SongLocalService
@@ -34,13 +35,38 @@ class SongRepository @Inject constructor(
     }
 
     // cache data
-    suspend fun getAllSongsFromLocal() = withContext(Dispatchers.IO) {
-        songLocalService.getAllSongs()
+
+    // online song
+    suspend fun getOnlineSongsFromLocal() = withContext(Dispatchers.IO) {
+        songLocalService.getOnlineSongs()
     }
 
-    suspend fun insertSongsToLocal(list: List<Song>) = withContext(Dispatchers.IO) {
-        songLocalService.insertAllSongs(list.map {
+    suspend fun insertOnlineSongsToLocal(list: List<Song>) = withContext(Dispatchers.IO) {
+        songLocalService.insertOnlineSongs(list.map {
             it.toSongEntity()
         })
+    }
+
+    // favourite song
+    suspend fun getFavouriteSongsFromLocal() = withContext(Dispatchers.IO) {
+        songLocalService.getFavouriteSongs()
+    }
+
+    suspend fun insertFavouriteSongsToLocal(list: List<Song>) = withContext(Dispatchers.IO) {
+        songLocalService.insertFavouriteSongs(list.map {
+            it.toFavouriteSongEntity()
+        })
+    }
+
+    suspend fun insertFavouriteSongToLocal(song: Song) = withContext(Dispatchers.IO) {
+        songLocalService.insertFavouriteSong(song.toFavouriteSongEntity())
+    }
+
+    suspend fun deleteAllFavouritesFromLocal() = withContext(Dispatchers.IO) {
+        songLocalService.deleteAllFavourites()
+    }
+
+    suspend fun deleteFavouriteSongFromLocal(song: Song) = withContext(Dispatchers.IO) {
+        songLocalService.deleteFavouriteSong(song.toFavouriteSongEntity())
     }
 }

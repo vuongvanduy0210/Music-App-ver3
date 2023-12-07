@@ -12,7 +12,9 @@ import com.vuongvanduy.music.common.DEVICE_SONGS_FRAGMENT_TAG
 import com.vuongvanduy.music.common.isExistSameName
 import com.vuongvanduy.music.data.common.Response
 import com.vuongvanduy.music.data.common.sortListAscending
+import com.vuongvanduy.music.data.data_source.database.daos.FavouriteSongDAO
 import com.vuongvanduy.music.data.data_source.database.daos.SongDAO
+import com.vuongvanduy.music.data.data_source.database.entities.FavouriteSongEntity
 import com.vuongvanduy.music.data.data_source.database.entities.SongEntity
 import com.vuongvanduy.music.data.models.Song
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -20,7 +22,8 @@ import javax.inject.Inject
 
 class SongLocalService @Inject constructor(
     @ApplicationContext val context: Context,
-    private val songDAO: SongDAO
+    private val songDAO: SongDAO,
+    private val favouriteSongDao: FavouriteSongDAO
 ) : BaseService() {
 
     @SuppressLint("Recycle")
@@ -68,15 +71,45 @@ class SongLocalService @Inject constructor(
         return list
     }
 
-    suspend fun getAllSongs(): Response<List<SongEntity>> {
+    suspend fun getOnlineSongs(): Response<List<SongEntity>> {
         return safeCallDao {
             songDAO.getAllSongs()
         }
     }
 
-    suspend fun insertAllSongs(list: List<SongEntity>): Response<Unit> {
+    suspend fun insertOnlineSongs(list: List<SongEntity>): Response<Unit> {
         return safeCallDao {
-            songDAO.insertAllSongs(list)
+            songDAO.insertSongs(list)
+        }
+    }
+
+    suspend fun getFavouriteSongs(): Response<List<FavouriteSongEntity>> {
+        return safeCallDao {
+            favouriteSongDao.getAllSongs()
+        }
+    }
+
+    suspend fun insertFavouriteSongs(list: List<FavouriteSongEntity>): Response<Unit> {
+        return safeCallDao {
+            favouriteSongDao.insertSongs(list)
+        }
+    }
+
+    suspend fun insertFavouriteSong(song: FavouriteSongEntity): Response<Unit> {
+        return safeCallDao {
+            favouriteSongDao.insertSong(song)
+        }
+    }
+
+    suspend fun deleteFavouriteSong(song: FavouriteSongEntity) {
+        safeCallDao {
+            favouriteSongDao.deleteSong(song)
+        }
+    }
+
+    suspend fun deleteAllFavourites() {
+        safeCallDao {
+            favouriteSongDao.deleteAllSongs()
         }
     }
 }

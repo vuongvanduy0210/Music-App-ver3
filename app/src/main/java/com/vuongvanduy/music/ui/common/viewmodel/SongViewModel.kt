@@ -1,5 +1,6 @@
 package com.vuongvanduy.music.ui.common.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
@@ -40,12 +41,13 @@ class SongViewModel @Inject constructor(
     val optionSong = MutableLiveData<Song>()
 
     init {
-        getAllSongFromRemote()
+        getOnlineSongsFromRemote()
+        getFavouriteSongsFromRemote()
     }
 
-    private fun getAllSongFromRemote() {
+    private fun getOnlineSongsFromRemote() {
         viewModelScope.launch(exceptionHandler) {
-            val response = songRepository.getAllSongsFromLocal()
+            val response = songRepository.getOnlineSongsFromLocal()
             if (response is Response.Success) {
                 val songs = response.data?.map { it.toSongModel() }
                 sortListAscending(songs as MutableList<Song>)
@@ -56,17 +58,38 @@ class SongViewModel @Inject constructor(
             songRepository.getOnlineSongs {
                 onlineSongs.value = it
                 viewModelScope.launch {
-                    songRepository.insertSongsToLocal(it)
+                    songRepository.insertOnlineSongsToLocal(it)
                 }
             }
         }
     }
 
-    fun getFavouriteSongs() {
+    fun getFavouriteSongsFromRemote() {
         if (FirebaseAuth.getInstance().currentUser != null) {
-            songRepository.getFavouriteSongs {
-                favouriteSongs.value = it
+            viewModelScope.launch(exceptionHandler) {
+                val response = songRepository.getFavouriteSongsFromLocal()
+                if (response is Response.Success) {
+                    val songs = response.data?.map { it.toSongModel() }
+                    sortListAscending(songs as MutableList<Song>)
+                    songs.let {
+                        favouriteSongs.value = it
+                    }
+                }
+                songRepository.getFavouriteSongs {
+                    favouriteSongs.value = it
+                    viewModelScope.launch(exceptionHandler) {
+                        songRepository.deleteAllFavouritesFromLocal()
+                        songRepository.insertFavouriteSongsToLocal(it)
+                        Log.e("SongViewModel", "saving data to local")
+                    }
+                }
             }
+        }
+    }
+
+    fun deleteAllFavourites() {
+        viewModelScope.launch(exceptionHandler) {
+            songRepository.deleteAllFavouritesFromLocal()
         }
     }
 
@@ -116,15 +139,26 @@ class SongViewModel @Inject constructor(
     }
 
     fun addSongToFavourites(song: Song) {
+        // remote
         FirebaseAuth.getInstance().currentUser?.email?.let {
             songRepository.pushSongToFavourites(it, song)
         }
+        //local
+        viewModelScope.launch(exceptionHandler) {
+            songRepository.insertFavouriteSongToLocal(song)
+        }
     }
 
-    fun removeSongFromFirebase(song: Song) {
+    fun removeSongFromFavourites(song: Song) {
+        // remote
         FirebaseAuth.getInstance().currentUser?.email?.let {
             songRepository.removeSongOnFavourites(it, song)
         }
-        getFavouriteSongs()
+
+        //app
+        viewModelScope.launch(exceptionHandler) {
+            songRepository.deleteFavouriteSongFromLocal(song)
+            getFavouriteSongsFromRemote()
+        }
     }
 }

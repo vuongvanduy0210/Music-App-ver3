@@ -5,13 +5,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.vuongvanduy.music.common.DATABASE_NAME
+import com.vuongvanduy.music.data.data_source.database.daos.FavouriteSongDAO
 import com.vuongvanduy.music.data.data_source.database.daos.SongDAO
+import com.vuongvanduy.music.data.data_source.database.entities.FavouriteSongEntity
 import com.vuongvanduy.music.data.data_source.database.entities.SongEntity
 
-@Database(entities = [SongEntity::class], version = 1)
+@Database(entities = [SongEntity::class, FavouriteSongEntity::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun songDao(): SongDAO
+
+    abstract fun favouriteSongDao(): FavouriteSongDAO
 
     companion object {
         private var instance: AppDatabase? = null
