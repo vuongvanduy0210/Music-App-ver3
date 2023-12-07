@@ -1,6 +1,7 @@
 package com.vuongvanduy.music.data.repositories
 
-import androidx.lifecycle.LiveData
+import com.vuongvanduy.music.data.common.toFavouriteSongEntity
+import com.vuongvanduy.music.data.common.toSongEntity
 import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.data.services.SongLocalService
 import com.vuongvanduy.music.data.services.SongRemoteService
@@ -13,8 +14,12 @@ class SongRepository @Inject constructor(
     private val songLocalService: SongLocalService
 ) {
 
-    fun getOnlineSongs(): LiveData<List<Song>> {
-        return songRemoteService.getAllSongsFromFirebase()
+    fun getOnlineSongs(callback: (List<Song>) -> Unit) {
+        songRemoteService.getAllSongsFromFirebase(callback)
+    }
+
+    fun getFavouriteSongs(callback: (List<Song>) -> Unit) {
+        songRemoteService.getFavouriteSongsFromFirebase(callback)
     }
 
     suspend fun getDeviceSongs() = withContext(Dispatchers.IO) {
@@ -27,5 +32,41 @@ class SongRepository @Inject constructor(
 
     fun removeSongOnFavourites(email: String, song: Song) {
         songRemoteService.removeSongOnFirebase(email, song)
+    }
+
+    // cache data
+
+    // online song
+    suspend fun getOnlineSongsFromLocal() = withContext(Dispatchers.IO) {
+        songLocalService.getOnlineSongs()
+    }
+
+    suspend fun insertOnlineSongsToLocal(list: List<Song>) = withContext(Dispatchers.IO) {
+        songLocalService.insertOnlineSongs(list.map {
+            it.toSongEntity()
+        })
+    }
+
+    // favourite song
+    suspend fun getFavouriteSongsFromLocal() = withContext(Dispatchers.IO) {
+        songLocalService.getFavouriteSongs()
+    }
+
+    suspend fun insertFavouriteSongsToLocal(list: List<Song>) = withContext(Dispatchers.IO) {
+        songLocalService.insertFavouriteSongs(list.map {
+            it.toFavouriteSongEntity()
+        })
+    }
+
+    suspend fun insertFavouriteSongToLocal(song: Song) = withContext(Dispatchers.IO) {
+        songLocalService.insertFavouriteSong(song.toFavouriteSongEntity())
+    }
+
+    suspend fun deleteAllFavouritesFromLocal() = withContext(Dispatchers.IO) {
+        songLocalService.deleteAllFavourites()
+    }
+
+    suspend fun deleteFavouriteSongFromLocal(song: Song) = withContext(Dispatchers.IO) {
+        songLocalService.deleteFavouriteSong(song.toFavouriteSongEntity())
     }
 }

@@ -1,4 +1,4 @@
-package com.vuongvanduy.music.activity.main
+package com.vuongvanduy.music.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -20,7 +20,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
-import com.google.firebase.auth.FirebaseAuth
 import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.activity.BaseActivity
 import com.vuongvanduy.music.common.*
@@ -120,10 +119,6 @@ class MainActivity : BaseActivity() {
     private fun init() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         songViewModel = ViewModelProvider(this)[SongViewModel::class.java]
-        songViewModel.getListOnline()
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            songViewModel.getFavouriteSongs()
-        }
         requestPermissionReadStorage()
         binding.viewModel = mainViewModel
         binding.lifecycleOwner = this

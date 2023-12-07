@@ -15,16 +15,6 @@ fun sortListAscending(list: MutableList<Song>?) {
     }
 }
 
-fun isListSortedAscending(list: MutableList<Song>): Boolean {
-    val collator = Collator.getInstance(Locale("vi"))
-    for (i in 1 until list.size) {
-        if (collator.compare(list[i].name!!, list[i - 1].name!!) < 0) {
-            return false
-        }
-    }
-    return true
-}
-
 fun containsIgnoreCaseWithDiacritics(mainString: String, subString: String): Boolean {
     val mainNormalized = removeDiacritics(mainString).lowercase()
     val subNormalized = removeDiacritics(subString).lowercase()

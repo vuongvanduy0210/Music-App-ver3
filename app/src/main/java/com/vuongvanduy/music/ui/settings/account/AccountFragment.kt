@@ -86,6 +86,7 @@ class AccountFragment : BaseFragment() {
                 Firebase.auth.signOut()
                 accountViewModel.user.value = null
                 songViewModel.favouriteSongs.value = null
+                songViewModel.deleteAllFavourites()
                 if (mainViewModel.currentListName == TITLE_FAVOURITE_SONGS) {
                     val list = mutableListOf<Song>()
                     sendListSongToService(mainActivity, list)
@@ -105,7 +106,7 @@ class AccountFragment : BaseFragment() {
                     tvName.text = user.displayName
                     tvEmail.text = user.email
 
-                    songViewModel.getFavouriteSongs()
+                    songViewModel.getFavouriteSongsFromRemote()
                 }
             } else {
                 binding.apply {
@@ -126,6 +127,5 @@ class AccountFragment : BaseFragment() {
 
         val user = FirebaseAuth.getInstance().currentUser
         accountViewModel.user.postValue(user)
-
     }
 }
