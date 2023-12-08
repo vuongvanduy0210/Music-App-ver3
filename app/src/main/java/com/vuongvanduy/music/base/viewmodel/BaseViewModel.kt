@@ -18,6 +18,6 @@ open class BaseViewModel : ViewModel() {
         private set
 
     var exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        Log.e("Duy", "Exception ${throwable.message}")
+        Log.e("CoroutineException", "Exception ${throwable.message}")
     }
 }

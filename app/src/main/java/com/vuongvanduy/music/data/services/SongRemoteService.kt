@@ -11,15 +11,26 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.vuongvanduy.music.base.service.BaseService
 import com.vuongvanduy.music.common.isSongExists
+import com.vuongvanduy.music.data.common.Response
 import com.vuongvanduy.music.data.common.sortListAscending
+import com.vuongvanduy.music.data.data_source.api.SongAPI
+import com.vuongvanduy.music.data.data_source.api.dto.SongDto
 import com.vuongvanduy.music.data.models.Song
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
+
 class SongRemoteService @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val songAPI: SongAPI
 ) : BaseService() {
     private val database = Firebase.database
+
+    suspend fun getOnlineSongs(): Response<List<SongDto>> {
+        return safeCallApi {
+            songAPI.getOnlineSongs()
+        }
+    }
 
     fun getAllSongsFromFirebase(callback: (List<Song>) -> Unit) {
         val list = mutableListOf<Song>()
@@ -73,12 +84,13 @@ class SongRemoteService @Inject constructor(
         })
     }
 
-    fun pushSongToFirebase(email: String, song: Song) {
+    fun pushSongToFirebase(email: String, song: Song, callback: () -> Unit) {
         val myRef = database.getReference("users")
             .child(email.substringBefore("."))
             .child("favourite_songs")
-        val path = song.name!!.replace("/", "-")
+        val path = song.name!!.replace("/", "|")
         myRef.child(path).setValue(song).addOnSuccessListener {
+            callback()
             Toast.makeText(
                 context,
                 "Add song from favourites success",
@@ -87,16 +99,15 @@ class SongRemoteService @Inject constructor(
         }
     }
 
-    fun removeSongOnFirebase(email: String, song: Song) {
-        val myRef = song.name?.let { name ->
-            database.getReference("users")
-                .child(email.substringBefore("."))
-                .child("favourite_songs")
-                .child(name)
-        }
-        myRef?.removeValue { databaseError, _ ->
+    fun removeSongOnFirebase(email: String, song: Song, callback: () -> Unit) {
+        val myRef = database.getReference("users")
+            .child(email.substringBefore("."))
+            .child("favourite_songs")
+        val path = song.name!!.replace("/", "|")
+        myRef.child(path).removeValue { databaseError, _ ->
             if (databaseError == null) {
                 // Removal successful
+                callback()
                 Toast.makeText(
                     context,
                     "Remove song from favourites success",

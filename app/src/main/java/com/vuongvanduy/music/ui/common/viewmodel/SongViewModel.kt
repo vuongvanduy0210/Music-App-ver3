@@ -10,6 +10,7 @@ import com.vuongvanduy.music.common.TITLE_FAVOURITE_SONGS
 import com.vuongvanduy.music.common.TITLE_ONLINE_SONGS
 import com.vuongvanduy.music.data.common.Response
 import com.vuongvanduy.music.data.common.sortListAscending
+import com.vuongvanduy.music.data.common.toSongDto
 import com.vuongvanduy.music.data.common.toSongModel
 import com.vuongvanduy.music.data.models.Category
 import com.vuongvanduy.music.data.models.Photo
@@ -55,16 +56,26 @@ class SongViewModel @Inject constructor(
                     onlineSongs.value = it
                 }
             }
-            songRepository.getOnlineSongs {
-                onlineSongs.value = it
-                viewModelScope.launch {
+
+            val networkResponse = songRepository.getOnlineSongs()
+            if (networkResponse is Response.Success) {
+                val songs = networkResponse.data?.map { it.toSongModel() }
+                sortListAscending(songs as MutableList<Song>)
+                songs.let {
+                    onlineSongs.value = it
                     songRepository.insertOnlineSongsToLocal(it)
+                }
+                Log.e("NetworkResponse", "Get data success")
+            } else if (networkResponse is Response.Error) {
+                networkResponse.message?.let {
+                    Log.e("NetworkResponse", it)
                 }
             }
         }
     }
 
     fun getFavouriteSongsFromRemote() {
+
         if (FirebaseAuth.getInstance().currentUser != null) {
             viewModelScope.launch(exceptionHandler) {
                 val response = songRepository.getFavouriteSongsFromLocal()
@@ -141,24 +152,23 @@ class SongViewModel @Inject constructor(
     fun addSongToFavourites(song: Song) {
         // remote
         FirebaseAuth.getInstance().currentUser?.email?.let {
-            songRepository.pushSongToFavourites(it, song)
-        }
-        //local
-        viewModelScope.launch(exceptionHandler) {
-            songRepository.insertFavouriteSongToLocal(song)
+            songRepository.pushSongToFavourites(it, song, callback = {
+                viewModelScope.launch(exceptionHandler) {
+                    songRepository.insertFavouriteSongToLocal(song)
+                }
+            })
         }
     }
 
     fun removeSongFromFavourites(song: Song) {
         // remote
         FirebaseAuth.getInstance().currentUser?.email?.let {
-            songRepository.removeSongOnFavourites(it, song)
-        }
-
-        //app
-        viewModelScope.launch(exceptionHandler) {
-            songRepository.deleteFavouriteSongFromLocal(song)
-            getFavouriteSongsFromRemote()
+            songRepository.removeSongOnFavourites(it, song, callback = {
+                viewModelScope.launch(exceptionHandler) {
+                    songRepository.deleteFavouriteSongFromLocal(song)
+                    getFavouriteSongsFromRemote()
+                }
+            })
         }
     }
 }
