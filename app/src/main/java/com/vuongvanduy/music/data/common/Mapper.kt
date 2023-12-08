@@ -1,5 +1,6 @@
 package com.vuongvanduy.music.data.common
 
+import com.vuongvanduy.music.data.data_source.api.dto.SongDto
 import com.vuongvanduy.music.data.data_source.database.entities.FavouriteSongEntity
 import com.vuongvanduy.music.data.data_source.database.entities.SongEntity
 import com.vuongvanduy.music.data.models.Song
@@ -28,6 +29,20 @@ fun FavouriteSongEntity.toSongModel() = Song(
 
 fun Song.toFavouriteSongEntity() = FavouriteSongEntity(
     id = resourceUri.hashCode(),
+    name = name!!,
+    singer = singer!!,
+    resourceUri = resourceUri!!,
+    imageUri = imageUri!!
+)
+
+fun SongDto.toSongModel() = Song(
+    name = name,
+    singer = singer,
+    resourceUri = resourceUri,
+    imageUri = imageUri
+)
+
+fun Song.toSongDto() = SongDto(
     name = name!!,
     singer = singer!!,
     resourceUri = resourceUri!!,

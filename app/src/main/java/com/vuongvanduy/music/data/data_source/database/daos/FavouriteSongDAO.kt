@@ -19,9 +19,9 @@ interface FavouriteSongDAO {
     @Query("delete from favourite_songs")
     suspend fun deleteAllSongs()
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE, entity = FavouriteSongEntity::class)
     suspend fun insertSong(song: FavouriteSongEntity)
 
-    @Delete
+    @Delete(FavouriteSongEntity::class)
     suspend fun deleteSong(song: FavouriteSongEntity)
 }

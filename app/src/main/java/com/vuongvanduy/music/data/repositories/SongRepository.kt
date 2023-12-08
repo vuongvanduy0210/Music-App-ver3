@@ -18,6 +18,10 @@ class SongRepository @Inject constructor(
         songRemoteService.getAllSongsFromFirebase(callback)
     }
 
+    suspend fun getOnlineSongs() = withContext(Dispatchers.IO) {
+        songRemoteService.getOnlineSongs()
+    }
+
     fun getFavouriteSongs(callback: (List<Song>) -> Unit) {
         songRemoteService.getFavouriteSongsFromFirebase(callback)
     }
@@ -26,16 +30,15 @@ class SongRepository @Inject constructor(
         songLocalService.getLocalMusic()
     }
 
-    fun pushSongToFavourites(email: String, song: Song) {
-        songRemoteService.pushSongToFirebase(email, song)
+    fun pushSongToFavourites(email: String, song: Song, callback: () -> Unit) {
+        songRemoteService.pushSongToFirebase(email, song, callback)
     }
 
-    fun removeSongOnFavourites(email: String, song: Song) {
-        songRemoteService.removeSongOnFirebase(email, song)
+    fun removeSongOnFavourites(email: String, song: Song, callback: () -> Unit) {
+        songRemoteService.removeSongOnFirebase(email, song, callback)
     }
 
     // cache data
-
     // online song
     suspend fun getOnlineSongsFromLocal() = withContext(Dispatchers.IO) {
         songLocalService.getOnlineSongs()
