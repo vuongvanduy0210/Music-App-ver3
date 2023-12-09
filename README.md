@@ -14,7 +14,7 @@
 
 **DI:** Hilt
 
-**Database:** Firebase Realtime, Storage
+**Database:** Firebase Realtime, Firebase Cloud Storage
 
 **Authentication:** Firebase Auth
 
