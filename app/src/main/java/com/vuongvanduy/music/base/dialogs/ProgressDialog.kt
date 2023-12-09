@@ -5,7 +5,7 @@ import android.content.Context
 import android.widget.TextView
 import com.vuongvanduy.music.R
 
-class ProgressDialog constructor(context: Context, message: String) {
+class ProgressDialog(context: Context, message: String) {
 
     private val dialog = Dialog(context)
 

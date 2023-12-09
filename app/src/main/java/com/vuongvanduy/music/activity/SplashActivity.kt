@@ -6,18 +6,22 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.vuongvanduy.music.R
-import com.vuongvanduy.music.activity.main.MainActivity
 import com.vuongvanduy.music.common.*
-import com.vuongvanduy.music.data.sharedPreferences.DataLocalManager
+import com.vuongvanduy.music.data.data_source.app_data.DataLocalManager
 import com.vuongvanduy.music.databinding.ActivitySplashBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var dataLocalManager: DataLocalManager
 
     private lateinit var binding: ActivitySplashBinding
 
@@ -42,7 +46,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun setThemeMode() {
-        when (DataLocalManager.getStringThemeMode()) {
+        when (dataLocalManager.getStringThemeMode()) {
             SYSTEM_MODE ->
                 setThemeMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 

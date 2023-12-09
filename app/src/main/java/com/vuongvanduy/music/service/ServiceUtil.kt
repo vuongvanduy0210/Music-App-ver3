@@ -4,9 +4,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.vuongvanduy.music.activity.main.MainActivity
+import com.vuongvanduy.music.activity.MainActivity
 import com.vuongvanduy.music.broadcast_receiver.MyReceiver
 import com.vuongvanduy.music.common.ACTION_MUSIC_NAME
+import com.vuongvanduy.music.data.models.Song
+import java.text.Collator
+import java.util.Locale
 
 fun getPendingIntent(context: Context, action: Int): PendingIntent? {
     val intent = Intent(context, MyReceiver::class.java)
@@ -42,4 +45,14 @@ fun getPendingIntentClickNotification(context: Context): PendingIntent {
             PendingIntent.FLAG_IMMUTABLE
         )
     }
+}
+
+fun isListSortedAscending(list: MutableList<Song>): Boolean {
+    val collator = Collator.getInstance(Locale("vi"))
+    for (i in 1 until list.size) {
+        if (collator.compare(list[i].name!!, list[i - 1].name!!) < 0) {
+            return false
+        }
+    }
+    return true
 }

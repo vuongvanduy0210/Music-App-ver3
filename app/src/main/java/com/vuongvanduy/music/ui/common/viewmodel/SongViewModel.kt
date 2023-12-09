@@ -1,20 +1,17 @@
 package com.vuongvanduy.music.ui.common.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
 import com.vuongvanduy.music.base.viewmodel.BaseViewModel
 import com.vuongvanduy.music.common.TITLE_DEVICE_SONGS
 import com.vuongvanduy.music.common.TITLE_FAVOURITE_SONGS
 import com.vuongvanduy.music.common.TITLE_ONLINE_SONGS
-import com.vuongvanduy.music.common.isSongExists
+import com.vuongvanduy.music.data.common.Response
 import com.vuongvanduy.music.data.common.sortListAscending
+import com.vuongvanduy.music.data.common.toSongDto
+import com.vuongvanduy.music.data.common.toSongModel
 import com.vuongvanduy.music.data.models.Category
 import com.vuongvanduy.music.data.models.Photo
 import com.vuongvanduy.music.data.models.Song
@@ -24,10 +21,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SongViewModel @Inject constructor(private val songRepository: SongRepository) :
-    BaseViewModel() {
+class SongViewModel @Inject constructor(
+    private val songRepository: SongRepository
+) : BaseViewModel() {
 
-    var onlineSongs = MutableLiveData<List<Song>>()
+    val onlineSongs = MutableLiveData<List<Song>>()
 
     val favouriteSongs = MutableLiveData<List<Song>>()
 
@@ -43,42 +41,67 @@ class SongViewModel @Inject constructor(private val songRepository: SongReposito
 
     val optionSong = MutableLiveData<Song>()
 
-    fun getListOnline() {
-        onlineSongs = songRepository.getOnlineSongs() as MutableLiveData<List<Song>>
+    init {
+        getOnlineSongsFromRemote()
+        getFavouriteSongsFromRemote()
     }
 
-    fun getFavouriteSongs() {
+    private fun getOnlineSongsFromRemote() {
+        viewModelScope.launch(exceptionHandler) {
+            val response = songRepository.getOnlineSongsFromLocal()
+            if (response is Response.Success) {
+                val songs = response.data?.map { it.toSongModel() }
+                sortListAscending(songs as MutableList<Song>)
+                songs.let {
+                    onlineSongs.value = it
+                }
+            }
+
+            val networkResponse = songRepository.getOnlineSongs()
+            if (networkResponse is Response.Success) {
+                val songs = networkResponse.data?.map { it.toSongModel() }
+                sortListAscending(songs as MutableList<Song>)
+                songs.let {
+                    onlineSongs.value = it
+                    songRepository.insertOnlineSongsToLocal(it)
+                }
+                Log.e("NetworkResponse", "Get data success")
+            } else if (networkResponse is Response.Error) {
+                networkResponse.message?.let {
+                    Log.e("NetworkResponse", it)
+                }
+            }
+        }
+    }
+
+    fun getFavouriteSongsFromRemote() {
+
         if (FirebaseAuth.getInstance().currentUser != null) {
-            getListFavouriteSongs()
-        }
-    }
-
-    private fun getListFavouriteSongs() {
-
-        val list = mutableListOf<Song>()
-        val email = FirebaseAuth.getInstance().currentUser?.email?.substringBefore(".")
-        val myRef = email?.let {
-            Firebase.database.getReference("users")
-                .child(it.substringBefore("."))
-                .child("favourite_songs")
-        }
-        myRef?.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val song = postSnapshot.getValue<Song>()
-                    if (song != null) {
-                        if (!isSongExists(list, song)) {
-                            list.add(song)
-                        }
+            viewModelScope.launch(exceptionHandler) {
+                val response = songRepository.getFavouriteSongsFromLocal()
+                if (response is Response.Success) {
+                    val songs = response.data?.map { it.toSongModel() }
+                    sortListAscending(songs as MutableList<Song>)
+                    songs.let {
+                        favouriteSongs.value = it
                     }
                 }
-                sortListAscending(list)
-                favouriteSongs.value = list
+                songRepository.getFavouriteSongs {
+                    favouriteSongs.value = it
+                    viewModelScope.launch(exceptionHandler) {
+                        songRepository.deleteAllFavouritesFromLocal()
+                        songRepository.insertFavouriteSongsToLocal(it)
+                        Log.e("SongViewModel", "saving data to local")
+                    }
+                }
             }
+        }
+    }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        })
+    fun deleteAllFavourites() {
+        viewModelScope.launch(exceptionHandler) {
+            songRepository.deleteAllFavouritesFromLocal()
+        }
     }
 
     fun getLocalData() {
@@ -93,7 +116,7 @@ class SongViewModel @Inject constructor(private val songRepository: SongReposito
     fun getListPhotos() {
         val list = mutableListOf<Photo>()
         if (!onlineSongs.value.isNullOrEmpty()) {
-            val listSongs = onlineSongs.value!!.shuffled().take(5)
+            val listSongs = onlineSongs.value!!.take(5)
             listSongs.forEach { song ->
                 song.imageUri?.let { list.add(Photo(it)) }
             }
@@ -121,21 +144,31 @@ class SongViewModel @Inject constructor(private val songRepository: SongReposito
     private fun getSongsShow(songs: MutableList<Song>?): MutableList<Song> {
         var list = mutableListOf<Song>()
         if (!songs.isNullOrEmpty()) {
-            list = songs.shuffled().take(10) as MutableList<Song>
+            list = songs.take(10) as MutableList<Song>
         }
         return list
     }
 
     fun addSongToFavourites(song: Song) {
+        // remote
         FirebaseAuth.getInstance().currentUser?.email?.let {
-            songRepository.pushSongToFavourites(it, song)
+            songRepository.pushSongToFavourites(it, song, callback = {
+                viewModelScope.launch(exceptionHandler) {
+                    songRepository.insertFavouriteSongToLocal(song)
+                }
+            })
         }
     }
 
-    fun removeSongFromFirebase(song: Song) {
+    fun removeSongFromFavourites(song: Song) {
+        // remote
         FirebaseAuth.getInstance().currentUser?.email?.let {
-            songRepository.removeSongOnFavourites(it, song)
+            songRepository.removeSongOnFavourites(it, song, callback = {
+                viewModelScope.launch(exceptionHandler) {
+                    songRepository.deleteFavouriteSongFromLocal(song)
+                    getFavouriteSongsFromRemote()
+                }
+            })
         }
-        getFavouriteSongs()
     }
 }

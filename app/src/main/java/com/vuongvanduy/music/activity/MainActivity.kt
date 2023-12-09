@@ -1,4 +1,4 @@
-package com.vuongvanduy.music.activity.main
+package com.vuongvanduy.music.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -16,16 +16,15 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
-import com.google.firebase.auth.FirebaseAuth
 import com.vuongvanduy.music.R
+import com.vuongvanduy.music.base.activity.BaseActivity
 import com.vuongvanduy.music.common.*
+import com.vuongvanduy.music.data.data_source.app_data.DataLocalManager
 import com.vuongvanduy.music.data.models.Song
-import com.vuongvanduy.music.data.sharedPreferences.DataLocalManager
 import com.vuongvanduy.music.databinding.ActivityMainBinding
 import com.vuongvanduy.music.ui.common.adapter.FragmentViewPagerAdapter
 import com.vuongvanduy.music.ui.common.viewmodel.MainViewModel
@@ -34,9 +33,12 @@ import com.vuongvanduy.music.ui.music_player.MusicPlayerFragment
 import com.vuongvanduy.music.ui.transformer.ZoomOutPageTransformer
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Random
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
+
+    override val TAG = MainActivity::class.java.simpleName.toString()
 
     lateinit var binding: ActivityMainBinding
 
@@ -45,6 +47,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var songViewModel: SongViewModel
 
     private lateinit var onBackPressedCallback: OnBackPressedCallback
+
+    @Inject
+    lateinit var dataLocalManager: DataLocalManager
 
     private val serviceReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -114,10 +119,6 @@ class MainActivity : AppCompatActivity() {
     private fun init() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         songViewModel = ViewModelProvider(this)[SongViewModel::class.java]
-        songViewModel.getListOnline()
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            songViewModel.getFavouriteSongs()
-        }
         requestPermissionReadStorage()
         binding.viewModel = mainViewModel
         binding.lifecycleOwner = this
@@ -378,7 +379,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             themeMode.observe(this@MainActivity) {
-                mainViewModel.themeMode.value?.let { DataLocalManager.putStringThemeMode(it) }
+                mainViewModel.themeMode.value?.let { dataLocalManager.putStringThemeMode(it) }
             }
         }
     }
@@ -468,6 +469,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun isSettingsFragment() = binding.bottomNav.selectedItemId == R.id.settings
 
+    @SuppressLint("RestrictedApi")
     private fun isSettingOptionsFragment(): Boolean {
         if (!isSettingsFragment()) {
             return false

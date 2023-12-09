@@ -17,7 +17,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vuongvanduy.music.base.fragment.BaseFragment
-import com.vuongvanduy.music.common.*
+import com.vuongvanduy.music.common.ACTION_START
+import com.vuongvanduy.music.common.TITLE_ONLINE_SONGS
+import com.vuongvanduy.music.common.hideKeyboard
+import com.vuongvanduy.music.common.sdk33AndUp
+import com.vuongvanduy.music.common.sendDataToService
+import com.vuongvanduy.music.common.sendListSongToService
 import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.FragmentOnlineSongsBinding
 import com.vuongvanduy.music.ui.common.adapter.ExtendSongAdapter
@@ -28,6 +33,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class OnlineSongsFragment : BaseFragment() {
+
+    override val TAG = OnlineSongsFragment::class.java.simpleName.toString()
 
     private lateinit var binding: FragmentOnlineSongsBinding
 

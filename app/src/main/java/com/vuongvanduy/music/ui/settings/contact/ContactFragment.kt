@@ -14,7 +14,11 @@ import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.fragment.BaseFragment
-import com.vuongvanduy.music.common.*
+import com.vuongvanduy.music.common.EMAIL_CONTACT
+import com.vuongvanduy.music.common.MICROSOFT_CONTACT
+import com.vuongvanduy.music.common.TITLE_CONTACT
+import com.vuongvanduy.music.common.URI_FB
+import com.vuongvanduy.music.common.URI_ZALO
 import com.vuongvanduy.music.databinding.DialogMailBinding
 import com.vuongvanduy.music.databinding.FragmentContactBinding
 

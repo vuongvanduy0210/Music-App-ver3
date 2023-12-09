@@ -17,7 +17,6 @@ import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.DialogLoginBinding
 import com.vuongvanduy.music.service.MusicService
 import java.io.Serializable
-import java.lang.Exception
 
 const val CHANNEL_ID = "channel_service"
 
@@ -101,6 +100,8 @@ const val URI_ZALO = "https://zalo.me/0987786011"
 
 const val GUEST = "Guest"
 const val GUEST_EMAIL = "someone@gmail.com"
+
+const val DATABASE_NAME = "my_db"
 
 fun hideKeyboard(context: Context, view: View) {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

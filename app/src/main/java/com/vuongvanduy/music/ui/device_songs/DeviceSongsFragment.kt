@@ -32,6 +32,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class DeviceSongsFragment : BaseFragment() {
 
+    override val TAG = DeviceSongsFragment::class.java.simpleName.toString()
+
     private lateinit var binding: FragmentDeviceSongsBinding
 
     private val activityResultLauncher =

@@ -13,7 +13,7 @@ import com.vuongvanduy.music.databinding.ItemCategoryBinding
 import com.vuongvanduy.music.ui.common.myinterface.IClickSongListener
 
 
-class CategoryAdapter constructor(
+class CategoryAdapter(
     private val context: Context,
     private val iClickCategoryListener: IClickCategoryListener
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
@@ -70,7 +70,7 @@ class CategoryAdapter constructor(
         }
     }
 
-    inner class CategoryViewHolder constructor(val binding: ItemCategoryBinding) :
+    inner class CategoryViewHolder(val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(category: Category) {

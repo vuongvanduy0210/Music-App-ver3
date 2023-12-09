@@ -12,12 +12,17 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.fragment.BaseFragment
-import com.vuongvanduy.music.common.*
+import com.vuongvanduy.music.common.GUEST
+import com.vuongvanduy.music.common.GUEST_EMAIL
+import com.vuongvanduy.music.common.TITLE_ACCOUNT
+import com.vuongvanduy.music.common.TITLE_FAVOURITE_SONGS
 import com.vuongvanduy.music.common.sendListSongToService
 import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.FragmentAccountBinding
 
 class AccountFragment : BaseFragment() {
+
+    override val TAG = AccountFragment::class.java.simpleName.toString()
 
     private lateinit var binding: FragmentAccountBinding
 
@@ -81,6 +86,7 @@ class AccountFragment : BaseFragment() {
                 Firebase.auth.signOut()
                 accountViewModel.user.value = null
                 songViewModel.favouriteSongs.value = null
+                songViewModel.deleteAllFavourites()
                 if (mainViewModel.currentListName == TITLE_FAVOURITE_SONGS) {
                     val list = mutableListOf<Song>()
                     sendListSongToService(mainActivity, list)
@@ -100,7 +106,7 @@ class AccountFragment : BaseFragment() {
                     tvName.text = user.displayName
                     tvEmail.text = user.email
 
-                    songViewModel.getFavouriteSongs()
+                    songViewModel.getFavouriteSongsFromRemote()
                 }
             } else {
                 binding.apply {
@@ -121,6 +127,5 @@ class AccountFragment : BaseFragment() {
 
         val user = FirebaseAuth.getInstance().currentUser
         accountViewModel.user.postValue(user)
-
     }
 }

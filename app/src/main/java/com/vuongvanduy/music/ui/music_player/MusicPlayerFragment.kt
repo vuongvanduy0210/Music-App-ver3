@@ -19,6 +19,8 @@ import com.vuongvanduy.music.databinding.FragmentMusicPlayerBinding
 
 class MusicPlayerFragment : BaseFragment() {
 
+    override val TAG = MusicPlayerFragment::class.java.simpleName.toString()
+
     private lateinit var binding: FragmentMusicPlayerBinding
 
     override fun onCreateView(
@@ -172,7 +174,7 @@ class MusicPlayerFragment : BaseFragment() {
                 )
             ) {
                 mainViewModel.currentSong.value?.let {
-                    removeSongFromFirebase(it)
+                    removeSongFromFavourites(it)
                 }
             } else {
                 mainViewModel.currentSong.value?.let {
