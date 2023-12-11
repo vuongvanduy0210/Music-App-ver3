@@ -62,10 +62,10 @@ class SignUpFragment : BaseFragment() {
             visibility = View.GONE
         }
 
-        val email = binding.edtEmail.text.trim().toString()
-        val name = binding.edtName.text.trim().toString()
-        val password = binding.edtPassword.text.trim().toString()
-        val confirmPassword = binding.edtConfirmPassword.text.trim().toString()
+        val email = binding.edtEmail.text?.trim().toString()
+        val name = binding.edtName.text?.trim().toString()
+        val password = binding.edtPassword.text?.trim().toString()
+        val confirmPassword = binding.edtConfirmPassword.text?.trim().toString()
 
         ValidationUtils.checkValidSignUpInput(email, name, password, confirmPassword)?.let {
             binding.apply {

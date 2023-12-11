@@ -134,11 +134,6 @@ class DeviceSongsFragment : BaseFragment() {
     }
 
     private fun setOnClickBtSearchView() {
-        binding.imgClear.apply {
-            setOnClickListener {
-                binding.edtSearch.setText("")
-            }
-        }
         binding.edtSearch.apply {
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {

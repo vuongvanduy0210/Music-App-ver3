@@ -4,6 +4,7 @@
     <color name="bg_toolbar_color">#151C4A</color>
     <color name="text_color">#FFFFFFFF</color>
     <color name="bg_color">#000000</color>
+    <color name="bg_edit_text_color">#2E2D2D</color>
     <color name="bg_bottom_sheet_color">#373737</color>
     <color name="seekbar_color">#FF03DAC5</color>
 

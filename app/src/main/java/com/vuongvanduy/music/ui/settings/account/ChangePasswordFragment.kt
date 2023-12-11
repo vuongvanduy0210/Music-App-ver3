@@ -52,9 +52,9 @@ class ChangePasswordFragment : BaseFragment() {
             tvNoti.visibility = View.GONE
         }
 
-        val oldPass = binding.edtOldPassword.text.trim().toString()
-        val newPass = binding.edtNewPassword.text.trim().toString()
-        val confirmPass = binding.edtConfirmPassword.text.trim().toString()
+        val oldPass = binding.edtOldPassword.text?.trim().toString()
+        val newPass = binding.edtNewPassword.text?.trim().toString()
+        val confirmPass = binding.edtConfirmPassword.text?.trim().toString()
 
         ValidationUtils.checkValidChangePasswordInput(oldPass, newPass, confirmPass)?.let {
             binding.apply {
