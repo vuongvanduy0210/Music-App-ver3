@@ -125,7 +125,7 @@ class ProfileFragment : BaseFragment() {
     private fun onClickUpdateProfile() {
         val dialog = ProgressDialog(mainActivity, "Updating...")
         hideKeyboard(mainActivity, binding.root)
-        val name = binding.edtName.text.trim().toString()
+        val name = binding.edtName.text?.trim().toString()
         if (name.isEmpty() || name.isBlank()) {
             binding.tvError.text = "Name can't blank"
             binding.tvError.visibility = View.VISIBLE

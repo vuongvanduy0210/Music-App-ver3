@@ -10,7 +10,6 @@ import com.vuongvanduy.music.common.TITLE_FAVOURITE_SONGS
 import com.vuongvanduy.music.common.TITLE_ONLINE_SONGS
 import com.vuongvanduy.music.data.common.Response
 import com.vuongvanduy.music.data.common.sortListAscending
-import com.vuongvanduy.music.data.common.toSongDto
 import com.vuongvanduy.music.data.common.toSongModel
 import com.vuongvanduy.music.data.models.Category
 import com.vuongvanduy.music.data.models.Photo

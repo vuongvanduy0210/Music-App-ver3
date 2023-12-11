@@ -11,6 +11,7 @@ class ProgressDialog(context: Context, message: String) {
 
     init {
         dialog.setContentView(R.layout.progress_dialog)
+        dialog.setCanceledOnTouchOutside(false)
         val messageTextView = dialog.findViewById<TextView>(R.id.message_text_view)
         messageTextView.text = message
     }

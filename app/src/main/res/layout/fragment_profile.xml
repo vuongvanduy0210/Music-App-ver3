@@ -41,18 +41,17 @@
             android:textSize="20sp"
             android:textColor="@color/text_color" />
 
-        <EditText
-            android:id="@+id/edt_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/BaseTextInputLayoutForLogin"
             android:hint="@string/name_hint"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:textSize="20sp"
-            android:textColor="@color/text_color"
-            android:backgroundTint="@color/text_color" />
+            android:layout_marginTop="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_name"
+                style="@style/BaseEditTextForLogin"
+                android:inputType="textPersonName"
+                android:maxLength="100" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/tv_error"
@@ -67,7 +66,7 @@
             android:id="@+id/bt_update_profile"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/custom_button"
             android:backgroundTint="@color/yellow"
             android:text="@string/update_profile"

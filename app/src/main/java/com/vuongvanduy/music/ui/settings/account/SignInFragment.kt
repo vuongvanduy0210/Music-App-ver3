@@ -152,8 +152,8 @@ class SignInFragment : BaseFragment() {
 
         val auth = FirebaseAuth.getInstance()
 
-        val email = binding.edtEmail.text.trim().toString()
-        val password = binding.edtPassword.text.trim().toString()
+        val email = binding.edtEmail.text?.trim().toString()
+        val password = binding.edtPassword.text?.trim().toString()
 
         ValidationUtils.checkValidSignInInput(email, password)?.let {
             binding.apply {

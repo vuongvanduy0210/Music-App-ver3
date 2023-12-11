@@ -49,7 +49,7 @@ class ForgotPasswordFragment : BaseFragment() {
         hideKeyboard(mainActivity, binding.root)
         val dialog = ProgressDialog(mainActivity, "Loading...")
 
-        val email = binding.edtEmail.text.trim().toString()
+        val email = binding.edtEmail.text?.trim().toString()
         binding.tvError.apply {
             text = ""
             visibility = View.GONE

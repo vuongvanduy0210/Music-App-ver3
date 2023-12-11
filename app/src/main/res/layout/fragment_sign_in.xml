@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -24,26 +25,30 @@
             android:textSize="30sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/edt_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/text_color"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/BaseTextInputLayoutForLogin"
             android:hint="@string/email_hint"
-            android:inputType="textEmailAddress"
-            android:maxLength="100"
-            android:textColor="@color/text_color" />
+            app:startIconDrawable="@drawable/ic_email">
 
-        <EditText
-            android:id="@+id/edt_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/text_color"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_email"
+                style="@style/BaseEditTextForLogin"
+                android:inputType="textEmailAddress"
+                android:maxLength="100" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/BaseTextInputLayoutForLogin"
             android:hint="@string/password_hint"
-            android:inputType="textPassword"
-            android:maxLength="100"
-            android:textColor="@color/text_color" />
+            app:startIconDrawable="@drawable/ic_lock"
+            app:endIconMode="password_toggle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_password"
+                style="@style/BaseEditTextForLogin"
+                android:inputType="textPassword"
+                android:maxLength="100" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/tv_error"
@@ -60,9 +65,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="15dp"
             android:orientation="vertical"
-            android:padding="7dp">
+            android:padding="7dp"
+            android:layout_marginTop="7dp">
 
             <TextView
                 android:layout_width="wrap_content"
