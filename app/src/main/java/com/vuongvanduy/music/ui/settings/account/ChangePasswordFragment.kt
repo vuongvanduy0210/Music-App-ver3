@@ -11,12 +11,12 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.dialogs.ProgressDialog
-import com.vuongvanduy.music.base.fragment.BaseFragment
+import com.vuongvanduy.music.base.fragment.BaseMainFragment
 import com.vuongvanduy.music.common.TITLE_ACCOUNT
 import com.vuongvanduy.music.common.hideKeyboard
 import com.vuongvanduy.music.databinding.FragmentChangePasswordBinding
 
-class ChangePasswordFragment : BaseFragment() {
+class ChangePasswordFragment : BaseMainFragment() {
 
     private lateinit var binding: FragmentChangePasswordBinding
 

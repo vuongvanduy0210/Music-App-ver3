@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import com.vuongvanduy.music.R
-import com.vuongvanduy.music.base.fragment.BaseFragment
+import com.vuongvanduy.music.base.fragment.BaseMainFragment
 import com.vuongvanduy.music.common.DARK_MODE
 import com.vuongvanduy.music.common.LIGHT_MODE
 import com.vuongvanduy.music.common.SYSTEM_MODE
 import com.vuongvanduy.music.common.TITLE_APPEARANCE
 import com.vuongvanduy.music.databinding.FragmentAppearanceBinding
 
-class AppearanceFragment : BaseFragment() {
+class AppearanceFragment : BaseMainFragment() {
 
     private lateinit var binding: FragmentAppearanceBinding
 

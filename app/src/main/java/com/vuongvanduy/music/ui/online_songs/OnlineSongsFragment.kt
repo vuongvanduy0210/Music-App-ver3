@@ -16,7 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.vuongvanduy.music.base.fragment.BaseFragment
+import com.vuongvanduy.music.base.fragment.BaseMainFragment
 import com.vuongvanduy.music.common.ACTION_START
 import com.vuongvanduy.music.common.TITLE_ONLINE_SONGS
 import com.vuongvanduy.music.common.hideKeyboard
@@ -32,7 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class OnlineSongsFragment : BaseFragment() {
+class OnlineSongsFragment : BaseMainFragment() {
 
     override val TAG = OnlineSongsFragment::class.java.simpleName.toString()
 

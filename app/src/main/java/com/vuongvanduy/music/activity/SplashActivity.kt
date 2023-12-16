@@ -6,10 +6,12 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.animation.AnimationUtils
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.firebase.auth.FirebaseAuth
 import com.vuongvanduy.music.R
+import com.vuongvanduy.music.base.activity.BaseActivity
 import com.vuongvanduy.music.common.*
 import com.vuongvanduy.music.data.data_source.app_data.DataLocalManager
 import com.vuongvanduy.music.databinding.ActivitySplashBinding
@@ -18,7 +20,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
+
+    override val TAG = SplashActivity::class.java.simpleName.toString()
 
     @Inject
     lateinit var dataLocalManager: DataLocalManager
@@ -36,6 +40,7 @@ class SplashActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             nextActivity()
         } else {
+            Log.e("SplashActivity", "Go to Login")
             Handler(Looper.myLooper()!!).postDelayed({ nextActivity() }, 2500)
         }
     }
@@ -66,7 +71,11 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun nextActivity() {
-        val intent = Intent(this@SplashActivity, MainActivity::class.java)
+        val intent = if (FirebaseAuth.getInstance().currentUser != null) {
+            Intent(this@SplashActivity, MainActivity::class.java)
+        } else {
+            Intent(this@SplashActivity, LoginActivity::class.java)
+        }
         startActivity(intent)
         finish()
     }

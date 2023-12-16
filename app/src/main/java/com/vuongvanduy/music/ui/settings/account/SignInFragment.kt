@@ -25,13 +25,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.dialogs.ProgressDialog
-import com.vuongvanduy.music.base.fragment.BaseFragment
-import com.vuongvanduy.music.common.TITLE_ACCOUNT
+import com.vuongvanduy.music.base.fragment.BaseLoginFragment
 import com.vuongvanduy.music.common.showDialog
 import com.vuongvanduy.music.databinding.FragmentSignInBinding
 
 
-class SignInFragment : BaseFragment() {
+class SignInFragment : BaseLoginFragment() {
 
     private lateinit var binding: FragmentSignInBinding
 
@@ -48,14 +47,11 @@ class SignInFragment : BaseFragment() {
                         idToken != null -> {
                             val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
                             Firebase.auth.signInWithCredential(firebaseCredential)
-                                .addOnCompleteListener(mainActivity) { task ->
+                                .addOnCompleteListener(loginActivity) { task ->
                                     if (task.isSuccessful) {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.e("SignInFragment", "SignInSuccess")
-                                        findNavController().popBackStack(
-                                            R.id.accountFragment,
-                                            false
-                                        )
+                                        loginActivity.goToMainActivity()
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.e("SignInFragment", "SignIn Fail")
@@ -98,12 +94,12 @@ class SignInFragment : BaseFragment() {
     }
 
     private fun drawUI() {
-        Glide.with(mainActivity).load(R.drawable.ic_google).into(binding.btSignInGoogle)
-        Glide.with(mainActivity).load(R.drawable.ic_github).into(binding.btSignInGithub)
+        Glide.with(loginActivity).load(R.drawable.ic_google).into(binding.btSignInGoogle)
+        Glide.with(loginActivity).load(R.drawable.ic_github).into(binding.btSignInGithub)
     }
 
     private fun setSignInWithGoogle() {
-        oneTapClient = Identity.getSignInClient(mainActivity)
+        oneTapClient = Identity.getSignInClient(loginActivity)
         signUpRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
@@ -143,7 +139,7 @@ class SignInFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun onClickSignIn() {
 
-        val progressDialog = ProgressDialog(mainActivity, "Signing in...")
+        val progressDialog = ProgressDialog(loginActivity, "Signing in...")
 
         binding.tvError.apply {
             text = ""
@@ -179,10 +175,10 @@ class SignInFragment : BaseFragment() {
                         if (!user.isEmailVerified) {
                             val message = "Your account is not verified. " +
                                     "Please check your email (${user.email}) to continue."
-                            showDialog(mainActivity, layoutInflater, message)
+                            showDialog(loginActivity, layoutInflater, message)
                             FirebaseAuth.getInstance().signOut()
                         } else {
-                            findNavController().popBackStack(R.id.accountFragment, false)
+                            loginActivity.goToMainActivity()
                         }
                     }
                 }
@@ -222,10 +218,10 @@ class SignInFragment : BaseFragment() {
     }
 
     private fun onClickSignInWithGoogle() {
-        val progressDialog = ProgressDialog(mainActivity, "Loading...")
+        val progressDialog = ProgressDialog(loginActivity, "Loading...")
         progressDialog.show()
         oneTapClient.beginSignIn(signUpRequest)
-            .addOnSuccessListener(mainActivity) { result ->
+            .addOnSuccessListener(loginActivity) { result ->
                 try {
                     progressDialog.dismiss()
                     val intentSenderRequest =
@@ -240,10 +236,5 @@ class SignInFragment : BaseFragment() {
     private fun goToGithubAuthFragment() {
         val action = SignInFragmentDirections.actionSignInFragmentToGithubAuthFragment()
         findNavController().navigate(action)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mainActivity.binding.toolBarTitle.text = TITLE_ACCOUNT
     }
 }

@@ -434,7 +434,7 @@ class MainActivity : BaseActivity() {
 
     private fun replaceMusicPlayer() {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_right)
+        transaction.setCustomAnimations(R.anim.slide_in_bottom, android.R.anim.slide_out_right)
             .replace(R.id.layout_music_player, MusicPlayerFragment())
             .addToBackStack("MusicPlayerFragment")
             .commit()
@@ -488,11 +488,9 @@ class MainActivity : BaseActivity() {
         }
 
     private fun popMusicPlayer() {
-        val slideOutAnimation =
-            AnimationUtils.loadAnimation(
-                this@MainActivity,
-                R.anim.slide_out_right
-            )
+
+        val slideOutAnimation = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right)
+
         slideOutAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {}
 
@@ -503,6 +501,11 @@ class MainActivity : BaseActivity() {
             override fun onAnimationRepeat(animation: Animation) {}
         })
         binding.layoutMusicPlayer.startAnimation(slideOutAnimation)
+    }
+
+    fun goToLoginActivity() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onResume() {

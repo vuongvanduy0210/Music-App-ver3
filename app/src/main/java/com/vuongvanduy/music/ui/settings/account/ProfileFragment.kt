@@ -20,13 +20,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.dialogs.ProgressDialog
-import com.vuongvanduy.music.base.fragment.BaseFragment
+import com.vuongvanduy.music.base.fragment.BaseMainFragment
 import com.vuongvanduy.music.common.TITLE_ACCOUNT
 import com.vuongvanduy.music.common.hideKeyboard
 import com.vuongvanduy.music.databinding.FragmentProfileBinding
 
 
-class ProfileFragment : BaseFragment() {
+class ProfileFragment : BaseMainFragment() {
 
     private lateinit var binding: FragmentProfileBinding
 

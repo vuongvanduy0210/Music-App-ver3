@@ -6,15 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
-import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.dialogs.ProgressDialog
-import com.vuongvanduy.music.base.fragment.BaseFragment
+import com.vuongvanduy.music.base.fragment.BaseLoginFragment
 import com.vuongvanduy.music.databinding.FragmentGithubAuthBinding
 
-class GithubAuthFragment : BaseFragment() {
+class GithubAuthFragment : BaseLoginFragment() {
 
     private lateinit var binding: FragmentGithubAuthBinding
 
@@ -56,24 +54,24 @@ class GithubAuthFragment : BaseFragment() {
         provider.addCustomParameter("login", email)
         provider.scopes = listOf("user:email")
 
-        val progressDialog = ProgressDialog(mainActivity, "Loading...")
+        val progressDialog = ProgressDialog(loginActivity, "Loading...")
         progressDialog.show()
         val pendingResultTask = FirebaseAuth.getInstance().pendingAuthResult
         if (pendingResultTask != null) {
             // There's something already here! Finish the sign-in for your user.
             pendingResultTask
                 .addOnSuccessListener {
-                    openNextActivity()
+                    loginActivity.goToMainActivity()
                 }
                 .addOnFailureListener {
                     Log.e("GithubAuthFragment", "pendingResultTask: ${it.message.toString()}")
                 }
         } else {
             FirebaseAuth.getInstance()
-                .startActivityForSignInWithProvider(mainActivity, provider.build())
+                .startActivityForSignInWithProvider(loginActivity, provider.build())
                 .addOnSuccessListener {
                     progressDialog.dismiss()
-                    openNextActivity()
+                    loginActivity.goToMainActivity()
                 }
                 .addOnFailureListener {
                     Log.e("GithubAuthFragment", it.message.toString())
@@ -84,9 +82,5 @@ class GithubAuthFragment : BaseFragment() {
                     }
                 }
         }
-    }
-
-    private fun openNextActivity() {
-        findNavController().popBackStack(R.id.accountFragment, false)
     }
 }

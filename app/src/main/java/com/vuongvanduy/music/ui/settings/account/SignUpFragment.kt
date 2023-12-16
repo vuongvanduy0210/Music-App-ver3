@@ -13,13 +13,12 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.dialogs.ProgressDialog
-import com.vuongvanduy.music.base.fragment.BaseFragment
-import com.vuongvanduy.music.common.TITLE_ACCOUNT
+import com.vuongvanduy.music.base.fragment.BaseLoginFragment
 import com.vuongvanduy.music.common.showDialog
 import com.vuongvanduy.music.databinding.FragmentSignUpBinding
 
 
-class SignUpFragment : BaseFragment() {
+class SignUpFragment : BaseLoginFragment() {
 
     private lateinit var binding: FragmentSignUpBinding
 
@@ -55,7 +54,7 @@ class SignUpFragment : BaseFragment() {
 
     @SuppressLint("SetTextI18n")
     private fun onClickSignUp() {
-        progressDialog = ProgressDialog(mainActivity, "Signing up...")
+        progressDialog = ProgressDialog(loginActivity, "Signing up...")
 
         binding.tvError.apply {
             text = ""
@@ -122,7 +121,7 @@ class SignUpFragment : BaseFragment() {
                     // If sign in fails, display a message to the user.
                     Log.w("SignUpActivity", "createUserWithEmail:failure", task.exception)
                     Toast.makeText(
-                        mainActivity,
+                        loginActivity,
                         "Authentication failed.",
                         Toast.LENGTH_SHORT,
                     ).show()
@@ -148,12 +147,11 @@ class SignUpFragment : BaseFragment() {
             progressDialog.dismiss()
             if (it.isSuccessful) {
                 //back to account fragment
-                findNavController().popBackStack(R.id.accountFragment, false)
-
+                loginActivity.goToMainActivity()
                 //show dialog
                 val message = "Sign up success. " +
                         "Please check your email (${user.email}) to verify account."
-                showDialog(mainActivity, layoutInflater, message)
+                showDialog(loginActivity, layoutInflater, message)
             }
         }
         FirebaseAuth.getInstance().signOut()
@@ -166,10 +164,5 @@ class SignUpFragment : BaseFragment() {
             val action = SignUpFragmentDirections.actionSignUpFragmentToSignInFragment()
             findNavController().navigate(action)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mainActivity.binding.toolBarTitle.text = TITLE_ACCOUNT
     }
 }

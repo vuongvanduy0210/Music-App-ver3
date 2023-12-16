@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.vuongvanduy.music.R
-import com.vuongvanduy.music.base.fragment.BaseFragment
+import com.vuongvanduy.music.base.fragment.BaseMainFragment
 import com.vuongvanduy.music.common.GUEST
 import com.vuongvanduy.music.common.GUEST_EMAIL
 import com.vuongvanduy.music.common.TITLE_ACCOUNT
@@ -20,7 +20,7 @@ import com.vuongvanduy.music.common.sendListSongToService
 import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.FragmentAccountBinding
 
-class AccountFragment : BaseFragment() {
+class AccountFragment : BaseMainFragment() {
 
     override val TAG = AccountFragment::class.java.simpleName.toString()
 
@@ -52,13 +52,7 @@ class AccountFragment : BaseFragment() {
     private fun initListener() {
         binding.apply {
             btSignIn.setOnClickListener {
-                val action = AccountFragmentDirections.actionAccountFragmentToSignInFragment()
-                findNavController().navigate(action)
-            }
-
-            btSignUp.setOnClickListener {
-                val action = AccountFragmentDirections.actionAccountFragmentToSignUpFragment()
-                findNavController().navigate(action)
+                mainActivity.goToLoginActivity()
             }
 
             btChangeProfile.setOnClickListener {
