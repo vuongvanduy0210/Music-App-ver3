@@ -1,16 +1,15 @@
 package com.vuongvanduy.music.ui.settings.app_info
 
 import android.os.Bundle
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.vuongvanduy.music.R
-import com.vuongvanduy.music.base.fragment.BaseFragment
+import com.vuongvanduy.music.base.fragment.BaseMainFragment
 import com.vuongvanduy.music.common.TITLE_APP_INFO
 
 
-class AppInfoFragment : BaseFragment() {
+class AppInfoFragment : BaseMainFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

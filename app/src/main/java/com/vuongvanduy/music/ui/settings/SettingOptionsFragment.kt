@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.vuongvanduy.music.base.fragment.BaseFragment
+import com.vuongvanduy.music.base.fragment.BaseMainFragment
 import com.vuongvanduy.music.common.*
 import com.vuongvanduy.music.databinding.FragmentSettingOptionsBinding
 
-class SettingOptionsFragment : BaseFragment() {
+class SettingOptionsFragment : BaseMainFragment() {
 
     private lateinit var binding: FragmentSettingOptionsBinding
 

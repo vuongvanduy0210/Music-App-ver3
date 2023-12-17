@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.vuongvanduy.music.R
-import com.vuongvanduy.music.base.fragment.BaseFragment
+import com.vuongvanduy.music.base.fragment.BaseMainFragment
 import com.vuongvanduy.music.common.ACTION_START
 import com.vuongvanduy.music.common.TITLE_DEVICE_SONGS
 import com.vuongvanduy.music.common.TITLE_FAVOURITE_SONGS
@@ -31,7 +31,7 @@ import com.vuongvanduy.music.ui.transformer.DepthPageTransformer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment() {
+class HomeFragment : BaseMainFragment() {
 
     override val TAG = HomeFragment::class.java.simpleName.toString()
 

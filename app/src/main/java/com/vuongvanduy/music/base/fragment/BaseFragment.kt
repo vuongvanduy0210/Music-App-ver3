@@ -7,9 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.vuongvanduy.music.activity.MainActivity
 import com.vuongvanduy.music.ui.common.adapter.ExtendSongAdapter
 import com.vuongvanduy.music.ui.common.adapter.SongAdapter
 import com.vuongvanduy.music.ui.common.viewmodel.MainViewModel
@@ -30,17 +28,8 @@ open class BaseFragment : Fragment() {
 
     lateinit var songAdapter: SongAdapter
 
-    lateinit var mainActivity: MainActivity
-
     fun log(tag: String, message: String) {
         Log.e(tag, message)
-    }
-
-    open fun init() {
-        mainActivity = requireActivity() as MainActivity
-        songViewModel = ViewModelProvider(mainActivity)[SongViewModel::class.java]
-        mainViewModel = ViewModelProvider(mainActivity)[MainViewModel::class.java]
-        accountViewModel = ViewModelProvider(mainActivity)[AccountViewModel::class.java]
     }
 
     fun isFragmentInBackStack(destinationId: Int) =

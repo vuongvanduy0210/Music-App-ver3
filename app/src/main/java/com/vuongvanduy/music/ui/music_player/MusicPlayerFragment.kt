@@ -12,12 +12,12 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.vuongvanduy.music.R
-import com.vuongvanduy.music.base.fragment.BaseFragment
+import com.vuongvanduy.music.base.fragment.BaseMainFragment
 import com.vuongvanduy.music.common.*
 import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.FragmentMusicPlayerBinding
 
-class MusicPlayerFragment : BaseFragment() {
+class MusicPlayerFragment : BaseMainFragment() {
 
     override val TAG = MusicPlayerFragment::class.java.simpleName.toString()
 
