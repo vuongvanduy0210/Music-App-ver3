@@ -99,17 +99,17 @@ class HomeFragment : BaseMainFragment() {
 
     private fun registerObserver() {
         songViewModel.apply {
-            onlineSongs.observe(mainActivity) {
+            onlineSongs.observe(viewLifecycleOwner) {
                 getListPhotos()
                 categoryAdapter.setData(getListCategories())
             }
-            favouriteSongs.observe(mainActivity) {
+            favouriteSongs.observe(viewLifecycleOwner) {
                 if (it.isNullOrEmpty()) {
                     favouriteSongsShow.value = null
                 }
                 categoryAdapter.setData(getListCategories())
             }
-            deviceSongs.observe(mainActivity) {
+            deviceSongs.observe(viewLifecycleOwner) {
                 getListPhotos()
                 categoryAdapter.setData(getListCategories())
             }
@@ -190,7 +190,7 @@ class HomeFragment : BaseMainFragment() {
 
     private fun setAutoSlideImage() {
         Glide.with(mainActivity).load(R.drawable.img_home).into(binding.imgBg)
-        songViewModel.photos.observe(mainActivity) {
+        songViewModel.photos.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 binding.slideImage.visibility = View.VISIBLE
                 photosAdapter = PhotoViewPager2Adapter(it, mainActivity)

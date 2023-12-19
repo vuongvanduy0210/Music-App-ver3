@@ -51,7 +51,7 @@ class SettingOptionsFragment : BaseMainFragment() {
             }
         }
 
-        mainViewModel.themeMode.observe(mainActivity) { mode ->
+        mainViewModel.themeMode.observe(viewLifecycleOwner) { mode ->
             binding.tvTheme.text = "( $mode )"
         }
     }

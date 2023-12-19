@@ -433,11 +433,23 @@ class MainActivity : BaseActivity() {
     }
 
     private fun replaceMusicPlayer() {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.setCustomAnimations(R.anim.slide_in_bottom, android.R.anim.slide_out_right)
-            .replace(R.id.layout_music_player, MusicPlayerFragment())
-            .addToBackStack("MusicPlayerFragment")
-            .commit()
+        val slideInAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_in_bottom)
+
+        slideInAnimation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation) {
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.layout_music_player, MusicPlayerFragment())
+                    .addToBackStack("MusicPlayerFragment")
+                    .commit()
+            }
+
+            override fun onAnimationEnd(animation: Animation) {
+            }
+
+            override fun onAnimationRepeat(animation: Animation) {}
+        })
+
+        binding.layoutMusicPlayer.startAnimation(slideInAnimation)
     }
 
     private fun onBackPressCallBack() {
