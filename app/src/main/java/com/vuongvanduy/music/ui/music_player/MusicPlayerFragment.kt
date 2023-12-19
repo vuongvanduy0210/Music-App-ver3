@@ -56,7 +56,7 @@ class MusicPlayerFragment : BaseMainFragment() {
                 }
             }
 
-            actionMusic.observe(mainActivity) {
+            actionMusic.observe(viewLifecycleOwner) {
                 when (it) {
                     ACTION_CLEAR -> {}
 
@@ -66,7 +66,7 @@ class MusicPlayerFragment : BaseMainFragment() {
                 }
             }
 
-            isPlaying.observe(mainActivity) {
+            isPlaying.observe(viewLifecycleOwner) {
                 if (it) {
                     binding.imgPlay.setImageResource(R.drawable.ic_pause)
                     startAnimation()
@@ -76,7 +76,7 @@ class MusicPlayerFragment : BaseMainFragment() {
                 }
             }
 
-            isLooping.observe(mainActivity) {
+            isLooping.observe(viewLifecycleOwner) {
                 if (it) {
                     binding.btLoop.setImageResource(R.drawable.ic_is_looping)
                 } else {
@@ -84,7 +84,7 @@ class MusicPlayerFragment : BaseMainFragment() {
                 }
             }
 
-            isShuffling.observe(mainActivity) {
+            isShuffling.observe(viewLifecycleOwner) {
                 if (it) {
                     binding.btShuffle.setImageResource(R.drawable.ic_is_shuffling)
                 } else {
@@ -92,7 +92,7 @@ class MusicPlayerFragment : BaseMainFragment() {
                 }
             }
 
-            currentTime.observe(mainActivity) {
+            currentTime.observe(viewLifecycleOwner) {
                 val current = mainViewModel.currentTime.value
                 if (current != null) {
                     binding.seekBarMusic.progress = current
@@ -105,7 +105,7 @@ class MusicPlayerFragment : BaseMainFragment() {
                 }
             }
 
-            finalTime.observe(mainActivity) {
+            finalTime.observe(viewLifecycleOwner) {
                 val final = mainViewModel.finalTime.value
                 if (final != null) {
                     binding.seekBarMusic.max = final

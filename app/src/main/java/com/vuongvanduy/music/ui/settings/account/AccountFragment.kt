@@ -91,7 +91,7 @@ class AccountFragment : BaseMainFragment() {
     }
 
     private fun registerObserver() {
-        accountViewModel.user.observe(mainActivity) { user ->
+        accountViewModel.user.observe(viewLifecycleOwner) { user ->
             accountViewModel.isShowSignOut.postValue(user != null)
             if (user != null) {
                 binding.apply {
