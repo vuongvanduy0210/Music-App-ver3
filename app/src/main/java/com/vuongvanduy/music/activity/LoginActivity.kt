@@ -2,6 +2,7 @@ package com.vuongvanduy.music.activity
 
 import android.content.Intent
 import android.os.Bundle
+import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.activity.BaseActivity
 import com.vuongvanduy.music.common.hideKeyboard
 import com.vuongvanduy.music.databinding.ActivityLoginBinding
@@ -18,6 +19,8 @@ class LoginActivity : BaseActivity() {
         setContentView(binding.root)
 
         setOnClickListener()
+
+        window.statusBarColor = getColor(R.color.status_bar_color_login)
     }
 
     private fun setOnClickListener() {

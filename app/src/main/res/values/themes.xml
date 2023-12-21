@@ -6,8 +6,6 @@
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 
-    <style name="Theme.MusicApp" parent="Base.Theme.MusicApp" />
-
     <style name="Theme.Splash" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="android:statusBarColor">#AE5253</item>
@@ -15,15 +13,11 @@
     </style>
 
     <style name="AppBottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
-
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
-
     </style>
 
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
-
         <item name="android:background">@drawable/top_rounded_bg</item>
-
     </style>
 
 </resources>
