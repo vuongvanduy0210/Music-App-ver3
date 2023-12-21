@@ -5,6 +5,7 @@ import com.bumptech.glide.load.HttpException
 import com.vuongvanduy.music.data.common.Response
 import java.io.IOException
 import java.net.SocketTimeoutException
+import java.util.concurrent.CancellationException
 
 open class BaseService {
 
@@ -17,6 +18,9 @@ open class BaseService {
         } catch (e: IOException) {
             Response.Error(e.message!!)
         } catch (e: Exception) {
+            if (e is CancellationException) {
+                throw e
+            }
             Response.Error(e.message ?: "Something went wrong")
         } catch (e: SocketTimeoutException) {
             Response.Error(e.message ?: "Something went wrong")

@@ -64,15 +64,9 @@
 
         <Button
             android:id="@+id/bt_update_profile"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/custom_button"
+            style="@style/BaseButtonLogin"
             android:backgroundTint="@color/yellow"
-            android:text="@string/update_profile"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:text="@string/update_profile" />
 
     </LinearLayout>
 </layout>

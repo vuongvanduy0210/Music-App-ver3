@@ -90,15 +90,9 @@
 
         <Button
             android:id="@+id/bt_sign_up"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/custom_button"
+            style="@style/BaseButtonLogin"
             android:backgroundTint="@android:color/holo_blue_light"
-            android:text="@string/sign_up"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:text="@string/sign_up" />
 
         <LinearLayout
             android:id="@+id/layout_sign_in"
