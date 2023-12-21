@@ -40,14 +40,8 @@
 
     <Button
         android:id="@+id/bt_sign_in"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/button_height"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/custom_button"
+        style="@style/BaseButtonLogin"
         android:backgroundTint="@color/text_color"
-        android:text="@string/sign_in"
-        android:textAllCaps="false"
-        android:textColor="@color/bg_color"
-        android:textSize="20sp" />
+        android:text="@string/sign_in" />
 
 </LinearLayout>

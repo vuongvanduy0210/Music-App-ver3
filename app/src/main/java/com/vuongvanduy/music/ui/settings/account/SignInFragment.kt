@@ -134,6 +134,10 @@ class SignInFragment : BaseLoginFragment() {
         binding.btSignInGithub.setOnClickListener {
             goToGithubAuthFragment()
         }
+
+        binding.btGuest.setOnClickListener {
+            loginActivity.goToMainActivity()
+        }
     }
 
     @SuppressLint("SetTextI18n")
