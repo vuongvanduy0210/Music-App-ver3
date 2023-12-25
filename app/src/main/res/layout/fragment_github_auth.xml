@@ -42,6 +42,7 @@
         android:id="@+id/bt_sign_in"
         style="@style/BaseButtonLogin"
         android:backgroundTint="@color/text_color"
-        android:text="@string/sign_in" />
+        android:text="@string/sign_in"
+        android:textColor="@color/bg_color"/>
 
 </LinearLayout>
