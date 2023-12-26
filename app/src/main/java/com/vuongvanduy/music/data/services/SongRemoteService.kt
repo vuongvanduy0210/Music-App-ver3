@@ -32,30 +32,6 @@ class SongRemoteService @Inject constructor(
         }
     }
 
-    fun getAllSongsFromFirebase(callback: (List<Song>) -> Unit) {
-        val list = mutableListOf<Song>()
-
-        val myRef = database.getReference("all_songs")
-        myRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val song = postSnapshot.getValue<Song>()
-                    if (song != null) {
-                        if (!isSongExists(list, song)) {
-                            list.add(song)
-                        }
-                    }
-                }
-                sortListAscending(list)
-                callback(list)
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                throw Exception(databaseError.message)
-            }
-        })
-    }
-
     fun getFavouriteSongsFromFirebase(callback: (List<Song>) -> Unit) {
 
         val list = mutableListOf<Song>()
