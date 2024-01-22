@@ -14,10 +14,6 @@ class SongRepository @Inject constructor(
     private val songLocalService: SongLocalService
 ) {
 
-    fun getOnlineSongs(callback: (List<Song>) -> Unit) {
-        songRemoteService.getAllSongsFromFirebase(callback)
-    }
-
     suspend fun getOnlineSongs() = withContext(Dispatchers.IO) {
         songRemoteService.getOnlineSongs()
     }
