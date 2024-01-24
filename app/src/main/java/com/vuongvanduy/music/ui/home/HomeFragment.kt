@@ -6,9 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -31,11 +29,9 @@ import com.vuongvanduy.music.ui.transformer.DepthPageTransformer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseMainFragment() {
+class HomeFragment : BaseMainFragment<FragmentHomeBinding>() {
 
     override val TAG = HomeFragment::class.java.simpleName.toString()
-
-    private lateinit var binding: FragmentHomeBinding
 
     private lateinit var photosAdapter: PhotoViewPager2Adapter
 
@@ -43,8 +39,8 @@ class HomeFragment : BaseMainFragment() {
 
     private var myHandler = Handler(Looper.getMainLooper())
     private val runnable = Runnable {
-        binding.slideImage.apply {
-            val count = songViewModel.photos.value?.size
+        binding?.slideImage?.apply {
+            val count = songViewModel?.photos?.value?.size
             if (count != null) {
                 if (currentItem == count - 1) {
                     currentItem = 0
@@ -58,8 +54,8 @@ class HomeFragment : BaseMainFragment() {
     private val activityResultLauncherNotification =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                mainViewModel.currentSong.value?.let { song ->
-                    mainViewModel.currentListName?.let { titleList ->
+                mainViewModel?.currentSong?.value?.let { song ->
+                    mainViewModel?.currentListName?.let { titleList ->
                         playMusic(song, titleList)
                     }
                 }
@@ -71,20 +67,13 @@ class HomeFragment : BaseMainFragment() {
                 ).show()
             }
         }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
-        init()
-        return binding.root
-    }
+    override val layoutRes: Int
+        get() = R.layout.fragment_home
 
     override fun init() {
         super.init()
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = songViewModel
+        binding?.lifecycleOwner = viewLifecycleOwner
+        binding?.viewModel = songViewModel
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -98,7 +87,7 @@ class HomeFragment : BaseMainFragment() {
     }
 
     private fun registerObserver() {
-        songViewModel.apply {
+        songViewModel?.apply {
             onlineSongs.observe(viewLifecycleOwner) {
                 getListPhotos()
                 categoryAdapter.setData(getListCategories())
@@ -118,18 +107,18 @@ class HomeFragment : BaseMainFragment() {
 
     private fun setRecyclerViewCategory() {
         categoryAdapter = CategoryAdapter(
-            mainActivity,
+            requireContext(),
             object : IClickCategoryListener {
                 override fun clickButtonViewAll(categoryName: String) {
                     gotoViewAll(categoryName)
                 }
 
                 override fun onClickSong(song: Song, categoryName: String) {
-                    mainViewModel.currentSong.postValue(song)
+                    mainViewModel?.currentSong?.postValue(song)
                     playSong(song, categoryName)
                 }
             })
-        binding.rcvCategory.apply {
+        binding?.rcvCategory?.apply {
             layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
             adapter = categoryAdapter
         }
@@ -138,21 +127,27 @@ class HomeFragment : BaseMainFragment() {
     private fun gotoViewAll(categoryName: String) {
         when (categoryName) {
             TITLE_ONLINE_SONGS -> {
-                mainActivity.binding.bottomNav.selectedItemId = R.id.online
+                mainActivity?.let {
+                    it.binding.bottomNav.selectedItemId = R.id.online
+                }
             }
 
             TITLE_FAVOURITE_SONGS -> {
-                mainActivity.binding.bottomNav.selectedItemId = R.id.favourite
+                mainActivity?.let {
+                    it.binding.bottomNav.selectedItemId = R.id.favourite
+                }
             }
 
             TITLE_DEVICE_SONGS -> {
-                mainActivity.binding.bottomNav.selectedItemId = R.id.device
+                mainActivity?.let {
+                    it.binding.bottomNav.selectedItemId = R.id.device
+                }
             }
         }
     }
 
     private fun playSong(song: Song, categoryName: String) {
-        mainViewModel.currentListName = categoryName
+        mainViewModel?.currentListName = categoryName
         sdk33AndUp {
             requestPermissionPostNotification(song, categoryName)
         } ?: playMusic(song, categoryName)
@@ -160,7 +155,7 @@ class HomeFragment : BaseMainFragment() {
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun requestPermissionPostNotification(song: Song, categoryName: String) {
-        if (mainActivity.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+        if (requireContext().checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
             == PackageManager.PERMISSION_GRANTED
         ) {
             playMusic(song, categoryName)
@@ -170,36 +165,51 @@ class HomeFragment : BaseMainFragment() {
     }
 
     private fun playMusic(song: Song, categoryName: String) {
-        mainViewModel.isShowMusicPlayer.postValue(true)
-        mainViewModel.isServiceRunning.postValue(true)
+        mainViewModel?.isShowMusicPlayer?.postValue(true)
+        mainViewModel?.isServiceRunning?.postValue(true)
         when (categoryName) {
             TITLE_ONLINE_SONGS -> {
-                songViewModel.onlineSongs.value?.let { sendListSongToService(mainActivity, it) }
+                songViewModel?.onlineSongs?.value?.let {
+                    sendListSongToService(
+                        requireContext(),
+                        it
+                    )
+                }
             }
 
             TITLE_FAVOURITE_SONGS -> {
-                songViewModel.favouriteSongs.value?.let { sendListSongToService(mainActivity, it) }
+                songViewModel?.favouriteSongs?.value?.let {
+                    sendListSongToService(
+                        requireContext(),
+                        it
+                    )
+                }
             }
 
             TITLE_DEVICE_SONGS -> {
-                songViewModel.deviceSongs.value?.let { sendListSongToService(mainActivity, it) }
+                songViewModel?.deviceSongs?.value?.let {
+                    sendListSongToService(
+                        requireContext(),
+                        it
+                    )
+                }
             }
         }
-        sendDataToService(mainActivity, song, ACTION_START)
+        sendDataToService(requireContext(), song, ACTION_START)
     }
 
     private fun setAutoSlideImage() {
-        Glide.with(mainActivity).load(R.drawable.img_home).into(binding.imgBg)
-        songViewModel.photos.observe(viewLifecycleOwner) {
+        binding?.let { Glide.with(this).load(R.drawable.img_home).into(it.imgBg) }
+        songViewModel?.photos?.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
-                binding.slideImage.visibility = View.VISIBLE
-                photosAdapter = PhotoViewPager2Adapter(it, mainActivity)
+                binding?.slideImage?.visibility = View.VISIBLE
+                photosAdapter = PhotoViewPager2Adapter(it, requireContext())
 
-                binding.slideImage.apply {
+                binding?.slideImage?.apply {
                     adapter = photosAdapter
                     setPageTransformer(DepthPageTransformer())
 
-                    binding.circleIndicator.setViewPager(this)
+                    binding?.circleIndicator?.setViewPager(this)
 
                     registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                         override fun onPageSelected(position: Int) {
@@ -210,7 +220,7 @@ class HomeFragment : BaseMainFragment() {
                     })
                 }
             } else {
-                binding.slideImage.visibility = View.GONE
+                binding?.slideImage?.visibility = View.GONE
             }
         }
     }

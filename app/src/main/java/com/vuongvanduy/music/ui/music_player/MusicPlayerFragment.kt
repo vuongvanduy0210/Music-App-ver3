@@ -3,9 +3,7 @@ package com.vuongvanduy.music.ui.music_player
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.SeekBar
 import android.widget.Toast
@@ -17,25 +15,19 @@ import com.vuongvanduy.music.common.*
 import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.FragmentMusicPlayerBinding
 
-class MusicPlayerFragment : BaseMainFragment() {
+class MusicPlayerFragment : BaseMainFragment<FragmentMusicPlayerBinding>() {
 
     override val TAG = MusicPlayerFragment::class.java.simpleName.toString()
 
-    private lateinit var binding: FragmentMusicPlayerBinding
+    private lateinit var runnable: Runnable
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentMusicPlayerBinding.inflate(inflater, container, false)
-        init()
-        return binding.root
-    }
+    override val layoutRes: Int
+        get() = R.layout.fragment_music_player
 
     override fun init() {
         super.init()
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = mainViewModel
+        binding?.lifecycleOwner = viewLifecycleOwner
+        binding?.viewModel = mainViewModel
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,7 +39,7 @@ class MusicPlayerFragment : BaseMainFragment() {
     }
 
     private fun registerObserver() {
-        mainViewModel.apply {
+        mainViewModel?.apply {
             isPlaying.observe(viewLifecycleOwner) {
                 if (it) {
                     startAnimation()
@@ -60,7 +52,7 @@ class MusicPlayerFragment : BaseMainFragment() {
                 when (it) {
                     ACTION_CLEAR -> {}
 
-                    else -> mainViewModel.currentSong.value?.let { song ->
+                    else -> mainViewModel?.currentSong?.value?.let { song ->
                         setLayoutForMusicPlayer(song)
                     }
                 }
@@ -68,58 +60,58 @@ class MusicPlayerFragment : BaseMainFragment() {
 
             isPlaying.observe(viewLifecycleOwner) {
                 if (it) {
-                    binding.imgPlay.setImageResource(R.drawable.ic_pause)
+                    binding?.imgPlay?.setImageResource(R.drawable.ic_pause)
                     startAnimation()
                 } else {
-                    binding.imgPlay.setImageResource(R.drawable.ic_play)
+                    binding?.imgPlay?.setImageResource(R.drawable.ic_play)
                     stopAnimation()
                 }
             }
 
             isLooping.observe(viewLifecycleOwner) {
                 if (it) {
-                    binding.btLoop.setImageResource(R.drawable.ic_is_looping)
+                    binding?.btLoop?.setImageResource(R.drawable.ic_is_looping)
                 } else {
-                    binding.btLoop.setImageResource(R.drawable.ic_loop)
+                    binding?.btLoop?.setImageResource(R.drawable.ic_loop)
                 }
             }
 
             isShuffling.observe(viewLifecycleOwner) {
                 if (it) {
-                    binding.btShuffle.setImageResource(R.drawable.ic_is_shuffling)
+                    binding?.btShuffle?.setImageResource(R.drawable.ic_is_shuffling)
                 } else {
-                    binding.btShuffle.setImageResource(R.drawable.ic_shuffle)
+                    binding?.btShuffle?.setImageResource(R.drawable.ic_shuffle)
                 }
             }
 
             currentTime.observe(viewLifecycleOwner) {
-                val current = mainViewModel.currentTime.value
+                val current = mainViewModel?.currentTime?.value
                 if (current != null) {
-                    binding.seekBarMusic.progress = current
+                    binding?.seekBarMusic?.progress = current
                     val minutes: Int = current / 1000 / 60
                     val seconds: Int = current / 1000 % 60
 
                     @SuppressLint("DefaultLocale")
                     val str = String.format("%02d:%02d", minutes, seconds)
-                    binding.tvCurrentTime.text = str
+                    binding?.tvCurrentTime?.text = str
                 }
             }
 
             finalTime.observe(viewLifecycleOwner) {
-                val final = mainViewModel.finalTime.value
+                val final = mainViewModel?.finalTime?.value
                 if (final != null) {
-                    binding.seekBarMusic.max = final
+                    binding?.seekBarMusic?.max = final
                     val minutes: Int = final / 1000 / 60
                     val seconds: Int = final / 1000 % 60
 
                     @SuppressLint("DefaultLocale")
                     val str = String.format("%02d:%02d", minutes, seconds)
-                    binding.tvFinalTime.text = str
+                    binding?.tvFinalTime?.text = str
                 }
             }
         }
 
-        songViewModel.apply {
+        songViewModel?.apply {
             favouriteSongs.observe(viewLifecycleOwner) {
                 setUIAddFavourites(null)
             }
@@ -127,12 +119,12 @@ class MusicPlayerFragment : BaseMainFragment() {
     }
 
     private fun setClickButtonListener() {
-        binding.apply {
+        binding?.apply {
             imgPrevious.setOnClickListener {
                 sendActionToService(requireContext(), ACTION_PREVIOUS)
             }
             imgPlay.setOnClickListener {
-                if (mainViewModel.isPlaying.value == true) {
+                if (mainViewModel?.isPlaying?.value == true) {
                     sendActionToService(requireContext(), ACTION_PAUSE)
                 } else {
                     sendActionToService(requireContext(), ACTION_RESUME)
@@ -166,18 +158,18 @@ class MusicPlayerFragment : BaseMainFragment() {
             ).show()
             return
         }
-        songViewModel.apply {
+        songViewModel?.apply {
             if (
                 isSongExists(
                     favouriteSongs.value,
-                    mainViewModel.currentSong.value
+                    mainViewModel?.currentSong?.value
                 )
             ) {
-                mainViewModel.currentSong.value?.let {
+                mainViewModel?.currentSong?.value?.let {
                     removeSongFromFavourites(it)
                 }
             } else {
-                mainViewModel.currentSong.value?.let {
+                mainViewModel?.currentSong?.value?.let {
                     addSongToFavourites(it)
                 }
             }
@@ -186,21 +178,25 @@ class MusicPlayerFragment : BaseMainFragment() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setLayoutForMusicPlayer(song: Song) {
-        binding.apply {
+        binding?.apply {
             tvMusicName.isSelected = true
             tvSinger.isSelected = true
             if (song.imageUri != null) {
                 val imageUri = Uri.parse(song.imageUri)
-                Glide.with(mainActivity).load(imageUri).into(circleImageView)
-                Glide.with(mainActivity).load(imageUri).into(imgBackGround)
+                Glide.with(this@MusicPlayerFragment).load(imageUri).into(circleImageView)
+                Glide.with(this@MusicPlayerFragment).load(imageUri).into(imgBackGround)
             } else {
-                val bitmap = getBitmapFromUri(mainActivity, song.resourceUri)
+                val bitmap = getBitmapFromUri(requireContext(), song.resourceUri)
                 if (bitmap == null) {
-                    binding.imgBackGround.setImageResource(R.drawable.icon_app)
-                    binding.circleImageView.setImageResource(R.drawable.icon_app)
+                    binding?.let {
+                        it.imgBackGround.setImageResource(R.drawable.icon_app)
+                        it.circleImageView.setImageResource(R.drawable.icon_app)
+                    }
                 } else {
-                    binding.imgBackGround.setImageBitmap(bitmap)
-                    binding.circleImageView.setImageBitmap(bitmap)
+                    binding?.let {
+                        it.imgBackGround.setImageBitmap(bitmap)
+                        it.circleImageView.setImageBitmap(bitmap)
+                    }
                 }
             }
         }
@@ -212,15 +208,15 @@ class MusicPlayerFragment : BaseMainFragment() {
     private fun setUIAddFavourites(song: Song?) {
         if (song != null) {
             if (song.resourceUri?.contains("https://firebasestorage.googleapis.com") == false) {
-                binding.btAddFavourites.visibility = View.GONE
+                binding?.btAddFavourites?.visibility = View.GONE
                 return
             }
         }
-        binding.apply {
+        binding?.apply {
             if (
                 isSongExists(
-                    songViewModel.favouriteSongs.value,
-                    mainViewModel.currentSong.value
+                    songViewModel?.favouriteSongs?.value,
+                    mainViewModel?.currentSong?.value
                 )
             ) {
                 btAddFavourites.setImageResource(R.drawable.ic_favourite_red)
@@ -231,7 +227,7 @@ class MusicPlayerFragment : BaseMainFragment() {
     }
 
     private fun setSeekBarStatus() {
-        binding.seekBarMusic.apply {
+        binding?.seekBarMusic?.apply {
 
             setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
@@ -241,9 +237,9 @@ class MusicPlayerFragment : BaseMainFragment() {
                 ) {
                     if (fromUser) {
                         // gui current time lai cho service
-                        sendCurrentTimeToService(mainActivity, progress)
-                        if (mainViewModel.isPlaying.value == false) {
-                            sendActionToService(mainActivity, ACTION_RESUME)
+                        sendCurrentTimeToService(requireContext(), progress)
+                        if (mainViewModel?.isPlaying?.value == false) {
+                            sendActionToService(requireContext(), ACTION_RESUME)
                         }
                     }
                 }
@@ -256,19 +252,35 @@ class MusicPlayerFragment : BaseMainFragment() {
     }
 
     private fun startAnimation() {
-        val runnable: Runnable = object : Runnable {
+        runnable = object : Runnable {
             override fun run() {
-                binding.circleImageView.animate()
-                    .rotationBy(360f).withEndAction(this).setDuration(10000)
-                    .setInterpolator(LinearInterpolator()).start()
+                binding
+                    ?.circleImageView
+                    ?.animate()
+                    ?.rotationBy(360f)
+                    ?.withEndAction(this)
+                    ?.setDuration(10000)
+                    ?.setInterpolator(LinearInterpolator())
+                    ?.start()
             }
         }
-        binding.circleImageView.animate()
-            .rotationBy(360f).withEndAction(runnable).setDuration(10000)
-            .setInterpolator(LinearInterpolator()).start()
+        binding
+            ?.circleImageView
+            ?.animate()
+            ?.rotationBy(360f)
+            ?.withEndAction(runnable)
+            ?.setDuration(10000)
+            ?.setInterpolator(LinearInterpolator())
+            ?.start()
     }
 
     private fun stopAnimation() {
-        binding.circleImageView.animate().cancel()
+        binding?.circleImageView?.animate()?.cancel()
+    }
+
+    override fun onDestroyView() {
+        binding?.circleImageView?.animate()?.cancel()
+        binding?.circleImageView?.removeCallbacks(runnable)
+        super.onDestroyView()
     }
 }

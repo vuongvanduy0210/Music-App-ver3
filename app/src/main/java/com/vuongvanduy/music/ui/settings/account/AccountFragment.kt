@@ -1,9 +1,7 @@
 package com.vuongvanduy.music.ui.settings.account
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -20,25 +18,16 @@ import com.vuongvanduy.music.common.sendListSongToService
 import com.vuongvanduy.music.data.models.Song
 import com.vuongvanduy.music.databinding.FragmentAccountBinding
 
-class AccountFragment : BaseMainFragment() {
+class AccountFragment : BaseMainFragment<FragmentAccountBinding>() {
 
     override val TAG = AccountFragment::class.java.simpleName.toString()
-
-    private lateinit var binding: FragmentAccountBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentAccountBinding.inflate(inflater, container, false)
-        init()
-        return binding.root
-    }
+    override val layoutRes: Int
+        get() = R.layout.fragment_account
 
     override fun init() {
         super.init()
-        binding.viewModel = accountViewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        binding?.viewModel = accountViewModel
+        binding?.lifecycleOwner = viewLifecycleOwner
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,9 +39,9 @@ class AccountFragment : BaseMainFragment() {
     }
 
     private fun initListener() {
-        binding.apply {
+        binding?.apply {
             btSignIn.setOnClickListener {
-                mainActivity.goToLoginActivity()
+                mainActivity?.goToLoginActivity()
             }
 
             btChangeProfile.setOnClickListener {
@@ -73,17 +62,17 @@ class AccountFragment : BaseMainFragment() {
     }
 
     private fun onClickSignOut() {
-        AlertDialog.Builder(mainActivity)
+        AlertDialog.Builder(requireContext())
             .setTitle("Sign Out")
             .setMessage("Are you sure want to sign out?")
             .setPositiveButton("Yes") { _, _ ->
                 Firebase.auth.signOut()
-                accountViewModel.user.value = null
-                songViewModel.favouriteSongs.value = null
-                songViewModel.deleteAllFavourites()
-                if (mainViewModel.currentListName == TITLE_FAVOURITE_SONGS) {
+                accountViewModel?.user?.value = null
+                songViewModel?.favouriteSongs?.value = null
+                songViewModel?.deleteAllFavourites()
+                if (mainViewModel?.currentListName == TITLE_FAVOURITE_SONGS) {
                     val list = mutableListOf<Song>()
-                    sendListSongToService(mainActivity, list)
+                    sendListSongToService(requireContext(), list)
                 }
             }
             .setNegativeButton("Cancel") { _, _ -> }
@@ -91,35 +80,38 @@ class AccountFragment : BaseMainFragment() {
     }
 
     private fun registerObserver() {
-        accountViewModel.user.observe(viewLifecycleOwner) { user ->
-            accountViewModel.isShowSignOut.postValue(user != null)
+        accountViewModel?.user?.observe(viewLifecycleOwner) { user ->
+            accountViewModel?.isShowSignOut?.postValue(user != null)
             if (user != null) {
-                binding.apply {
-                    Glide.with(mainActivity).load(user.photoUrl).error(R.drawable.img_avatar_error)
+                binding?.apply {
+                    Glide.with(this@AccountFragment).load(user.photoUrl)
+                        .error(R.drawable.img_avatar_error)
                         .into(imgUser)
                     tvName.text = user.displayName
                     tvEmail.text = user.email
 
-                    songViewModel.getFavouriteSongsFromRemote()
+                    songViewModel?.getFavouriteSongsFromRemote()
                 }
             } else {
-                binding.apply {
-                    Glide.with(mainActivity).load(R.drawable.img_avatar_error)
+                binding?.apply {
+                    Glide.with(this@AccountFragment).load(R.drawable.img_avatar_error)
                         .into(imgUser)
                     tvName.text = GUEST
                     tvEmail.text = GUEST_EMAIL
                 }
 
-                songViewModel.favouriteSongs.value = null
+                songViewModel?.favouriteSongs?.value = null
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        mainActivity.binding.toolBarTitle.text = TITLE_ACCOUNT
+        mainActivity?.let {
+            it.binding.toolBarTitle.text = TITLE_ACCOUNT
+        }
 
         val user = FirebaseAuth.getInstance().currentUser
-        accountViewModel.user.postValue(user)
+        accountViewModel?.user?.postValue(user)
     }
 }

@@ -44,7 +44,7 @@ class MainActivity : BaseActivity() {
 
     private lateinit var mainViewModel: MainViewModel
 
-    private lateinit var songViewModel: SongViewModel
+    private var songViewModel: SongViewModel? = null
 
     private lateinit var onBackPressedCallback: OnBackPressedCallback
 
@@ -70,7 +70,7 @@ class MainActivity : BaseActivity() {
     private val activityResultLauncherGetData =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                songViewModel.getLocalData()
+                songViewModel?.getLocalData()
                 Toast.makeText(
                     this,
                     "You can see your list songs from device in Device Songs tab.",
@@ -134,7 +134,7 @@ class MainActivity : BaseActivity() {
             if (checkSelfPermission(Manifest.permission.READ_MEDIA_AUDIO)
                 == PackageManager.PERMISSION_GRANTED
             ) {
-                songViewModel.getLocalData()
+                songViewModel?.getLocalData()
             } else {
                 activityResultLauncherGetData.launch(Manifest.permission.READ_MEDIA_AUDIO)
             }
@@ -142,7 +142,7 @@ class MainActivity : BaseActivity() {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED
             ) {
-                songViewModel.getLocalData()
+                songViewModel?.getLocalData()
             } else {
                 activityResultLauncherGetData.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
@@ -265,25 +265,25 @@ class MainActivity : BaseActivity() {
         when (binding.bottomNav.selectedItemId) {
             R.id.online -> {
 
-                if (!songViewModel.onlineSongs.value.isNullOrEmpty()) {
+                if (!songViewModel?.onlineSongs?.value.isNullOrEmpty()) {
                     mainViewModel.currentListName = TITLE_ONLINE_SONGS
-                    val list = songViewModel.onlineSongs.value as MutableList<Song>
+                    val list = songViewModel?.onlineSongs?.value as MutableList<Song>
                     playList(list)
                 }
             }
 
             R.id.favourite -> {
-                if (!songViewModel.favouriteSongs.value.isNullOrEmpty()) {
+                if (!songViewModel?.favouriteSongs?.value.isNullOrEmpty()) {
                     mainViewModel.currentListName = TITLE_FAVOURITE_SONGS
-                    val list = songViewModel.favouriteSongs.value as MutableList<Song>
+                    val list = songViewModel?.favouriteSongs?.value as MutableList<Song>
                     playList(list)
                 }
             }
 
             R.id.device -> {
-                if (!songViewModel.deviceSongs.value.isNullOrEmpty()) {
+                if (!songViewModel?.deviceSongs?.value.isNullOrEmpty()) {
                     mainViewModel.currentListName = TITLE_DEVICE_SONGS
-                    val list = songViewModel.deviceSongs.value as MutableList<Song>
+                    val list = songViewModel?.deviceSongs?.value as MutableList<Song>
                     playList(list)
                 }
             }
@@ -534,5 +534,6 @@ class MainActivity : BaseActivity() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(serviceReceiver)
         LocalBroadcastManager.getInstance(this).unregisterReceiver(currentTimeReceiver)
+        songViewModel = null
     }
 }

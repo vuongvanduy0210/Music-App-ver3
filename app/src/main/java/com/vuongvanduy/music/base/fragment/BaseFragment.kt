@@ -18,11 +18,11 @@ open class BaseFragment : Fragment() {
 
     protected open val TAG = ""
 
-    lateinit var mainViewModel: MainViewModel
+    var mainViewModel: MainViewModel? = null
 
-    lateinit var songViewModel: SongViewModel
+    var songViewModel: SongViewModel? = null
 
-    lateinit var accountViewModel: AccountViewModel
+    var accountViewModel: AccountViewModel? = null
 
     lateinit var extendSongAdapter: ExtendSongAdapter
 
@@ -88,6 +88,9 @@ open class BaseFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         logLifecycle("onDestroyView")
+        songViewModel = null
+        accountViewModel = null
+        mainViewModel = null
     }
 
     override fun onDestroy() {
