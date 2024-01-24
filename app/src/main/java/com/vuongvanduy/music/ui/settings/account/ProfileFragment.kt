@@ -9,9 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
@@ -26,9 +24,9 @@ import com.vuongvanduy.music.common.hideKeyboard
 import com.vuongvanduy.music.databinding.FragmentProfileBinding
 
 
-class ProfileFragment : BaseMainFragment() {
+class ProfileFragment : BaseMainFragment<FragmentProfileBinding>() {
 
-    private lateinit var binding: FragmentProfileBinding
+//    private lateinit var binding: FragmentProfileBinding
 
     private var uriImage: Uri? = null
 
@@ -51,15 +49,8 @@ class ProfileFragment : BaseMainFragment() {
                 }
             }
         }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentProfileBinding.inflate(inflater, container, false)
-        init()
-        return binding.root
-    }
+    override val layoutRes: Int
+        get() = R.layout.fragment_profile
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -70,12 +61,13 @@ class ProfileFragment : BaseMainFragment() {
     }
 
     private fun registerObserver() {
-        accountViewModel.user.observe(viewLifecycleOwner) { user ->
-            accountViewModel.isShowSignOut.postValue(user != null)
+        accountViewModel?.user?.observe(viewLifecycleOwner) { user ->
+            accountViewModel?.isShowSignOut?.postValue(user != null)
 
             if (user != null) {
-                binding.apply {
-                    Glide.with(mainActivity).load(user.photoUrl).error(R.drawable.img_avatar_error)
+                binding?.apply {
+                    Glide.with(this@ProfileFragment).load(user.photoUrl)
+                        .error(R.drawable.img_avatar_error)
                         .into(imgUser)
                     edtName.setText(user.displayName)
                     tvEmail.text = user.email
@@ -85,24 +77,24 @@ class ProfileFragment : BaseMainFragment() {
     }
 
     private fun initListener() {
-        binding.imgUser.setOnClickListener {
+        binding?.imgUser?.setOnClickListener {
             requestPermissionReadStorage()
         }
-        binding.btUpdateProfile.setOnClickListener {
+        binding?.btUpdateProfile?.setOnClickListener {
             onClickUpdateProfile()
         }
     }
 
     private fun requestPermissionReadStorage() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (mainActivity.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
+            if (requireContext().checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
                 // get list song from device and send to music device fragment
                 openGallery()
             } else {
                 activityResultLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
             }
         } else {
-            if (mainActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (requireContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 // get list song from device and send to music device fragment
                 openGallery()
             } else {
@@ -123,12 +115,12 @@ class ProfileFragment : BaseMainFragment() {
 
     @SuppressLint("SetTextI18n")
     private fun onClickUpdateProfile() {
-        val dialog = ProgressDialog(mainActivity, "Updating...")
-        hideKeyboard(mainActivity, binding.root)
-        val name = binding.edtName.text?.trim().toString()
+        val dialog = ProgressDialog(requireContext(), "Updating...")
+        hideKeyboard(requireContext(), binding?.root)
+        val name = binding?.edtName?.text?.trim().toString()
         if (name.isEmpty() || name.isBlank()) {
-            binding.tvError.text = "Name can't blank"
-            binding.tvError.visibility = View.VISIBLE
+            binding?.tvError?.text = "Name can't blank"
+            binding?.tvError?.visibility = View.VISIBLE
             return
         }
         val user = FirebaseAuth.getInstance().currentUser ?: return
@@ -148,7 +140,7 @@ class ProfileFragment : BaseMainFragment() {
                         "Update profile success.",
                         Toast.LENGTH_LONG
                     ).show()
-                    accountViewModel.user.postValue(FirebaseAuth.getInstance().currentUser)
+                    accountViewModel?.user?.postValue(FirebaseAuth.getInstance().currentUser)
                     findNavController().popBackStack(R.id.accountFragment, false)
                 }
             }
@@ -157,13 +149,15 @@ class ProfileFragment : BaseMainFragment() {
 
     override fun onResume() {
         super.onResume()
-        mainActivity.binding.toolBarTitle.text = TITLE_ACCOUNT
+        mainActivity?.let {
+            it.binding.toolBarTitle.text = TITLE_ACCOUNT
+        }
 
         uriImage?.let { setImageViewForUser(it) }
     }
 
     private fun setImageViewForUser(uri: Uri) {
         Log.e("AccountFragment", uri.toString())
-        Glide.with(mainActivity).load(uri).into(binding.imgUser)
+        binding?.let { Glide.with(this).load(uri).into(it.imgUser) }
     }
 }

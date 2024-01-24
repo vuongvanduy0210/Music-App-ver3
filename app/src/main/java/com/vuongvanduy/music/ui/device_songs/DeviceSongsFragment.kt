@@ -6,9 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,6 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.fragment.BaseMainFragment
 import com.vuongvanduy.music.common.ACTION_START
 import com.vuongvanduy.music.common.TITLE_DEVICE_SONGS
@@ -30,16 +29,14 @@ import com.vuongvanduy.music.ui.common.myinterface.IClickSongListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DeviceSongsFragment : BaseMainFragment() {
+class DeviceSongsFragment : BaseMainFragment<FragmentDeviceSongsBinding>() {
 
     override val TAG = DeviceSongsFragment::class.java.simpleName.toString()
-
-    private lateinit var binding: FragmentDeviceSongsBinding
 
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                mainViewModel.currentSong.value?.let { playMusic(it) }
+                mainViewModel?.currentSong?.value?.let { playMusic(it) }
             } else {
                 Toast.makeText(
                     mainActivity,
@@ -49,19 +46,13 @@ class DeviceSongsFragment : BaseMainFragment() {
             }
         }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentDeviceSongsBinding.inflate(inflater, container, false)
-        init()
-        return binding.root
-    }
+    override val layoutRes: Int
+        get() = R.layout.fragment_device_songs
 
     override fun init() {
         super.init()
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = songViewModel
+        binding?.lifecycleOwner = viewLifecycleOwner
+        binding?.viewModel = songViewModel
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,9 +66,9 @@ class DeviceSongsFragment : BaseMainFragment() {
     }
 
     private fun setRecyclerViewSongs() {
-        songAdapter = SongAdapter(mainActivity, object : IClickSongListener {
+        songAdapter = SongAdapter(requireContext(), object : IClickSongListener {
             override fun onClickSong(song: Song) {
-                mainViewModel.currentSong.postValue(song)
+                mainViewModel?.currentSong?.postValue(song)
                 sdk33AndUp {
                     requestPermissionPostNotification(song)
                 } ?: playMusic(song)
@@ -87,7 +78,7 @@ class DeviceSongsFragment : BaseMainFragment() {
             }
         })
         val decoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
-        binding.rcvListSongs.apply {
+        binding?.rcvListSongs?.apply {
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(decoration)
             adapter = songAdapter
@@ -96,7 +87,7 @@ class DeviceSongsFragment : BaseMainFragment() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                        hideKeyboard(requireContext(), binding.root)
+                        hideKeyboard(requireContext(), binding?.root)
                     }
                 }
             })
@@ -105,7 +96,7 @@ class DeviceSongsFragment : BaseMainFragment() {
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun requestPermissionPostNotification(song: Song) {
-        if (mainActivity.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+        if (requireContext().checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
             == PackageManager.PERMISSION_GRANTED
         ) {
             playMusic(song)
@@ -115,29 +106,29 @@ class DeviceSongsFragment : BaseMainFragment() {
     }
 
     private fun playMusic(song: Song) {
-        mainViewModel.apply {
+        mainViewModel?.apply {
             isShowMusicPlayer.postValue(true)
             isServiceRunning.postValue(true)
             currentListName = TITLE_DEVICE_SONGS
         }
-        songViewModel.deviceSongs.value?.let { sendListSongToService(mainActivity, it) }
-        sendDataToService(mainActivity, song, ACTION_START)
+        songViewModel?.deviceSongs?.value?.let { sendListSongToService(requireContext(), it) }
+        sendDataToService(requireContext(), song, ACTION_START)
     }
 
     private fun registerObserverFetchDataFinish() {
-        songViewModel.deviceSongs.observe(viewLifecycleOwner) {
+        songViewModel?.deviceSongs?.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
-                songViewModel.isLoadingDevice.postValue(false)
+                songViewModel?.isLoadingDevice?.postValue(false)
                 songAdapter.setData(it)
             }
         }
     }
 
     private fun setOnClickBtSearchView() {
-        binding.edtSearch.apply {
+        binding?.edtSearch?.apply {
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    hideKeyboard(requireContext(), binding.root)
+                    hideKeyboard(requireContext(), binding?.root)
                     return@setOnEditorActionListener true
                 }
                 false
