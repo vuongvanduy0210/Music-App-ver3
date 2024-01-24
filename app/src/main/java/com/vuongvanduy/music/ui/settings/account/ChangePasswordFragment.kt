@@ -2,9 +2,7 @@ package com.vuongvanduy.music.ui.settings.account
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.EmailAuthProvider
@@ -16,18 +14,10 @@ import com.vuongvanduy.music.common.TITLE_ACCOUNT
 import com.vuongvanduy.music.common.hideKeyboard
 import com.vuongvanduy.music.databinding.FragmentChangePasswordBinding
 
-class ChangePasswordFragment : BaseMainFragment() {
+class ChangePasswordFragment : BaseMainFragment<FragmentChangePasswordBinding>() {
 
-    private lateinit var binding: FragmentChangePasswordBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentChangePasswordBinding.inflate(inflater, container, false)
-        init()
-        return binding.root
-    }
+    override val layoutRes: Int
+        get() = R.layout.fragment_account
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,28 +26,28 @@ class ChangePasswordFragment : BaseMainFragment() {
     }
 
     private fun initListener() {
-        binding.btChangePassword.setOnClickListener {
+        binding?.btChangePassword?.setOnClickListener {
             onClickChangePassword()
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun onClickChangePassword() {
-        hideKeyboard(mainActivity, binding.root)
+        hideKeyboard(requireContext(), binding?.root)
         val dialog = ProgressDialog(requireActivity(), "Loading...")
 
-        binding.apply {
+        binding?.apply {
             tvError.text = ""
             tvError.visibility = View.GONE
             tvNoti.visibility = View.GONE
         }
 
-        val oldPass = binding.edtOldPassword.text?.trim().toString()
-        val newPass = binding.edtNewPassword.text?.trim().toString()
-        val confirmPass = binding.edtConfirmPassword.text?.trim().toString()
+        val oldPass = binding?.edtOldPassword?.text?.trim().toString()
+        val newPass = binding?.edtNewPassword?.text?.trim().toString()
+        val confirmPass = binding?.edtConfirmPassword?.text?.trim().toString()
 
         ValidationUtils.checkValidChangePasswordInput(oldPass, newPass, confirmPass)?.let {
-            binding.apply {
+            binding?.apply {
                 tvError.text = it
                 tvError.visibility = View.VISIBLE
                 if (it.contains("confirm", true)) {
@@ -86,7 +76,7 @@ class ChangePasswordFragment : BaseMainFragment() {
                         .addOnCompleteListener { task ->
                             dialog.dismiss()
                             if (task.isSuccessful) {
-                                binding.apply {
+                                binding?.apply {
                                     edtOldPassword.setText("")
                                     edtNewPassword.setText("")
                                     edtConfirmPassword.setText("")
@@ -101,7 +91,7 @@ class ChangePasswordFragment : BaseMainFragment() {
                         }
                 } else {
                     // If authentication fails, show an error message
-                    binding.apply {
+                    binding?.apply {
                         tvError.text = "Password is incorrect."
                         tvError.visibility = View.VISIBLE
                         edtOldPassword.setText("")
@@ -112,6 +102,8 @@ class ChangePasswordFragment : BaseMainFragment() {
 
     override fun onResume() {
         super.onResume()
-        mainActivity.binding.toolBarTitle.text = TITLE_ACCOUNT
+        mainActivity?.let {
+            it.binding.toolBarTitle.text = TITLE_ACCOUNT
+        }
     }
 }

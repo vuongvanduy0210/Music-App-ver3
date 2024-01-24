@@ -103,9 +103,9 @@ const val GUEST_EMAIL = "someone@gmail.com"
 
 const val DATABASE_NAME = "my_db"
 
-fun hideKeyboard(context: Context, view: View) {
+fun hideKeyboard(context: Context, view: View?) {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.hideSoftInputFromWindow(view.windowToken, 0)
+    imm.hideSoftInputFromWindow(view?.windowToken, 0)
 }
 
 fun isSongExists(songList: List<Song>?, song: Song?): Boolean {
