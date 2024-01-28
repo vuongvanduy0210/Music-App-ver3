@@ -11,6 +11,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -20,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.activity.BaseActivity
 import com.vuongvanduy.music.common.*
@@ -44,7 +46,7 @@ class MainActivity : BaseActivity() {
 
     private lateinit var mainViewModel: MainViewModel
 
-    private lateinit var songViewModel: SongViewModel
+    private var songViewModel: SongViewModel? = null
 
     private lateinit var onBackPressedCallback: OnBackPressedCallback
 
@@ -70,7 +72,7 @@ class MainActivity : BaseActivity() {
     private val activityResultLauncherGetData =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                songViewModel.getLocalData()
+                songViewModel?.getLocalData()
                 Toast.makeText(
                     this,
                     "You can see your list songs from device in Device Songs tab.",
@@ -134,7 +136,7 @@ class MainActivity : BaseActivity() {
             if (checkSelfPermission(Manifest.permission.READ_MEDIA_AUDIO)
                 == PackageManager.PERMISSION_GRANTED
             ) {
-                songViewModel.getLocalData()
+                songViewModel?.getLocalData()
             } else {
                 activityResultLauncherGetData.launch(Manifest.permission.READ_MEDIA_AUDIO)
             }
@@ -142,7 +144,7 @@ class MainActivity : BaseActivity() {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED
             ) {
-                songViewModel.getLocalData()
+                songViewModel?.getLocalData()
             } else {
                 activityResultLauncherGetData.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
@@ -206,6 +208,11 @@ class MainActivity : BaseActivity() {
 
     private fun registerButtonListener() {
         binding.apply {
+
+            imgFavourite.setOnClickListener {
+                onClickAddFavourites()
+            }
+
             imgBack.setOnClickListener {
                 onBackPressedCallback.handleOnBackPressed()
             }
@@ -265,25 +272,25 @@ class MainActivity : BaseActivity() {
         when (binding.bottomNav.selectedItemId) {
             R.id.online -> {
 
-                if (!songViewModel.onlineSongs.value.isNullOrEmpty()) {
+                if (!songViewModel?.onlineSongs?.value.isNullOrEmpty()) {
                     mainViewModel.currentListName = TITLE_ONLINE_SONGS
-                    val list = songViewModel.onlineSongs.value as MutableList<Song>
+                    val list = songViewModel?.onlineSongs?.value as MutableList<Song>
                     playList(list)
                 }
             }
 
             R.id.favourite -> {
-                if (!songViewModel.favouriteSongs.value.isNullOrEmpty()) {
+                if (!songViewModel?.favouriteSongs?.value.isNullOrEmpty()) {
                     mainViewModel.currentListName = TITLE_FAVOURITE_SONGS
-                    val list = songViewModel.favouriteSongs.value as MutableList<Song>
+                    val list = songViewModel?.favouriteSongs?.value as MutableList<Song>
                     playList(list)
                 }
             }
 
             R.id.device -> {
-                if (!songViewModel.deviceSongs.value.isNullOrEmpty()) {
+                if (!songViewModel?.deviceSongs?.value.isNullOrEmpty()) {
                     mainViewModel.currentListName = TITLE_DEVICE_SONGS
-                    val list = songViewModel.deviceSongs.value as MutableList<Song>
+                    val list = songViewModel?.deviceSongs?.value as MutableList<Song>
                     playList(list)
                 }
             }
@@ -382,6 +389,12 @@ class MainActivity : BaseActivity() {
                 mainViewModel.themeMode.value?.let { dataLocalManager.putStringThemeMode(it) }
             }
         }
+
+        songViewModel?.apply {
+            favouriteSongs.observe(this@MainActivity) {
+                setUIAddFavourites(null)
+            }
+        }
     }
 
     private fun setToolbarTitle() {
@@ -410,8 +423,6 @@ class MainActivity : BaseActivity() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setLayoutMiniPlayer(song: Song) {
-
-
         // set layout
         binding.apply {
             if (song.imageUri != null) {
@@ -425,10 +436,58 @@ class MainActivity : BaseActivity() {
                 Glide.with(this@MainActivity).load(bitmap).into(imgBgMiniPlayer)
                     .onLoadFailed(getDrawable(R.drawable.icon_app))
             }
-
+            setUIAddFavourites(song)
             tvMusicName.isSelected = true
             tvSinger.isSelected = true
             progressBar.isEnabled = false
+        }
+    }
+
+    private fun setUIAddFavourites(song: Song?) {
+        if (song != null) {
+            if (song.resourceUri?.contains("https://firebasestorage.googleapis.com") == false) {
+                binding.imgFavourite.visibility = View.GONE
+                return
+            }
+        }
+        binding.apply {
+            if (
+                isSongExists(
+                    songViewModel?.favouriteSongs?.value,
+                    mainViewModel.currentSong.value
+                )
+            ) {
+                imgFavourite.setImageResource(R.drawable.ic_favourite_mini_player)
+            } else {
+                imgFavourite.setImageResource(R.drawable.ic_favourite_bored)
+            }
+        }
+    }
+
+    private fun onClickAddFavourites() {
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            Toast.makeText(
+                this,
+                "You must sign in to use this feature.",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+        songViewModel?.apply {
+            if (
+                isSongExists(
+                    favouriteSongs.value,
+                    mainViewModel.currentSong.value
+                )
+            ) {
+                mainViewModel.currentSong.value?.let {
+                    removeSongFromFavourites(it)
+                }
+            } else {
+                mainViewModel.currentSong.value?.let {
+                    addSongToFavourites(it)
+                }
+            }
         }
     }
 
@@ -534,5 +593,6 @@ class MainActivity : BaseActivity() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(serviceReceiver)
         LocalBroadcastManager.getInstance(this).unregisterReceiver(currentTimeReceiver)
+        songViewModel = null
     }
 }

@@ -82,7 +82,7 @@
                 android:id="@+id/bt_add_favourites"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:src="@drawable/ic_favourite_bored"
+                android:src="@drawable/ic_favourite_bored_red"
                 android:layout_marginTop="8dp" />
 
             <RelativeLayout

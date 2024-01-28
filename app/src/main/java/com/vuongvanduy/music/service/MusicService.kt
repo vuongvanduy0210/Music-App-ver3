@@ -432,6 +432,9 @@ class MusicService : Service(), MediaPlayer.OnCompletionListener, MediaPlayer.On
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onDestroy() {
         super.onDestroy()
+        Log.d(MUSIC_SERVICE_TAG, "onDestroy")
+        //save state song to local
+
         notificationScope.cancel()
         if (mediaPlayer != null) {
             mediaPlayer!!.release()

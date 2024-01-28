@@ -1,22 +1,17 @@
 package com.vuongvanduy.music.ui.settings.app_info
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.vuongvanduy.music.R
 import com.vuongvanduy.music.base.fragment.BaseMainFragment
 import com.vuongvanduy.music.common.TITLE_APP_INFO
+import com.vuongvanduy.music.databinding.FragmentAppInfoBinding
 
 
-class AppInfoFragment : BaseMainFragment() {
+class AppInfoFragment : BaseMainFragment<FragmentAppInfoBinding>() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_app_info, container, false)
-    }
+    override val layoutRes: Int
+        get() = R.layout.fragment_app_info
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -25,6 +20,8 @@ class AppInfoFragment : BaseMainFragment() {
 
     override fun onResume() {
         super.onResume()
-        mainActivity.binding.toolBarTitle.text = TITLE_APP_INFO
+        mainActivity?.let {
+            it.binding.toolBarTitle.text = TITLE_APP_INFO
+        }
     }
 }

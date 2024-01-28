@@ -111,7 +111,7 @@
                 android:id="@+id/img_favourite"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/ic_favourite_bored" />
+                android:src="@drawable/ic_favourite_bored_red" />
 
             <TextView
                 android:id="@+id/tv_add_favourites"
