@@ -100,7 +100,7 @@ class SongBSDFragment : BottomSheetDialogFragment() {
                 imgFavourite.setImageResource(R.drawable.ic_favourite_red)
             } else {
                 tvAddFavourites.text = "Add this song to your favourites"
-                imgFavourite.setImageResource(R.drawable.ic_favourite_bored)
+                imgFavourite.setImageResource(R.drawable.ic_favourite_bored_red)
             }
 
             layoutAddFavourites.setOnClickListener {

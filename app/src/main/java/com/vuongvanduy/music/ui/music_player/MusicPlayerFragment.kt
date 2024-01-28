@@ -221,7 +221,7 @@ class MusicPlayerFragment : BaseMainFragment<FragmentMusicPlayerBinding>() {
             ) {
                 btAddFavourites.setImageResource(R.drawable.ic_favourite_red)
             } else {
-                btAddFavourites.setImageResource(R.drawable.ic_favourite_bored)
+                btAddFavourites.setImageResource(R.drawable.ic_favourite_bored_red)
             }
         }
     }
@@ -280,7 +280,7 @@ class MusicPlayerFragment : BaseMainFragment<FragmentMusicPlayerBinding>() {
 
     override fun onDestroyView() {
         binding?.circleImageView?.animate()?.cancel()
-        binding?.circleImageView?.removeCallbacks(runnable)
+//        binding?.circleImageView?.removeCallbacks(runnable)
         super.onDestroyView()
     }
 }
