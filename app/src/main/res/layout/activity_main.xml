@@ -190,17 +190,26 @@
                 android:layout_marginStart="10dp">
 
                 <ImageView
-                    android:id="@+id/img_previous"
-                    android:layout_width="40sp"
+                    android:id="@+id/img_favourite"
+                    android:layout_width="25dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="5dp"
+                    tools:src="@drawable/ic_favourite" />
+
+                <ImageView
+                    android:id="@+id/img_previous"
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@id/img_favourite"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_previous" />
 
                 <ImageView
                     android:id="@+id/img_play"
-                    android:layout_width="50dp"
+                    android:layout_width="35dp"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@id/img_previous"
@@ -208,7 +217,7 @@
 
                 <ImageView
                     android:id="@+id/img_next"
-                    android:layout_width="40sp"
+                    android:layout_width="35dp"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="5dp"
@@ -217,7 +226,7 @@
 
                 <ImageView
                     android:id="@+id/img_clear"
-                    android:layout_width="35dp"
+                    android:layout_width="30dp"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="5dp"
