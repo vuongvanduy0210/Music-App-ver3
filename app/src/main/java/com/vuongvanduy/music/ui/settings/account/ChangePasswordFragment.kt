@@ -17,7 +17,7 @@ import com.vuongvanduy.music.databinding.FragmentChangePasswordBinding
 class ChangePasswordFragment : BaseMainFragment<FragmentChangePasswordBinding>() {
 
     override val layoutRes: Int
-        get() = R.layout.fragment_account
+        get() = R.layout.fragment_change_password
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
