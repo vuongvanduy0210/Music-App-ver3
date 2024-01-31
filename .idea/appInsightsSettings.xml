@@ -9,10 +9,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.vuongvanduy.music" />
-                  <option name="mobileSdkAppId" value="1:864398814382:android:b0fb7ff2cf8c32014a913f" />
-                  <option name="projectId" value="music-app-ff534" />
-                  <option name="projectNumber" value="864398814382" />
+                  <option name="appId" value="PLACEHOLDER" />
+                  <option name="mobileSdkAppId" value="" />
+                  <option name="projectId" value="" />
+                  <option name="projectNumber" value="" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

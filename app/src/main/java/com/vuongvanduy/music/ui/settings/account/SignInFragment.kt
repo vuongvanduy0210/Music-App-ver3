@@ -235,6 +235,9 @@ class SignInFragment : BaseLoginFragment() {
                     Log.e("Duy", "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
+            .addOnFailureListener {
+                Log.e("SignInGoogle", it.message.toString())
+            }
     }
 
     private fun goToGithubAuthFragment() {
